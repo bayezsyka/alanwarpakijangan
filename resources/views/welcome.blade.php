@@ -59,7 +59,7 @@
                 <a href="#pendaftaran" class="btn-primary text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
                     Daftar Sekarang
                 </a>
-                <a href="artikel.php" class="btn-outline text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-xl border-2 hover:shadow-lg transition-all duration-300">
+                <a href="artikel" class="btn-outline text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-xl border-2 hover:shadow-lg transition-all duration-300">
                     Artikel Kami
                 </a>
             </div>
@@ -77,7 +77,7 @@
                 <p class="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-6 sm:mb-8">
                     Temukan wawasan dan pengetahuan terbaru dari para ustadz dan santri Pesantren Al-Anwar Pakijangan
                 </p>
-                <a href="artikel.php" class="inline-flex items-center text-primary-600 hover:text-primary-700 font-semibold text-base sm:text-lg transition duration-300 group">
+                <a href="artikel" class="inline-flex items-center text-primary-600 hover:text-primary-700 font-semibold text-base sm:text-lg transition duration-300 group">
                     Lihat Semua Artikel
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 transform group-hover:translate-x-1 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
