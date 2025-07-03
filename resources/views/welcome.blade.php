@@ -1,22 +1,20 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <title>Pondok Pesantren Al-Anwar Pakijangan</title>
-
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-        <script src="https://cdn.tailwindcss.com"></script>
-    </head>
-   <header id="navbar" class="fixed top-0 right-0 w-full p-3 text-sm not-has-[nav]:hidden transform -translate-y-full transition-transform duration-300 ease-in-out z-50 bg-white dark:bg-gray-900 shadow-md">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pondok Pesantren Al-Anwar Pakijangan</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<header id="navbar" class="fixed top-0 right-0 w-full p-4 text-sm not-has-[nav]:hidden transform -translate-y-full transition-transform duration-300 ease-in-out z-50 bg-white dark:bg-gray-900 shadow-md">
     @if (Route::has('login'))
         <nav class="flex items-center justify-end gap-4">
             <a
                 href="{{ url('/artikel') }}"
-                class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal"
+                class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] text-[#1b1b18] border border-transparent hover:border-[#19140035] dark:hover:border-[#3E3E3A] rounded-sm text-sm leading-normal"
             >
                 Artikel
             </a>
@@ -34,7 +32,6 @@
                 >
                     Log in
                 </a>
-
                 @if (Route::has('register'))
                     <a
                         href="{{ route('register') }}"
@@ -45,9 +42,8 @@
             @endauth
         </nav>
     @endif
-    </header>
-    <body  class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] flex items-center lg:justify-center min-h-screen flex-col">
-        
+</header>
+<body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] flex items-center lg:justify-center min-h-screen flex-col">
 
     {{-- Home Section --}}
     <section style="background-image: url('{{ asset('images/landingpage/bgppdb.png') }}'); background-size: cover; background-position: center;" class="w-full min-h-screen flex items-center justify-center bg-no-repeat bg-cover bg-center relative">
@@ -67,8 +63,8 @@
     </section>
 
     {{-- Artikel --}}
-    <section class="min-h-[calc(100vh-4rem)] flex flex-col justify-center py-8 sm:py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 pt-16 pb-16">
-        <div class="container mx-auto max-w-7xl">
+    <section class="min-h-screen">
+        <div class="container mx-auto max-w-7xl p-8 pt-24">
             <!-- Section Header -->
             <div class="text-center mb-8 sm:mb-12 md:mb-16">
                 <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
@@ -133,38 +129,37 @@
         </div>
     </section>
 
-        @if (Route::has('login'))
-            <div class="h-14.5 hidden lg:block"></div>
-        @endif
-    </body>
+    @if (Route::has('login'))
+        <div class="h-14.5 hidden lg:block"></div>
+    @endif
+</body>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let lastScrollTop = 0;
+    const navbar = document.getElementById('navbar');
+    const scrollThreshold = 100; // Minimum scroll distance to trigger navbar
 
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        let lastScrollTop = 0;
-        const navbar = document.getElementById('navbar');
-        const scrollThreshold = 100; // Minimum scroll distance to trigger navbar
-        
-        window.addEventListener('scroll', function() {
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            
-            // Jika scroll masih di atas threshold, sembunyikan navbar
-            if (scrollTop <= scrollThreshold) {
-                navbar.classList.add('-translate-y-full');
-                navbar.classList.remove('translate-y-0');
-            } 
-            // Jika scroll ke bawah dan melebihi threshold, tampilkan navbar
-            else if (scrollTop > lastScrollTop && scrollTop > scrollThreshold) {
-                navbar.classList.remove('-translate-y-full');
-                navbar.classList.add('translate-y-0');
-            }
-            // Jika scroll ke atas tapi masih di atas threshold, sembunyikan navbar
-            else if (scrollTop < lastScrollTop && scrollTop > scrollThreshold) {
-                navbar.classList.remove('-translate-y-full');
-                navbar.classList.add('translate-y-0');
-            }
-            
-            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-        });
+    window.addEventListener('scroll', function() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        // Jika scroll masih di atas threshold, sembunyikan navbar
+        if (scrollTop <= scrollThreshold) {
+            navbar.classList.add('-translate-y-full');
+            navbar.classList.remove('translate-y-0');
+        }
+        // Jika scroll ke bawah dan melebihi threshold, tampilkan navbar
+        else if (scrollTop > lastScrollTop && scrollTop > scrollThreshold) {
+            navbar.classList.remove('-translate-y-full');
+            navbar.classList.add('translate-y-0');
+        }
+        // Jika scroll ke atas tapi masih di atas threshold, sembunyikan navbar
+        else if (scrollTop < lastScrollTop && scrollTop > scrollThreshold) {
+            navbar.classList.remove('-translate-y-full');
+            navbar.classList.add('translate-y-0');
+        }
+
+        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
     });
-    </script>
+});
+</script>
 </html>
