@@ -8,13 +8,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/pendaftaran', function () {
+    return view('pendaftaran');
+});
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // Rute untuk menampilkan daftar artikel
 Route::get('/artikel', [ArtikelController::class, 'index'])->name('artikel');
-
 Route::get('/artikel/{id}', [ArtikelController::class, 'show'])->name('artikel.detail');
 
 Route::middleware('auth')->group(function () {

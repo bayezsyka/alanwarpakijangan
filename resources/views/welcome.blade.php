@@ -52,10 +52,10 @@
                 Pondok Pesantren Al-Anwar Pakijangan
             </h1>
             <div class="flex flex-col text-zinc-50 sm:flex-row justify-center gap-4 sm:gap-6">
-                <a href="#pendaftaran" class="btn-primary text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                <a href="{{ url('/pendaftaran') }}" class="btn-primary text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
                     Daftar Sekarang
                 </a>
-                <a href="artikel" class="btn-outline text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-xl border-2 hover:shadow-lg transition-all duration-300">
+                <a href="{{ url('/artikel') }}" class="btn-outline text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-xl border-2 hover:shadow-lg transition-all duration-300">
                     Artikel Kami
                 </a>
             </div>
