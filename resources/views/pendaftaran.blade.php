@@ -36,20 +36,22 @@
     
     {{-- Font Awesome for icons --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    {{-- Favicon --}}
-    <link rel="icon" href="https://lirboyo.net/wp-content/uploads/2021/06/cropped-logo-lirboyo-32x32.png" sizes="32x32">
 </head>
 <body class="bg-gray-50 min-h-screen flex items-center justify-center p-4">
     <div class="w-full max-w-4xl bg-white rounded-xl shadow-lg overflow-hidden">
         {{-- Header with logo and title --}}
         <div class="bg-gradient-to-r from-primary-600 to-primary-700 p-6 text-white">
             <div class="flex flex-col md:flex-row items-center justify-between">
-                <div class="flex items-center space-x-4 mb-4 md:mb-0">
+                <div class="flex justify-between items-center space-x-4 mb-4 md:mb-0">
                     <img src="{{ url('images/logo.png') }}" alt="Logo Lirboyo" class="h-12">
                     <div>
                         <h1 class="text-2xl font-bold">Pendaftaran Santri Baru</h1>
                         <p class="text-sm opacity-90">Pondok Pesantren Al-Anwar Pakijangan</p>
+                    </div>
+                    <div class="ml-auto item-right">
+                        <a href="{{ url('/') }}" class="text-sm text-white hover:underline">
+                            <i class="fas fa-home mr-1"></i> Kembali ke Beranda
+                        </a>
                     </div>
                 </div>
             </div>
@@ -219,15 +221,7 @@
                             <label for="nomor_hp_aktif" class="block text-sm font-medium text-gray-700 mb-1">Nomor Telepon/HP <span class="text-red-500">*</span></label>
                             <input type="text" id="nomor_hp_aktif" name="nomor_hp_aktif" readonly
                                    class="block w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md shadow-sm cursor-not-allowed">
-                        </div>
-                        
-                        {{-- Email --}}
-                        <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Aktif</label>
-                            <input type="email" id="email" name="email"
-                                   class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-600 focus:border-primary-600"
-                                   placeholder="Untuk informasi pendaftaran">
-                        </div>
+                        </div>                       
                         
                         {{-- Alamat --}}
                         <div class="col-span-2">

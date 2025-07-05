@@ -12,6 +12,10 @@ Route::get('/pendaftaran', function () {
     return view('pendaftaran');
 });
 
+Route::get('/informasipendaftaran', function () {
+    return view('psb');
+});
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
