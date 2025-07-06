@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str; // Import Str facade
+use Illuminate\Support\Str;
 
 class ArticleController extends Controller
 {
@@ -24,32 +24,28 @@ class ArticleController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'judul' => 'required|string|max:255',
-            'penulis' => 'required|string|max:255',
-            'isi' => 'required|string',
-            'tanggal' => 'required|date',
-            // Validasi dibuat terpisah untuk kedua input
+            'judul'         => 'required|string|max:255',
+            'penulis'       => 'required|string|max:255',
+            'isi'           => 'required|string',
+            'tanggal'       => 'required|date',
             'gambar_upload' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'gambar_url' => 'nullable|url|max:2048',
+            'gambar_url'    => 'nullable|url',
         ]);
 
         $imagePath = null;
 
-        // Logika 1: Prioritaskan file upload
         if ($request->hasFile('gambar_upload')) {
             $imagePath = $request->file('gambar_upload')->store('artikel', 'public');
-        } 
-        // Logika 2: Jika tidak ada file, gunakan URL
-        elseif ($request->filled('gambar_url')) {
+        } elseif ($request->filled('gambar_url')) {
             $imagePath = $request->gambar_url;
         }
 
         Article::create([
-            'judul' => $request->judul,
+            'judul'   => $request->judul,
             'penulis' => $request->penulis,
-            'isi' => $request->isi,
+            'isi'     => $request->isi,
             'tanggal' => $request->tanggal,
-            'gambar' => $imagePath, // Simpan path atau URL
+            'gambar'  => $imagePath,
         ]);
 
         return redirect()->route('admin.artikel.index')->with('success', 'Artikel berhasil ditambahkan.');
@@ -63,39 +59,39 @@ class ArticleController extends Controller
     public function update(Request $request, Article $artikel)
     {
         $request->validate([
-            'judul' => 'required|string|max:255',
-            'penulis' => 'required|string|max:255',
-            'isi' => 'required|string',
-            'tanggal' => 'required|date',
+            'judul'         => 'required|string|max:255',
+            'penulis'       => 'required|string|max:255',
+            'isi'           => 'required|string',
+            'tanggal'       => 'required|date',
             'gambar_upload' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'gambar_url' => 'nullable|url|max:2048',
+            'gambar_url'    => 'nullable|url',
         ]);
 
         $imagePath = $artikel->gambar;
 
-        // Cek jika ada file upload baru (ini jadi prioritas)
         if ($request->hasFile('gambar_upload')) {
-            // Hapus gambar lama JIKA gambar lama adalah file lokal (bukan URL)
             if ($artikel->gambar && !Str::startsWith($artikel->gambar, 'http')) {
                 Storage::disk('public')->delete($artikel->gambar);
             }
             $imagePath = $request->file('gambar_upload')->store('artikel', 'public');
-        } 
-        // Jika tidak ada file upload, cek apakah ada URL baru
-        elseif ($request->filled('gambar_url')) {
-             // Hapus gambar lama JIKA gambar lama adalah file lokal (bukan URL)
+        } elseif ($request->filled('gambar_url')) {
             if ($artikel->gambar && !Str::startsWith($artikel->gambar, 'http')) {
                 Storage::disk('public')->delete($artikel->gambar);
             }
             $imagePath = $request->gambar_url;
+        } elseif ($request->input('hapus_gambar') == '1') {
+            if ($artikel->gambar && !Str::startsWith($artikel->gambar, 'http')) {
+                Storage::disk('public')->delete($artikel->gambar);
+            }
+            $imagePath = null;
         }
 
         $artikel->update([
-            'judul' => $request->judul,
+            'judul'   => $request->judul,
             'penulis' => $request->penulis,
-            'isi' => $request->isi,
+            'isi'     => $request->isi,
             'tanggal' => $request->tanggal,
-            'gambar' => $imagePath,
+            'gambar'  => $imagePath,
         ]);
 
         return redirect()->route('admin.artikel.index')->with('success', 'Artikel berhasil diperbarui.');
@@ -103,11 +99,10 @@ class ArticleController extends Controller
 
     public function destroy(Article $artikel)
     {
-        // Hapus gambar dari storage HANYA jika itu file lokal
         if ($artikel->gambar && !Str::startsWith($artikel->gambar, 'http')) {
             Storage::disk('public')->delete($artikel->gambar);
         }
-        
+
         $artikel->delete();
         return redirect()->route('admin.artikel.index')->with('success', 'Artikel berhasil dihapus.');
     }
