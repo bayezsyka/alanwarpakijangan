@@ -9,14 +9,16 @@ class ArtikelController extends Controller
 {
     public function welcome()
     {
-        $articles = Article::latest()->take(3)->get();
-        return view('welcome', compact('articles'));
+       $articles = Article::orderBy('tanggal', 'desc')->take(3)->get();
+
+    return view('welcome', compact('articles'));
     }
 
     public function index()
     {
-        $articles = Article::latest()->paginate(9);
-        return view('artikel', compact('articles'));
+         $articles = Article::orderBy('tanggal', 'desc')->paginate(9);
+    
+    return view('artikel', compact('articles'));
     }
 
     public function show($id)

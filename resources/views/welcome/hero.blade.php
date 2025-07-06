@@ -1,5 +1,5 @@
 {{-- Home Section --}}
-    <section style="background-image: url('{{ asset('images/landingpage/bgppdb.png') }}'); background-size: cover; background-position: center;" class="w-full min-h-screen flex items-center justify-center bg-no-repeat bg-cover bg-center relative">
+    <section style="background-image: linear-gradient(rgba(0,131,98,0.4), rgba(0,131,98,0.4)), url('{{ asset('images/landingpage/bgppdb.png') }}'); background-size: cover; background-position: center;" class="w-full min-h-screen flex items-center justify-center bg-no-repeat bg-cover bg-center relative">
         <div class="container mx-auto text-center max-w-6xl px-4">
             <h1 class="font-bold mb-6 text-zinc-50 leading-tight
                 text-2xl

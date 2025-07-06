@@ -1,7 +1,7 @@
 <header id="navbar" class="fixed top-0 right-0 w-full p-3 text-sm not-has-[nav]:hidden transform -translate-y-full transition-transform duration-300 ease-in-out z-50 bg-white dark:bg-gray-900 shadow-md">
         <nav class="grid grid-cols-3 items-center w-full">
             <div>
-                <a class="text-m font-bold text-sky-900">
+                <a class="text-m font-bold text-[#008362]">
                     MENDAMPINGI POTENSI
                     <br>MEMBENTUK KARAKTER</br>
                 </a>

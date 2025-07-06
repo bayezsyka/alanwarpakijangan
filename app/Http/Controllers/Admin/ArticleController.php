@@ -12,8 +12,8 @@ class ArticleController extends Controller
 {
     public function index()
     {
-        $articles = Article::latest()->paginate(10);
-        return view('admin.artikel.index', compact('articles'));
+    $articles = Article::orderBy('tanggal', 'desc')->paginate(10);
+    return view('admin.artikel.index', compact('articles'));
     }
 
     public function create()
