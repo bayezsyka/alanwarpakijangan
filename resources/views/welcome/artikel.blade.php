@@ -1,5 +1,5 @@
 <section class="min-h-screen">
-    <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24">
+    <div class="container mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24">
         <div class="text-center mb-6 sm:mb-10 md:mb-14">
             <div class="inline-block bg-blue-900/10 px-4 py-2 sm:px-6 sm:py-3 rounded-full mb-4 sm:mb-6">
                 <h2 class="text-blue-900 text-xl sm:text-2xl md:text-3xl font-medium tracking-widerr">ARTIKEL TERBARU</h2>

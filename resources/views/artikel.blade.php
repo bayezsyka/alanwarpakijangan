@@ -12,7 +12,7 @@
 <body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] min-h-screen flex flex-col">
     <main class="flex-grow">
         <section class="py-8 sm:py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 pt-24 pb-16">
-            <div class="container mx-auto max-w-7xl">
+            <div class="container mx-auto max-w-5xl">
                 <div class="text-center mb-8 sm:mb-12 md:mb-16">
                     <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
                         Artikel Terbaru
