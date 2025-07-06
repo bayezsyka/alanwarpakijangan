@@ -50,7 +50,7 @@
                         <i class=""></i>
                         Daftar Sekarang
                     </a>
-                    <a href="index.html" class="px-8 py-4 bg-transparent border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-cyan-700 transition-all duration-300 flex items-center justify-center gap-2">
+                    <a href="/" class="px-8 py-4 bg-transparent border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-cyan-700 transition-all duration-300 flex items-center justify-center gap-2">
                         <i class="fas fa-home"></i>
                         Kembali ke Beranda
                     </a>

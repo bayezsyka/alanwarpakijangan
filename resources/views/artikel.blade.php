@@ -29,51 +29,9 @@
         }
     </style>
 </head>
+  @include('layouts.nav')
 <body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] min-h-screen flex flex-col">
-
-    <header class="w-full lg:max-w-4xl pt-6 max-w-[335px] text-sm mb-6 not-has-[nav]:hidden mx-auto px-4 lg:px-0">
-        {{-- Mengatur tata letak navbar dengan logo di kiri dan navigasi di kanan --}}
-        <nav class="flex items-center justify-between gap-4">
-            <a href="{{ url('/') }}" class="flex items-center">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo Pesantren Al-Anwar" class="h-10 w-auto">
-            </a>
-
-            {{-- Bagian navigasi lainnya --}}
-            <div class="flex items-center gap-4">
-                <a
-                    href="{{ route('artikel') }}"
-                    class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal"
-                >
-                    Artikel
-                </a>
-                @if (Route::has('login'))
-                    @auth
-                        <a
-                            href="{{ url('/dashboard') }}"
-                            class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal"
-                        >
-                            Dashboard
-                        </a>
-                    @else
-                        <a
-                            href="{{ route('login') }}"
-                            class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] text-[#1b1b18] border border-transparent hover:border-[#19140035] dark:hover:border-[#3E3E3A] rounded-sm text-sm leading-normal"
-                        >
-                            Log in
-                        </a>
-
-                        @if (Route::has('register'))
-                            <a
-                                href="{{ route('register') }}"
-                                class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal">
-                                Register
-                            </a>
-                        @endif
-                    @endauth
-                @endif
-            </div>
-        </nav>
-    </header>
+  
 
     <main class="flex-grow">
         <section class="py-8 sm:py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 pt-16 pb-16">
@@ -146,5 +104,6 @@
     @if (Route::has('login'))
         <div class="h-14.5 hidden lg:block"></div>
     @endif
+    @include('layouts.footer')
 </body>
 </html>
