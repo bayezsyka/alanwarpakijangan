@@ -17,6 +17,9 @@
                     <x-nav-link :href="route('admin.artikel.index')" :active="request()->routeIs('admin.artikel.index')">
                         {{ __('Manajemen Artikel') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('admin.pendaftaran.index')" :active="request()->routeIs('admin.pendaftaran.*')">
+                        {{ __('Pendaftaran') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -71,6 +74,9 @@
             <x-responsive-nav-link :href="route('admin.artikel.index')" :active="request()->routeIs('admin.artikel.index')">
                 {{ __('Manajemen Artikel') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin.pendaftaran.index')" :active="request()->routeIs('admin.pendaftaran.*')">
+            {{ __('Pendaftaran') }}
+            </x-responsive-nav-link>    
         </div>
 
         <div class="pt-4 pb-1 border-t border-gray-200">

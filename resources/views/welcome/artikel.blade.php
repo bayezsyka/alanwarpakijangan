@@ -1,8 +1,8 @@
 <section class="min-h-screen">
     <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24">
         <div class="text-center mb-6 sm:mb-10 md:mb-14">
-            <div class="inline-block bg-blue-900/10 px-4 py-2 sm:px-6 sm:py-3 rounded-full mb-4 sm:mb-6">
-                <h2 class="text-blue-900 text-xl sm:text-2xl md:text-3xl font-medium tracking-widerr">ARTIKEL TERBARU</h2>
+            <div class="inline-block bg-green-900/10 px-4 py-2 sm:px-6 sm:py-3 rounded-full mb-4 sm:mb-6">
+                <h2 class="text-green-900 text-xl sm:text-2xl md:text-3xl font-medium tracking-widerr">ARTIKEL TERBARU</h2>
             </div>
         </div>
         <div class="flex-1 flex items-center justify-center">
@@ -28,7 +28,7 @@
                             <div class="p-4 sm:p-6 flex-grow flex flex-col">
                                 <h3 class="text-lg sm:text-xl font-bold mb-3 text-gray-900 leading-tight">
                                     {{-- PASTIKAN LINK INI JUGA MENGGUNAKAN "$a->slug" --}}
-                                    <a href="{{ route('artikel.detail', $a->slug) }}" class="hover:text-blue-600 transition duration-300">
+                                    <a href="{{ route('artikel.detail', $a->slug) }}" class="hover:text-green-600 transition duration-300">
                                         {{ $a->judul }}
                                     </a>
                                 </h3>
