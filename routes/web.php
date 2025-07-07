@@ -7,6 +7,11 @@ use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use App\Http\Controllers\Admin\PendaftaranController as AdminPendaftaranController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\OtpController;
+
+Route::post('/otp/send', [OtpController::class, 'send'])->name('otp.send');
+Route::post('/otp/send', [OtpController::class, 'send'])->name('otp.send');
+Route::post('/otp/verify', [OtpController::class, 'verify'])->name('otp.verify');
 
 // == RUTE FRONTEND ==
 Route::get('/', [ArtikelController::class, 'welcome'])->name('welcome');
@@ -16,6 +21,15 @@ Route::get('/pendaftaran', [PendaftaranController::class, 'create'])->name('pend
 Route::post('/pendaftaran', [PendaftaranController::class, 'store'])->name('pendaftaran.store');
 Route::get('/informasipendaftaran', function () { return view('psb'); })->name('informasipendaftaran');
 Route::get('/profil', function () { return view('profil'); })->name('profil');
+
+
+// Route untuk menampilkan form pendaftaran
+Route::get('/pendaftaran', [PendaftaranController::class, 'create'])->name('pendaftaran.create');
+// Route untuk memproses submit form
+Route::post('/pendaftaran', [PendaftaranController::class, 'store'])->name('pendaftaran.store');
+// ### TAMBAHKAN ROUTE BARU INI UNTUK VALIDASI AJAX ###
+Route::post('/pendaftaran/validate', [PendaftaranController::class, 'ajaxValidate'])->name('pendaftaran.ajax_validate');
+
 
 // == RUTE BACKEND ==
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');

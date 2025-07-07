@@ -2,169 +2,185 @@
 
 @section('title', 'Pendaftaran Santri Baru - Pesantren Al-Anwar')
 
+@push('styles')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+@endpush
+
 @section('content')
 <div class="bg-gray-50 flex items-center justify-center p-4 pt-24 pb-12">
-    <div class="w-full max-w-4xl bg-white rounded-xl shadow-lg overflow-hidden">
-        {{-- Header Form --}}
+    <div x-data="pendaftaranForm({ success: {{ session('registration_success') ? 'true' : 'false' }} })" class="w-full max-w-4xl bg-white rounded-xl shadow-lg overflow-hidden">
+        
         <div class="bg-gradient-to-r from-blue-600 to-sky-700 p-6 text-white">
-            <div class="flex items-center space-x-4">
-                <img src="{{ url('images/logo.png') }}" alt="Logo Pesantren" class="h-12">
-                <div>
-                    <h1 class="text-2xl font-bold">Pendaftaran Santri Baru</h1>
-                    <p class="text-sm opacity-90">Pondok Pesantren Al-Anwar Pakijangan</p>
-                </div>
+             <h1 class="text-2xl font-bold">Pendaftaran Santri Baru</h1>
+             <p class="text-sm opacity-90">Pondok Pesantren Al-Anwar Pakijangan</p>
+        </div>
+
+        <div class="px-6 pt-4" x-show="langkah < 3" x-transition>
+            <div class="flex justify-between items-start text-center">
+                <div class="w-1/3"><div class="h-8 w-8 mx-auto rounded-full flex items-center justify-center font-bold" :class="langkah >= 1 ? 'bg-blue-600 text-white' : 'bg-gray-300 text-gray-600'">1</div><span class="text-xs mt-1">Verifikasi</span></div>
+                <div class="w-1/3"><div class="h-8 w-8 mx-auto rounded-full flex items-center justify-center font-bold" :class="langkah >= 2 ? 'bg-blue-600 text-white' : 'bg-gray-300 text-gray-600'">2</div><span class="text-xs mt-1">Data Diri</span></div>
+                <div class="w-1/3"><div class="h-8 w-8 mx-auto rounded-full flex items-center justify-center font-bold" :class="langkah >= 3 ? 'bg-blue-600 text-white' : 'bg-gray-300 text-gray-600'">3</div><span class="text-xs mt-1">Selesai</span></div>
             </div>
         </div>
 
-        {{-- Menampilkan Error Validasi Jika Ada --}}
-        @if ($errors->any())
-            <div class="p-6">
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                    <strong class="font-bold">Terjadi Kesalahan! Harap periksa kembali isian Anda.</strong>
-                    <ul class="mt-2 list-disc list-inside text-sm">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
+        <div class="p-6 md:p-8">
+            <div x-show="langkah === 1" x-transition.opacity class="space-y-8">
+                <div class="text-center"><h2 class="text-2xl font-bold text-gray-800">Verifikasi Nomor WhatsApp</h2><p class="mt-2 text-gray-600">Masukkan nomor WhatsApp aktif untuk memulai pendaftaran.</p></div>
+                <div class="mt-8 max-w-md mx-auto space-y-4">
+                    <div>
+                        <label for="wa_input" class="block text-sm font-medium text-gray-700 mb-1">Nomor WhatsApp</label>
+                        <div class="flex rounded-md shadow-sm">
+                            <span class="inline-flex items-center px-3 rounded-l-md border bg-gray-50 text-gray-500">+62</span>
+                            <input type="tel" id="wa_input" x-model="nomorWaInput" required placeholder="81234567890" class="flex-1 block w-full px-3 py-3 rounded-none rounded-r-md border-gray-300">
+                        </div>
+                    </div>
+                    <div x-show="errorMessage" x-text="errorMessage" class="text-red-500 text-sm p-2 bg-red-50 rounded-md"></div>
+                    <button type="button" @click="sendOtp" :disabled="loading" class="w-full flex justify-center items-center py-3 px-4 border rounded-md shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300">
+                        <span x-show="!loading">Kirim Kode Verifikasi</span>
+                        <svg x-show="loading" class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                        <span x-show="loading">Mengirim...</span>
+                    </button>
                 </div>
-            </div>
-        @endif
-
-        {{-- Form Utama --}}
-        <form id="registrationForm" action="{{ route('pendaftaran.store') }}" method="POST" enctype="multipart/form-data" class="p-6 md:p-8 space-y-8">
-            @csrf
-            
-            {{-- Data Diri Santri --}}
-            <div class="space-y-6">
-                <div class="border-b border-gray-200 pb-2">
-                    <h3 class="text-lg font-semibold text-gray-800">Data Diri Santri</h3>
-                    <p class="text-sm text-gray-500">Isi dengan data lengkap dan valid sesuai dokumen resmi.</p>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                    <div class="col-span-2">
-                        <label for="nama_lengkap" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap <span class="text-red-500">*</span></label>
-                        <input type="text" id="nama_lengkap" name="nama_lengkap" value="{{ old('nama_lengkap') }}" required class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
-                    </div>
-                    <div>
-                        <label for="nik" class="block text-sm font-medium text-gray-700 mb-1">Nomor Induk Kependudukan (NIK) <span class="text-red-500">*</span></label>
-                        <input type="text" id="nik" name="nik" value="{{ old('nik') }}" required pattern="\d{16}" title="NIK harus 16 digit angka" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
-                    </div>
-                    <div>
-                        <label for="nisn" class="block text-sm font-medium text-gray-700 mb-1">NISN</label>
-                        <input type="text" id="nisn" name="nisn" value="{{ old('nisn') }}" pattern="\d{10}" title="NISN harus 10 digit angka" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
-                    </div>
-                    <div>
-                        <label for="nomor_wa" class="block text-sm font-medium text-gray-700 mb-1">Nomor WhatsApp <span class="text-red-500">*</span></label>
-                        <input type="tel" id="nomor_wa" name="nomor_wa" value="{{ old('nomor_wa') }}" required class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Jenis Kelamin <span class="text-red-500">*</span></label>
-                        <select name="jenis_kelamin" required class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
-                            <option value="">Pilih Jenis Kelamin</option>
-                            <option value="Laki-laki" @if(old('jenis_kelamin') == 'Laki-laki') selected @endif>Laki-laki</option>
-                            <option value="Perempuan" @if(old('jenis_kelamin') == 'Perempuan') selected @endif>Perempuan</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="tempat_lahir" class="block text-sm font-medium text-gray-700 mb-1">Tempat Lahir <span class="text-red-500">*</span></label>
-                        <input type="text" id="tempat_lahir" name="tempat_lahir" value="{{ old('tempat_lahir') }}" required class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
-                    </div>
-                    <div>
-                        <label for="tanggal_lahir" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Lahir <span class="text-red-500">*</span></label>
-                        <input type="date" id="tanggal_lahir" name="tanggal_lahir" value="{{ old('tanggal_lahir') }}" required class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
-                    </div>
-                    <div class="col-span-2">
-                        <label for="alamat" class="block text-sm font-medium text-gray-700 mb-1">Alamat Lengkap <span class="text-red-500">*</span></label>
-                        <textarea id="alamat" name="alamat" rows="3" required class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">{{ old('alamat') }}</textarea>
-                    </div>
+                <div x-show="otpSent" x-transition class="mt-8 max-w-md mx-auto">
+                    <label class="block text-sm font-medium text-gray-700 text-center">Masukkan 6 Digit Kode Verifikasi</label>
+                    <div class="flex justify-center space-x-2 mt-2" @keydown.backspace="handleOtpBackspace">
+                        <template x-for="(digit, index) in otp" :key="index"><input type="text" maxlength="1" x-model="otp[index]" :id="'otp-' + index" @input="handleOtpInput" class="w-12 h-12 text-2xl text-center border rounded-md"></template>
+                    </div><div x-show="otpErrorMessage" x-text="otpErrorMessage" class="text-red-500 text-sm text-center mt-2"></div>
                 </div>
             </div>
 
-            {{-- Data Orang Tua --}}
-            <div class="space-y-6">
-                <div class="border-b border-gray-200 pb-2">
-                    <h3 class="text-lg font-semibold text-gray-800">Data Orang Tua / Wali</h3>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {{-- Data Ayah --}}
-                    <div class="space-y-4">
-                        <h4 class="font-medium">Data Ayah</h4>
-                        <div>
-                            <label for="nama_ayah" class="block text-sm text-gray-700 mb-1">Nama Ayah <span class="text-red-500">*</span></label>
-                            <input type="text" name="nama_ayah" value="{{ old('nama_ayah') }}" required class="w-full border-gray-300 rounded-md">
-                        </div>
-                        <div>
-                            <label for="pekerjaan_ayah" class="block text-sm text-gray-700 mb-1">Pekerjaan Ayah <span class="text-red-500">*</span></label>
-                            <input type="text" name="pekerjaan_ayah" value="{{ old('pekerjaan_ayah') }}" required class="w-full border-gray-300 rounded-md">
-                        </div>
-                        <div>
-                            <label for="telepon_ayah" class="block text-sm text-gray-700 mb-1">Telepon Ayah <span class="text-red-500">*</span></label>
-                            <input type="tel" name="telepon_ayah" value="{{ old('telepon_ayah') }}" required class="w-full border-gray-300 rounded-md">
-                        </div>
+            <div x-show="langkah === 2" x-transition>
+                @if ($errors->any())
+                    <div class="mb-6 bg-red-100 border-l-4 border-red-500 text-red-700 p-4" role="alert"><p class="font-bold">Error dari Server!</p><p>Data yang Anda kirim masih belum valid. Mohon periksa kembali.</p></div>
+                @endif
+                <form id="registrationForm" x-ref="form" action="{{ route('pendaftaran.store') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
+                    @csrf
+                    <input type="hidden" name="nomor_wa" :value="verifiedNomorWa">
+                    @include('pendaftaran.form-fields')
+                    <div class="pt-4 border-t flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-3">
+                        <button type="button" @click="validateForm" class="w-full sm:w-auto flex justify-center items-center py-3 px-6 border border-gray-300 rounded-md shadow-sm text-base font-medium text-gray-700 bg-white hover:bg-gray-50">Cek Validitas Data</button>
+                        <button type="submit" :disabled="!isFormValid" class="w-full sm:w-auto flex justify-center items-center py-3 px-6 border rounded-md shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed">Kirim Formulir</button>
                     </div>
-                    {{-- Data Ibu --}}
-                    <div class="space-y-4">
-                        <h4 class="font-medium">Data Ibu</h4>
-                        <div>
-                            <label for="nama_ibu" class="block text-sm text-gray-700 mb-1">Nama Ibu <span class="text-red-500">*</span></label>
-                            <input type="text" name="nama_ibu" value="{{ old('nama_ibu') }}" required class="w-full border-gray-300 rounded-md">
-                        </div>
-                        <div>
-                            <label for="pekerjaan_ibu" class="block text-sm text-gray-700 mb-1">Pekerjaan Ibu <span class="text-red-500">*</span></label>
-                            <input type="text" name="pekerjaan_ibu" value="{{ old('pekerjaan_ibu') }}" required class="w-full border-gray-300 rounded-md">
-                        </div>
-                        <div>
-                            <label for="telepon_ibu" class="block text-sm text-gray-700 mb-1">Telepon Ibu <span class="text-red-500">*</span></label>
-                            <input type="tel" name="telepon_ibu" value="{{ old('telepon_ibu') }}" required class="w-full border-gray-300 rounded-md">
-                        </div>
-                    </div>
-                    {{-- Data Wali --}}
-                    <div class="md:col-span-2 space-y-4 pt-4 border-t">
-                        <h4 class="font-medium">Data Wali (Opsional)</h4>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <input type="text" name="nama_wali" value="{{ old('nama_wali') }}" placeholder="Nama Wali" class="w-full border-gray-300 rounded-md">
-                            <input type="text" name="pekerjaan_wali" value="{{ old('pekerjaan_wali') }}" placeholder="Pekerjaan Wali" class="w-full border-gray-300 rounded-md">
-                            <input type="tel" name="telepon_wali" value="{{ old('telepon_wali') }}" placeholder="Telepon Wali" class="w-full border-gray-300 rounded-md">
-                            <input type="text" name="hubungan_wali" value="{{ old('hubungan_wali') }}" placeholder="Hubungan dengan Santri" class="w-full border-gray-300 rounded-md">
-                        </div>
-                    </div>
-                </div>
+                </form>
             </div>
 
-            {{-- Riwayat Pendidikan & Berkas --}}
-            <div class="space-y-6">
-                 <div class="border-b border-gray-200 pb-2">
-                    <h3 class="text-lg font-semibold text-gray-800">Riwayat Pendidikan & Berkas</h3>
-                    <p class="text-sm text-gray-500">Upload dokumen dengan format JPG/PNG/PDF (maks. 2MB)</p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <input type="text" name="asal_sekolah" value="{{ old('asal_sekolah') }}" required placeholder="Asal Sekolah Terakhir *" class="w-full border-gray-300 rounded-md">
-                    <input type="number" name="tahun_lulus" value="{{ old('tahun_lulus') }}" required placeholder="Tahun Lulus *" class="w-full border-gray-300 rounded-md">
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Foto Santri <span class="text-red-500">*</span></label>
-                        <input type="file" name="foto_santri" required class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Scan Kartu Keluarga (KK) <span class="text-red-500">*</span></label>
-                        <input type="file" name="scan_kk" required class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Scan Ijazah/SKL <span class="text-red-500">*</span></label>
-                        <input type="file" name="scan_ijazah" required class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-                    </div>
-                </div>
+            <div x-show="langkah === 3" x-transition.opacity class="text-center py-12">
+                <div class="w-24 h-24 bg-green-100 rounded-full p-4 flex items-center justify-center mx-auto"><svg class="w-16 h-16 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></div>
+                <h2 class="text-2xl font-bold text-gray-800 mt-6">Pendaftaran Berhasil!</h2>
+                <p class="text-gray-600 mt-2 max-w-md mx-auto">Terima kasih, data Anda telah kami terima. Notifikasi berisi link grup WhatsApp telah dikirim ke nomor Anda.</p>
+                <div class="mt-8" x-show="showHomeButton" x-transition.enter.duration.500ms><a href="{{ route('welcome') }}" class="inline-block px-8 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700">Kembali ke Beranda</a></div>
             </div>
-
-            {{-- Tombol Submit --}}
-            <div class="pt-4 border-t">
-                <button type="submit" class="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700">
-                    Kirim Formulir Pendaftaran
-                </button>
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    function pendaftaranForm(config) {
+        return {
+            langkah: 2,
+            isFormValid: false,
+            showHomeButton: false,
+            nomorWaInput: '',
+            verifiedNomorWa: '',
+            loading: false,
+            errorMessage: '',
+            otpSent: false,
+            otp: Array(6).fill(''),
+            otpErrorMessage: '',
+
+            init() {
+                if (config.success) {
+                    this.langkah = 3;
+                    setTimeout(() => { this.showHomeButton = true; }, 2000);
+                }
+            },
+
+            validateForm() {
+                const form = this.$refs.form;
+                this.isFormValid = false;
+                if (form.checkValidity()) {
+                    this.loading = true;
+                    fetch('{{ route('pendaftaran.ajax_validate') }}', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') },
+                        body: JSON.stringify({ nik: document.getElementById('nik').value })
+                    })
+                    .then(res => {
+                        if (!res.ok) { return res.json().then(err => { throw err; }); }
+                        return res.json();
+                    })
+                    .then(data => {
+                        this.isFormValid = true;
+                        Swal.fire('Data Valid!', 'Semua data yang dicek sudah benar. Silakan kirim formulir.', 'success');
+                    })
+                    .catch(error => {
+                        const errorMessages = Object.values(error.errors).flat();
+                        Swal.fire('Data Tidak Valid!', errorMessages.join('\n'), 'error');
+                    })
+                    .finally(() => {
+                        this.loading = false;
+                    });
+                } else {
+                    form.reportValidity();
+                    Swal.fire('Oops!', 'Masih ada data yang belum diisi atau tidak sesuai format. Silakan periksa kembali.', 'error');
+                }
+            },
+
+            sendOtp() {
+                if (!this.nomorWaInput) { this.errorMessage = 'Nomor WhatsApp tidak boleh kosong.'; return; }
+                this.loading = true; this.errorMessage = '';
+                fetch('{{ route('otp.send') }}', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') },
+                    body: JSON.stringify({ nomor_wa: '62' + this.nomorWaInput })
+                })
+                .then(res => {
+                    if (!res.ok) { return res.json().then(err => { throw new Error(err.message || 'Gagal mengirim OTP.') }); }
+                    return res.json();
+                })
+                .then(data => {
+                    this.otpSent = true;
+                    this.$nextTick(() => document.getElementById('otp-0').focus());
+                })
+                .catch(error => { this.errorMessage = error.message; })
+                .finally(() => { this.loading = false; });
+            },
+
+            handleOtpInput(e) {
+                const index = parseInt(e.target.id.split('-')[1]);
+                if (e.target.value && index < 5) { document.getElementById('otp-' + (index + 1)).focus(); }
+                if (this.otp.join('').length === 6) { this.verifyOtp(); }
+            },
+            
+            handleOtpBackspace(e) {
+                const index = parseInt(e.target.id.split('-')[1]);
+                if (!e.target.value && index > 0) { document.getElementById('otp-' + (index - 1)).focus(); }
+            },
+
+            verifyOtp() {
+                this.otpErrorMessage = '';
+                const enteredOtp = this.otp.join('');
+                if (enteredOtp.length !== 6) return;
+                fetch('{{ route('otp.verify') }}', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') },
+                    body: JSON.stringify({ otp: enteredOtp, nomor_wa: '62' + this.nomorWaInput })
+                })
+                .then(res => {
+                    if (!res.ok) { return res.json().then(err => { throw new Error(err.message || 'Verifikasi gagal.') }); }
+                    return res.json();
+                })
+                .then(data => {
+                    this.langkah = 2;
+                    this.verifiedNomorWa = '62' + this.nomorWaInput;
+                })
+                .catch(error => {
+                    this.otpErrorMessage = error.message;
+                });
+            }
+        }
+    }
+</script>
+@endpush
