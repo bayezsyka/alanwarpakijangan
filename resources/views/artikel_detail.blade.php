@@ -7,6 +7,8 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-gray-50 min-h-screen flex flex-col">
     @include('layouts.nav')
@@ -17,6 +19,40 @@
                 <span class="mr-4">Tanggal: {{ \Carbon\Carbon::parse($article->tanggal)->format('d M Y') }}</span>
                 <span>Oleh: {{ $article->penulis }}</span>
             </div>
+            
+            <div class="mb-6 flex flex-wrap items-center gap-2">
+                <span class="text-gray-600 mr-2">Bagikan:</span>
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}" 
+                   target="_blank" 
+                   class="bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700 transition duration-300"
+                   aria-label="Share ke Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://twitter.com/intent/tweet?url={{ urlencode(url()->current()) }}&text={{ urlencode($article->judul) }}" 
+                   target="_blank" 
+                   class="bg-blue-400 text-white p-2 rounded-full hover:bg-blue-500 transition duration-300"
+                   aria-label="Share ke Twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://wa.me/?text={{ urlencode($article->judul . ' ' . url()->current()) }}" 
+                   target="_blank" 
+                   class="bg-green-500 text-white p-2 rounded-full hover:bg-green-600 transition duration-300"
+                   aria-label="Share ke WhatsApp">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+                <a href="https://t.me/share/url?url={{ urlencode(url()->current()) }}&text={{ urlencode($article->judul) }}" 
+                   target="_blank" 
+                   class="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 transition duration-300"
+                   aria-label="Share ke Telegram">
+                    <i class="fab fa-telegram-plane"></i>
+                </a>
+                <button onclick="copyToClipboard('{{ url()->current() }}')" 
+                        class="bg-gray-600 text-white p-2 rounded-full hover:bg-gray-700 transition duration-300"
+                        aria-label="Salin link">
+                    <i class="fas fa-link"></i>
+                </button>
+            </div>
+            
             @if($article->gambar)
                 @php
                     $imageUrl = Illuminate\Support\Str::startsWith($article->gambar, 'http')
@@ -36,5 +72,55 @@
         </article>
     </main>
     @include('layouts.footer')
+
+    {{-- ======================= PERUBAHAN DI SINI ======================= --}}
+    <script>
+        // Fungsi untuk copy link ke clipboard
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                // Ganti alert() dengan Swal.fire()
+                Swal.fire({
+                    title: 'Tersalin!',
+                    text: 'Link artikel berhasil disalin.',
+                    icon: 'success',
+                    timer: 2000, // Notifikasi hilang setelah 2 detik
+                    showConfirmButton: false
+                });
+            }, function(err) {
+                // Tampilkan notifikasi error jika gagal
+                Swal.fire({
+                    title: 'Gagal Menyalin',
+                    text: 'Maaf, terjadi kesalahan.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                console.error('Gagal menyalin link: ', err);
+            });
+        }
+    </script>
+    {{-- =================================================================== --}}
+
+    {{-- Notifikasi dari session (sudah benar, tidak perlu diubah) --}}
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+        </script>
+    @endif
+
+    @if (session('error'))
+        <script>
+            Swal.fire({
+                title: 'Gagal!',
+                text: '{{ session('error') }}',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        </script>
+    @endif
 </body>
 </html>

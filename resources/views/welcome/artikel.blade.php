@@ -1,8 +1,8 @@
 <section class="min-h-screen">
-    <div class="container mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24">
+    <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24">
         <div class="text-center mb-6 sm:mb-10 md:mb-14">
-            <div class="inline-block bg-gray-100 px-4 py-2 sm:px-6 sm:py-3 rounded-full mb-4 sm:mb-6">
-                <h2 class="text-[#008362] text-xl sm:text-2xl md:text-3xl font-medium tracking-widerr">ARTIKEL TERBARU</h2>
+            <div class="inline-block bg-blue-900/10 px-4 py-2 sm:px-6 sm:py-3 rounded-full mb-4 sm:mb-6">
+                <h2 class="text-blue-900 text-xl sm:text-2xl md:text-3xl font-medium tracking-widerr">ARTIKEL TERBARU</h2>
             </div>
         </div>
         <div class="flex-1 flex items-center justify-center">
@@ -12,9 +12,12 @@
                 </div>
             @else
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 w-full">
+                    {{-- Perhatikan variabel yang digunakan di sini adalah "$a" --}}
                     @foreach ($articles as $a)
                         <article class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex flex-col h-full">
-                            <a href="{{ route('artikel.detail', $a->id) }}" class="block overflow-hidden">
+                            
+                            {{-- PASTIKAN LINK INI MENGGUNAKAN "$a->slug" --}}
+                            <a href="{{ route('artikel.detail', $a->slug) }}" class="block overflow-hidden">
                                 @php
                                     $imageUrl = $a->gambar && Illuminate\Support\Str::startsWith($a->gambar, 'http')
                                         ? $a->gambar
@@ -24,7 +27,8 @@
                             </a>
                             <div class="p-4 sm:p-6 flex-grow flex flex-col">
                                 <h3 class="text-lg sm:text-xl font-bold mb-3 text-gray-900 leading-tight">
-                                    <a href="{{ route('artikel.detail', $a->id) }}" class="hover:text-blue-600 transition duration-300">
+                                    {{-- PASTIKAN LINK INI JUGA MENGGUNAKAN "$a->slug" --}}
+                                    <a href="{{ route('artikel.detail', $a->slug) }}" class="hover:text-blue-600 transition duration-300">
                                         {{ $a->judul }}
                                     </a>
                                 </h3>

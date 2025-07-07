@@ -10,10 +10,24 @@ use Illuminate\Support\Str;
 
 class ArticleController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-    $articles = Article::orderBy('tanggal', 'desc')->paginate(10);
-    return view('admin.artikel.index', compact('articles'));
+        $query = Article::query();
+
+        // Cek jika ada input pencarian
+        if ($request->filled('search')) {
+            $searchTerm = $request->input('search');
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('judul', 'like', "%{$searchTerm}%")
+                  ->orWhere('penulis', 'like', "%{$searchTerm}%");
+            });
+        }
+
+        $articles = $query->orderBy('tanggal', 'desc')
+                          ->paginate(10)
+                          ->withQueryString(); // Agar pencarian tetap ada saat ganti halaman
+
+        return view('admin.artikel.index', compact('articles'));
     }
 
     public function create()

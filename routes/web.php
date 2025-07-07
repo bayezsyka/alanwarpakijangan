@@ -8,8 +8,7 @@ use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 // == RUTE FRONTEND ==
 Route::get('/', [ArtikelController::class, 'welcome'])->name('welcome');
 Route::get('/artikel', [ArtikelController::class, 'index'])->name('artikel');
-Route::get('/artikel/{id}', [ArtikelController::class, 'show'])->name('artikel.detail');
-Route::get('/informasipendaftaran', function () { return view('psb'); })->name('informasipendaftaran');
+Route::get('/artikel/{article:slug}', [ArtikelController::class, 'show'])->name('artikel.detail');Route::get('/informasipendaftaran', function () { return view('psb'); })->name('informasipendaftaran');
 Route::get('/pendaftaran', function () { return view('pendaftaran'); })->name('pendaftaran');
 Route::get('/profil', function () { return view('profil'); })->name('profil');
 

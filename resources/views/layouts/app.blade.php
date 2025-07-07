@@ -11,6 +11,10 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        @livewireScripts {{-- <-- TAMBAHKAN INI --}}
+
+
 
 
         <!-- Scripts -->
@@ -34,5 +38,27 @@
                 {{ $slot }}
             </main>
         </div>
+
+        @if (session('success'))
+            <script>
+            Swal.fire({
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+            </script>
+        @endif
+
+        @if (session('error'))
+            <script>
+            Swal.fire({
+                title: 'Gagal!',
+                text: '{{ session('error') }}',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+            </script>
+        @endif
     </body>
 </html>
