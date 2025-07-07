@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="bg-gradient-to-r from-blue-600 to-sky-600 rounded-xl shadow-lg">
+        <div class="bg-gradient-to-r from-green-600 to-sky-600 rounded-xl shadow-lg">
             <div class="px-8 py-6">
                 <h2 class="text-2xl font-bold text-white">Data Pendaftar Santri</h2>
                 <p class="text-sky-100 mt-2">Kelola data calon santri yang telah mendaftar.</p>

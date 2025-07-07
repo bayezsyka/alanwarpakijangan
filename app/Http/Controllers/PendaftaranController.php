@@ -22,29 +22,38 @@ class PendaftaranController extends Controller
     {
         // 1. Validasi semua input dari form
         $validatedData = $request->validate([
-            'nama_lengkap'    => 'required|string|max:255',
-            'nik'             => 'required|string|digits:16|unique:pendaftarans,nik',
-            'nisn'            => 'nullable|string|digits:10',
-            'nomor_wa'        => 'required|string|max:15',
-            'jenis_kelamin'   => 'required|string',
-            'tempat_lahir'    => 'required|string|max:100',
-            'tanggal_lahir'   => 'required|date',
-            'alamat'          => 'required|string',
-            'nama_ayah'       => 'required|string|max:255',
-            'pekerjaan_ayah'  => 'required|string|max:100',
-            'telepon_ayah'    => 'required|string|max:15',
-            'nama_ibu'        => 'required|string|max:255',
-            'pekerjaan_ibu'   => 'required|string|max:100',
-            'telepon_ibu'     => 'required|string|max:15',
-            'nama_wali'       => 'nullable|string|max:255',
-            'pekerjaan_wali'  => 'nullable|string|max:100',
-            'telepon_wali'    => 'nullable|string|max:15',
-            'hubungan_wali'   => 'nullable|string|max:100',
-            'asal_sekolah'    => 'required|string|max:100',
-            'tahun_lulus'     => 'required|digits:4',
-            'foto_santri'     => 'required|file|image|mimes:jpg,png,jpeg|max:2048', // maks 2MB
-            'scan_kk'         => 'required|file|mimes:jpg,png,jpeg,pdf|max:2048',
-            'scan_ijazah'     => 'required|file|mimes:jpg,png,jpeg,pdf|max:2048',
+            'nama_lengkap'    => ['required', 'string', 'max:255'],
+            'nik'             => ['required', 'string', 'digits:16', 'unique:pendaftarans,nik'],
+            'nisn'            => ['nullable', 'string', 'digits:10'],
+            'nomor_wa'        => ['required', 'string', 'max:15'],
+            'jenis_kelamin'   => ['required', 'string', 'in:Laki-laki,Perempuan'],
+            'tempat_lahir'    => ['required', 'string', 'max:100'],
+            'tanggal_lahir'   => ['required', 'date'],
+            'alamat'          => ['required', 'string'],
+            'nama_ayah'       => ['required', 'string', 'max:255'],
+            'pekerjaan_ayah'  => ['required', 'string', 'max:100'],
+            'telepon_ayah'    => ['required', 'string', 'max:15'],
+            'nama_ibu'        => ['required', 'string', 'max:255'],
+            'pekerjaan_ibu'   => ['required', 'string', 'max:100'],
+            'telepon_ibu'     => ['required', 'string', 'max:15'],
+            'nama_wali'       => ['nullable', 'string', 'max:255'],
+            'pekerjaan_wali'  => ['nullable', 'string', 'max:100'],
+            'telepon_wali'    => ['nullable', 'string', 'max:15'],
+            'hubungan_wali'   => ['nullable', 'string', 'max:100'],
+            'asal_sekolah'    => ['required', 'string', 'max:100'],
+
+            // ### ATURAN PROTEKSI BARU UNTUK TAHUN LULUS ###
+            'tahun_lulus'     => [
+                'required', 
+                'digits:4', 
+                'integer', 
+                'min:1950', // Tahun kelulusan paling lama yang diterima
+                'max:' . (date('Y') + 1) // Maksimal tahun depan (untuk kelonggaran)
+            ],
+            
+            'foto_santri'     => ['required', 'file', 'image', 'mimes:jpg,png,jpeg', 'max:2048'],
+            'scan_kk'         => ['required', 'file', 'mimes:jpg,png,jpeg,pdf', 'max:2048'],
+            'scan_ijazah'     => ['required', 'file', 'mimes:jpg,png,jpeg,pdf', 'max:2048'],
         ]);
 
         // 2. Proses upload file dan simpan path-nya
