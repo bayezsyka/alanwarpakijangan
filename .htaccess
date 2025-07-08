@@ -1,17 +1,15 @@
 <IfModule mod_rewrite.c>
-    Options +FollowSymLinks
-    RewriteEngine On
+Options +FollowSymLinks
+RewriteEngine On
 
-    # Hanya teruskan jika URI tidak dimulai dengan /public/
-    RewriteCond %{REQUEST_URI} !^/public/
+RewriteCond %{REQUEST_URI} !^/public/ 
 
-    # Lewati jika file atau direktori sudah ada
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
 
-    # Redirect semua permintaan ke folder public
-    RewriteRule ^(.*)$ /public/$1
 
-    # Atur root ke public/index.php
-    RewriteRule ^(/)?$ public/index.php [L]
+
+RewriteRule ^(.*)$ /public/$1 
+#RewriteRule ^ index.php [L]
+RewriteRule ^(/)?$ public/index.php [L] 
 </IfModule>
