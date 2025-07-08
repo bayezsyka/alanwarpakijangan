@@ -79,7 +79,7 @@
 <script>
     function pendaftaranForm(config) {
         return {
-            langkah: 2,
+            langkah: 1,
             isFormValid: false,
             showHomeButton: false,
             nomorWaInput: '',
