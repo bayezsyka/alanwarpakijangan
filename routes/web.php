@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\PendaftaranController as AdminPendaftaranControll
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\OtpController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Author\ArticleController as AuthorArticleController;
 
 
 Route::post('/otp/send', [OtpController::class, 'send'])->name('otp.send');
@@ -30,7 +31,6 @@ Route::get('/pendaftaran', [PendaftaranController::class, 'create'])->name('pend
 Route::post('/pendaftaran', [PendaftaranController::class, 'store'])->name('pendaftaran.store');
 Route::post('/pendaftaran/validate', [PendaftaranController::class, 'ajaxValidate'])->name('pendaftaran.ajax_validate');
 
-
 // == RUTE BACKEND ==
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -48,5 +48,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/pendaftaran/{pendaftaran}', [AdminPendaftaranController::class, 'destroy'])->name('pendaftaran.destroy');
     });
 });
+
+
 
 require __DIR__.'/auth.php';

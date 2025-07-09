@@ -5,7 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str; // Import facade Str untuk membuat slug
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+
+/**
+ * === TAMBAHKAN BLOK KOMENTAR INI ===
+ * * @property int $id
+ * @property int $user_id
+ * @property string $judul
+ * @property string $slug
+ * @property string|null $penulis
+ * @property string $isi
+ * @property string|null $gambar
+ * @property \Illuminate\Support\Carbon $tanggal
+ * @property int $views
+ * @property-read \App\Models\User $user
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property \Illuminate\Support\Carbon $updated_at
+ */
 class Article extends Model
 {
     use HasFactory;
@@ -15,11 +32,12 @@ class Article extends Model
      */
     protected $fillable = [
         'judul',
-        'slug', // Pastikan 'slug' ditambahkan di sini
+        'slug',
         'penulis',
         'isi',
         'gambar',
         'tanggal',
+        'views',
     ];
 
     /**
@@ -71,5 +89,9 @@ class Article extends Model
         }
 
         return $query->exists();
+    }
+     public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

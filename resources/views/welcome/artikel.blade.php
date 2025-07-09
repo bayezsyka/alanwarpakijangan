@@ -1,45 +1,47 @@
-<section class="min-h-screen">
-    <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24">
-        <div class="text-center mb-6 sm:mb-10 md:mb-14">
-            <div class="inline-block bg-green-900/10 px-4 py-2 sm:px-6 sm:py-3 rounded-full mb-4 sm:mb-6">
-                <h2 class="text-green-900 text-xl sm:text-2xl md:text-3xl font-medium tracking-widerr">ARTIKEL TERBARU</h2>
-            </div>
+<section class="bg-gray-50 py-16 sm:py-24">
+    <div class="container text-center mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+        <div class="inline-block bg-gray-100 px-4 md:px-6 py-2 md:py-3 rounded-full mb-4 md:mb-6">
+                <span class="text-[#008362] text-xl sm:text-2xl md:text-3xl font-medium tracking-wider">ARTIKEL</span>
         </div>
-        <div class="flex-1 flex items-center justify-center">
-            @if ($articles->isEmpty())
-                <div class="bg-white rounded-2xl shadow-lg p-8 sm:p-12 text-center max-w-md mx-auto">
-                    <p class="text-gray-500 text-base sm:text-lg">Belum ada artikel yang tersedia.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {{-- Pastikan loop menggunakan variabel $latestArticles --}}
+            @forelse($latestArticles as $article)
+                <article class="bg-white rounded-xl overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300 flex flex-col group">
+                    <a href="{{ route('artikel.detail', $article->slug) }}" class="block">
+                        {{-- UBAH RASIO GAMBAR MENJADI 2:1 (4:2) --}}
+                        <div class="relative w-full" style="padding-top: 50%;">
+                            @php
+                                $imageUrl = $article->gambar && Illuminate\Support\Str::startsWith($article->gambar, 'http')
+                                    ? $article->gambar
+                                    : ($article->gambar ? asset('storage/' . $article->gambar) : 'https://via.placeholder.com/800x400/f3f4f6/6b7280?text=Al-Anwar');
+                            @endphp
+                            <img 
+                                src="{{ $imageUrl }}" 
+                                alt="{{ $article->judul }}" 
+                                class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        </div>
+                        
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-gray-900 leading-snug group-hover:text-green-600 transition-colors duration-200">
+                                {{ \Illuminate\Support\Str::limit($article->judul, 60) }}
+                            </h3>
+                        </div>
+                    </a>
+                    
+                    <div class="p-6 pt-0 mt-auto">
+                        <div class="flex items-center text-xs text-gray-500 pt-4 border-t border-gray-100">
+                            <span>{{ $article->penulis }}</span>
+                            <span class="mx-2">•</span>
+                            <span>{{ \Carbon\Carbon::parse($article->tanggal)->format('d M Y') }}</span>
+                        </div>
+                    </div>
+                </article>
+            @empty
+                <div class="col-span-3 text-center py-12">
+                    <p class="text-gray-500">Belum ada artikel untuk ditampilkan.</p>
                 </div>
-            @else
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 w-full">
-                    {{-- Perhatikan variabel yang digunakan di sini adalah "$a" --}}
-                    @foreach ($articles as $a)
-                        <article class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex flex-col h-full">
-                            
-                            {{-- PASTIKAN LINK INI MENGGUNAKAN "$a->slug" --}}
-                            <a href="{{ route('artikel.detail', $a->slug) }}" class="block overflow-hidden">
-                                @php
-                                    $imageUrl = $a->gambar && Illuminate\Support\Str::startsWith($a->gambar, 'http')
-                                        ? $a->gambar
-                                        : ($a->gambar ? asset('storage/' . $a->gambar) : 'https://via.placeholder.com/400x250?text=Al-Anwar');
-                                @endphp
-                                <img src="{{ $imageUrl }}" alt="{{ $a->judul }}" class="w-full h-48 object-cover hover:scale-110 transition-transform duration-500">
-                            </a>
-                            <div class="p-4 sm:p-6 flex-grow flex flex-col">
-                                <h3 class="text-lg sm:text-xl font-bold mb-3 text-gray-900 leading-tight">
-                                    {{-- PASTIKAN LINK INI JUGA MENGGUNAKAN "$a->slug" --}}
-                                    <a href="{{ route('artikel.detail', $a->slug) }}" class="hover:text-green-600 transition duration-300">
-                                        {{ $a->judul }}
-                                    </a>
-                                </h3>
-                                <p class="text-gray-600 text-sm sm:text-base mb-4 sm:mb-6 flex-grow leading-relaxed">
-                                    {{ \Illuminate\Support\Str::limit(strip_tags($a->isi), 100) }}
-                                </p>
-                            </div>
-                        </article>
-                    @endforeach
-                </div>
-            @endif
+            @endforelse
         </div>
     </div>
 </section>

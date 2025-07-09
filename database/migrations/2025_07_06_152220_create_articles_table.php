@@ -8,18 +8,22 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     public function up(): void
-    {
-        Schema::create('articles', function (Blueprint $table) {
-            $table->id();
-            $table->string('judul');
-            $table->string('penulis');
-            $table->text('isi');
-            $table->string('gambar')->nullable(); // Path untuk menyimpan gambar
-            $table->date('tanggal');
-            $table->timestamps(); // Kolom created_at dan updated_at
-        });
-    }
+{
+    Schema::create('articles', function (Blueprint $table) {
+        $table->id();
+        $table->string('judul');
+        $table->string('slug')->unique();
+        $table->string('penulis')->nullable();
+        $table->longText('isi');
+        $table->text('gambar')->nullable();
+        $table->integer('views')->default(0);
 
+        // PASTIKAN BARIS INI ADA KEMBALI
+        $table->date('tanggal')->nullable();
+
+        $table->timestamps();
+    });
+}
     public function down(): void
     {
         Schema::dropIfExists('articles');

@@ -1,4 +1,27 @@
 <x-app-layout>
+    @push('styles')
+        {{-- 1. Ganti CSS Trix dengan CSS Quill --}}
+        <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+        
+        {{-- Style tambahan agar Quill menyatu dengan Tailwind --}}
+        <style>
+            #editor {
+                min-height: 250px;
+            }
+            .ql-toolbar.ql-snow {
+                border-top-left-radius: 0.5rem;
+                border-top-right-radius: 0.5rem;
+                border-color: #d1d5db;
+            }
+            .ql-container.ql-snow {
+                border-bottom-left-radius: 0.5rem;
+                border-bottom-right-radius: 0.5rem;
+                border-color: #d1d5db;
+                font-size: 1rem;
+            }
+        </style>
+    @endpush
+
     <x-slot name="header">
         <div class="bg-gradient-to-r from-[#008362] to-emerald-600 rounded-xl shadow-lg">
             <div class="px-8 py-6">
@@ -20,9 +43,10 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('admin.artikel.store') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
+                    <form id="artikel-form" action="{{ route('admin.artikel.store') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
                         @csrf
                         
+                        {{-- Informasi Dasar (Tidak berubah) --}}
                         <div class="bg-gray-50 rounded-xl p-6">
                             <h3 class="text-lg font-semibold text-gray-800 mb-6">Informasi Dasar</h3>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -41,64 +65,37 @@
                             </div>
                         </div>
 
-                        <div 
-                            class="bg-gray-50 rounded-xl p-6"
-                            x-data="{ 
-                                activeTab: 'upload', 
-                                imageUrl: '',
-                                handleFileSelect(event) {
-                                    const file = event.target.files[0];
-                                    if (file) { this.imageUrl = URL.createObjectURL(file); }
-                                }
-                            }"
-                        >
-                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Gambar Artikel</h3>
+                        {{-- Gambar Artikel (Tidak berubah) --}}
+                        <div class="bg-gray-50 rounded-xl p-6" x-data="{ activeTab: 'upload', imageUrl: '', handleFileSelect(event) { const file = event.target.files[0]; if (file) { this.imageUrl = URL.createObjectURL(file); } } }">
+                             <h3 class="text-lg font-semibold text-gray-800 mb-4">Gambar Artikel</h3>
+                             <template x-if="imageUrl">
+                                 <div class="mb-4">
+                                     <label class="block text-sm font-medium text-gray-700 mb-2">Preview</label>
+                                     <div class="relative inline-block group">
+                                         <img :src="imageUrl" class="w-full max-w-sm h-48 object-cover rounded-lg border shadow-sm">
+                                         <div @click="imageUrl = ''; $refs.fileInput.value = ''; $refs.urlInput.value = ''" class="absolute top-0 right-0 m-2 bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity" title="Hapus Gambar">
+                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                         </div>
+                                     </div>
+                                 </div>
+                             </template>
+                             <div class="mb-4 border-b border-gray-200">
+                                 <nav class="-mb-px flex space-x-4" aria-label="Tabs">
+                                     <button type="button" @click="activeTab = 'upload'; $refs.urlInput.value = ''" :class="{ 'border-[#008362] text-[#008362]': activeTab === 'upload', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'upload' }" class="whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm">Upload File</button>
+                                     <button type="button" @click="activeTab = 'url'; $refs.fileInput.value = ''" :class="{ 'border-[#008362] text-[#008362]': activeTab === 'url', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'url' }" class="whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm">URL Gambar</button>
+                                 </nav>
+                             </div>
+                             <div>
+                                 <div x-show="activeTab === 'upload'"><label for="gambar_upload" class="block text-sm font-medium text-gray-700 mb-2">Pilih File Gambar</label><input type="file" name="gambar_upload" id="gambar_upload" x-ref="fileInput" @change="handleFileSelect" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100"></div>
+                                 <div x-show="activeTab === 'url'"><label for="gambar_url" class="block text-sm font-medium text-gray-700 mb-2">Masukkan URL Gambar</label><div class="flex space-x-2"><input type="url" name="gambar_url" id="gambar_url" x-ref="urlInput" placeholder="https://..." class="w-full px-4 py-3 border border-gray-300 rounded-lg"><button type="button" @click="imageUrl = $refs.urlInput.value" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300">Cek</button></div></div>
+                             </div>
+                         </div>
 
-                            <template x-if="imageUrl">
-                                <div class="mb-4">
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Preview</label>
-                                    <div class="relative inline-block group">
-                                        <img :src="imageUrl" class="w-full max-w-sm h-48 object-cover rounded-lg border shadow-sm">
-                                        <div @click="imageUrl = ''; $refs.fileInput.value = ''; $refs.urlInput.value = ''" class="absolute top-0 right-0 m-2 bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity" title="Hapus Gambar">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                                        </div>
-                                    </div>
-                                </div>
-                            </template>
-
-                            <div class="mb-4 border-b border-gray-200">
-                                <nav class="-mb-px flex space-x-4" aria-label="Tabs">
-                                    <button type="button" @click="activeTab = 'upload'; $refs.urlInput.value = ''" 
-                                            :class="{ 'border-[#008362] text-[#008362]': activeTab === 'upload', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'upload' }" 
-                                            class="whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm">
-                                        Upload File
-                                    </button>
-                                    <button type="button" @click="activeTab = 'url'; $refs.fileInput.value = ''"
-                                            :class="{ 'border-[#008362] text-[#008362]': activeTab === 'url', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'url' }" 
-                                            class="whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm">
-                                        URL Gambar
-                                    </button>
-                                </nav>
-                            </div>
-
-                            <div>
-                                <div x-show="activeTab === 'upload'">
-                                    <label for="gambar_upload" class="block text-sm font-medium text-gray-700 mb-2">Pilih File Gambar</label>
-                                    <input type="file" name="gambar_upload" id="gambar_upload" x-ref="fileInput" @change="handleFileSelect" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100">
-                                </div>
-                                <div x-show="activeTab === 'url'">
-                                    <label for="gambar_url" class="block text-sm font-medium text-gray-700 mb-2">Masukkan URL Gambar</label>
-                                    <div class="flex space-x-2">
-                                        <input type="url" name="gambar_url" id="gambar_url" x-ref="urlInput" placeholder="https://..." class="w-full px-4 py-3 border border-gray-300 rounded-lg">
-                                        <button type="button" @click="imageUrl = $refs.urlInput.value" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300">Cek</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
+                        {{-- 2. Ganti Trix Editor dengan Quill Editor --}}
                         <div class="bg-gray-50 rounded-xl p-6">
                             <h3 class="text-lg font-semibold text-gray-800 mb-6">Konten Artikel</h3>
-                            <textarea name="isi" id="isi" rows="12" required class="w-full px-4 py-3 border border-gray-300 rounded-lg resize-none">{{ old('isi') }}</textarea>
+                            <input type="hidden" name="isi" id="isi_hidden" value="{{ old('isi') }}">
+                            <div id="editor">{!! old('isi') !!}</div>
                         </div>
 
                         <div class="flex justify-end space-x-4 pt-6 border-t">
@@ -110,4 +107,29 @@
             </div>
         </div>
     </div>
+
+    {{-- 3. Ganti script Trix dengan script Quill --}}
+    @push('scripts')
+        <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+        <script>
+            var quill = new Quill('#editor', {
+                theme: 'snow',
+                modules: {
+                    toolbar: [
+                        [{ 'header': [1, 2, 3, false] }],
+                        ['bold', 'italic', 'underline', 'blockquote'],
+                        [{'list': 'ordered'}, {'list': 'bullet'}],
+                        ['link', 'image', 'code-block'],
+                        ['clean']
+                    ]
+                }
+            });
+
+            var form = document.querySelector('#artikel-form');
+            form.addEventListener('submit', function(e) {
+                var isi = document.querySelector('#isi_hidden');
+                isi.value = quill.root.innerHTML;
+            });
+        </script>
+    @endpush
 </x-app-layout>

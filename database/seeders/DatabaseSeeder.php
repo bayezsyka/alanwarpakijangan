@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\User; // <-- 1. PASTIKAN MODEL USER DI-IMPORT
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash; // <-- 2. PASTIKAN HASH DI-IMPORT
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,11 +13,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
+        // 3. Buat satu user default secara langsung di sini
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Direktorat Pengembangan', // Ganti dengan nama Anda
+            'email' => 'admin@alanwar.id', // Ganti dengan email login Anda
+            'password' => Hash::make('Pakijangan@67'), // GANTI 'password' DENGAN PASSWORD YANG AMAN
         ]);
     }
 }

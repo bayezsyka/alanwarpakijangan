@@ -8,7 +8,7 @@
             </div>
             <div class="flex justify-center">
                 <a href="{{ url('/') }}" class="flex items-center">
-                    <img src="{{ asset('images/logoarab.png') }}" alt="Logo Al-Anwar" class="h-10 w-auto" />
+                    <img src="{{ asset('images/logoarab.png') }}" alt="Logo Al-Anwar" class="h-10 w-auto hidden sm:block" />
                 </a>
             </div>
             <div class="flex justify-end">

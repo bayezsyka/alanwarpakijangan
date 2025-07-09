@@ -42,11 +42,12 @@
                         </div>
                         <div class="flex justify-between items-center pt-4 border-t border-gray-100">
                             <a href="{{ route('admin.artikel.edit', $article->id) }}" class="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200">Edit</a>
-                            <form action="{{ route('admin.artikel.destroy', $article->id) }}" method="POST" onsubmit="return confirm('Yakin?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="inline-flex items-center px-4 py-2 bg-red-50 text-red-600 rounded-lg text-sm font-medium hover:bg-red-100">Hapus</button>
-                            </form>
+                            <button 
+                                wire:click="$dispatch('show-delete-confirmation', { id: {{ $article->id }}, name: '{{ e($article->judul) }}' })"
+                                type="button" 
+                                class="text-red-600 hover:text-red-900 font-semibold">
+                                Hapus
+                            </button>
                         </div>
                     </div>
                 </div>

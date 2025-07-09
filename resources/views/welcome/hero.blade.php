@@ -21,4 +21,9 @@
                 </a>
             </div>
         </div>
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+            <svg class="size-8 animate-bounce text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+            </svg>
+        </div>
     </section>

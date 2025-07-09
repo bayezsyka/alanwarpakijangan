@@ -10,7 +10,7 @@
         </div>
     </x-slot>
 
-    <div class="py-8">
+       <div class="py-8">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
             @if (session('success'))
                 <div class="mb-6 bg-emerald-50 border-l-4 border-[#008362] rounded-r-lg p-6 shadow-sm">
@@ -53,4 +53,38 @@
             </div>
         </div>
     </div>
+
+@push('scripts')
+<script>
+    // Dengarkan event dari tombol hapus di Livewire
+    document.addEventListener('livewire:initialized', () => {
+        Livewire.on('show-delete-confirmation', (data) => {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                html: `Anda akan menghapus artikel: <br><strong>${data.name}</strong>`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Jika dikonfirmasi, kirim event ke komponen Livewire untuk eksekusi
+                    Livewire.dispatch('delete-artikel', { id: data.id });
+                }
+            });
+        });
+
+        // Dengarkan event sukses setelah data dihapus
+        Livewire.on('article-deleted', (message) => {
+            Swal.fire(
+                'Berhasil!',
+                message,
+                'success'
+            );
+        });
+    });
+</script>
+@endpush
 </x-app-layout>
