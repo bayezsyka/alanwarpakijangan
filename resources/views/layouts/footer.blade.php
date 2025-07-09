@@ -38,9 +38,6 @@
                         <li class="mb-4">
                             <a href="{{ route('login') }}" class="hover:underline">Login</a>
                         </li>
-                        <li>
-                            <a href="{{ route('register') }}" class="hover:underline">Register</a>
-                        </li>
                     @else
                         <li>
                             <a href="{{ route('dashboard') }}" class="hover:underline">Dashboard</a>

@@ -20,6 +20,9 @@
                     <x-nav-link :href="route('admin.pendaftaran.index')" :active="request()->routeIs('admin.pendaftaran.*')">
                         {{ __('Pendaftaran') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
+                        {{ __('Manajemen User') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -77,6 +80,9 @@
             <x-responsive-nav-link :href="route('admin.pendaftaran.index')" :active="request()->routeIs('admin.pendaftaran.*')">
             {{ __('Pendaftaran') }}
             </x-responsive-nav-link>    
+            <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
+                {{ __('Manajemen User') }}
+            </x-responsive-nav-link>
         </div>
 
         <div class="pt-4 pb-1 border-t border-gray-200">
