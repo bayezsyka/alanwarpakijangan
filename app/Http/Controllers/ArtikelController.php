@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use Illuminate\Http\Request;
+use App\Models\Event; // <-- Tambahkan ini
+
 
 class ArtikelController extends Controller
 {
@@ -11,7 +13,12 @@ class ArtikelController extends Controller
     {
         // Ganti orderBy('tanggal', 'desc') menjadi latest()
         $latestArticles = Article::latest()->take(3)->get();
-        return view('welcome', ['latestArticles' => $latestArticles]);
+        $latestEvents = Event::with('photos')->latest()->take(3)->get(); // <-- Tambahkan ini
+
+        return view('welcome', [
+            'latestArticles' => $latestArticles,
+            'latestEvents' => $latestEvents,
+        ]);
     }
 
     public function index(Request $request)

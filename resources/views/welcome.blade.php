@@ -9,4 +9,5 @@
     @include('welcome.hero')
     @include('welcome.artikel')
     @include('welcome.profil')
+    @include('welcome.galeri')
 @endsection

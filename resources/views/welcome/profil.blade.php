@@ -2,9 +2,12 @@
     <div class="max-w-4xl mx-auto">
         <!-- Hero Tagline (Vision) -->
         <div class="text-center mb-10 md:mb-16">
-            <div class="inline-block bg-gray-100 px-4 md:px-6 py-2 md:py-3 rounded-full mb-4 md:mb-6">
-                <span class="text-[#008362] text-xl sm:text-2xl md:text-3xl font-medium tracking-wider">PROFIL PESANTREN</span>
-            </div>
+            <div class="text-center mb-16">
+    <div class="inline-block bg-[#008362] text-white px-4 md:px-6 py-2 md:py-3 rounded-full shadow-lg">
+        <span class="text-xl sm:text-2xl md:text-3xl font-medium tracking-wider">PROFIL PESANTREN</span>
+    </div>
+</div>
+
             <h2 class="text-2xl sm:text-3xl md:text-5xl font-bold text-[#125645] mb-4 md:mb-6 leading-tight">
                 "Mendampingi Potensi,<br> 
                 <span class="text-[#008362]">Membentuk Karakter</span>"
