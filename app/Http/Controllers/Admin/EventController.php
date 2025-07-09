@@ -41,7 +41,11 @@ class EventController extends Controller
                 $event->photos()->create(['file_path' => $path]);
             }
         }
-
+        
+         // Jika request adalah AJAX, kita bisa beri response JSON
+        if ($request->wantsJson()) {
+            return response()->json(['message' => 'Acara berhasil dibuat!']);
+        }
         // 3. PASTIKAN REDIRECT INI SELALU ADA DI AKHIR
         return redirect()->route('admin.events.index')->with('success', 'Acara galeri berhasil ditambahkan.');
     }
