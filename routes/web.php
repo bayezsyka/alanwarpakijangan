@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use App\Http\Controllers\Admin\PendaftaranController as AdminPendaftaranController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,6 +54,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::patch('/pendaftaran/{pendaftaran}/status', [AdminPendaftaranController::class, 'updateStatus'])->name('pendaftaran.update_status');
         Route::delete('/pendaftaran/{pendaftaran}', [AdminPendaftaranController::class, 'destroy'])->name('pendaftaran.destroy');
     });
+});
+
+// === ROUTE SEMENTARA UNTUK MEMBUAT SYMLINK ===
+Route::get('/buat-link-penyimpanan-final-xyz', function () {
+    try {
+        // Hapus link lama jika ada, untuk menghindari error
+        if (file_exists(public_path('storage'))) {
+            unlink(public_path('storage'));
+        }
+
+        Artisan::call('storage:link');
+        return 'Symbolic link berhasil dibuat ulang. Silakan HAPUS route ini sekarang dari file routes/web.php.';
+    } catch (\Exception $e) {
+        return 'Error saat membuat link: ' . $e->getMessage();
+    }
 });
 
 // --- Rute Otentikasi Bawaan ---
