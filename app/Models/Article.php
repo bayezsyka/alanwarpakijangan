@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $slug
  * @property string|null $penulis
  * @property string $isi
+ *  * @property string $kategori  // <-- Tambahkan ini di komentar
  * @property string|null $gambar
  * @property \Illuminate\Support\Carbon $tanggal
  * @property int $views
@@ -34,6 +35,7 @@ class Article extends Model
         'judul',
         'slug',
         'penulis',
+        'kategroi',
         'isi',
         'gambar',
         'tanggal',

@@ -7,26 +7,14 @@ use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class ArticleController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $query = Article::query();
-
-        // Cek jika ada input pencarian
-        if ($request->filled('search')) {
-            $searchTerm = $request->input('search');
-            $query->where(function ($q) use ($searchTerm) {
-                $q->where('judul', 'like', "%{$searchTerm}%")
-                  ->orWhere('penulis', 'like', "%{$searchTerm}%");
-            });
-        }
-
-        $articles = $query->orderBy('tanggal', 'desc')
-                          ->paginate(10)
-                          ->withQueryString(); // Agar pencarian tetap ada saat ganti halaman
-
+        // Mengurutkan berdasarkan data terbaru (created_at)
+        $articles = Article::latest()->paginate(10);
         return view('admin.artikel.index', compact('articles'));
     }
 
@@ -37,30 +25,26 @@ class ArticleController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'judul'         => 'required|string|max:255',
-            'penulis'       => 'required|string|max:255',
-            'isi'           => 'required|string',
-            'tanggal'       => 'required|date',
-            'gambar_upload' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'gambar_url'    => 'nullable|url',
+        $validated = $request->validate([
+            'judul' => 'required|string|max:255|unique:articles,judul',
+            'penulis' => 'required|string|max:255',
+            'isi' => 'required|string',
+            'kategori' => 'required|string|in:Artikel,Opini',
+            'gambar_upload' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+            'gambar_url' => 'nullable|url',
         ]);
 
-        $imagePath = null;
-
+        // Membuat slug secara otomatis dari judul
+        $validated['slug'] = Str::slug($validated['judul']);
+        
+        // Menangani upload gambar (dari file atau URL)
         if ($request->hasFile('gambar_upload')) {
-            $imagePath = $request->file('gambar_upload')->store('artikel', 'public');
+            $validated['gambar'] = $request->file('gambar_upload')->store('artikel-images', 'public');
         } elseif ($request->filled('gambar_url')) {
-            $imagePath = $request->gambar_url;
+            $validated['gambar'] = $validated['gambar_url'];
         }
 
-        Article::create([
-            'judul'   => $request->judul,
-            'penulis' => $request->penulis,
-            'isi'     => $request->isi,
-            'tanggal' => $request->tanggal,
-            'gambar'  => $imagePath,
-        ]);
+        Article::create($validated);
 
         return redirect()->route('admin.artikel.index')->with('success', 'Artikel berhasil ditambahkan.');
     }
@@ -72,41 +56,40 @@ class ArticleController extends Controller
 
     public function update(Request $request, Article $artikel)
     {
-        $request->validate([
-            'judul'         => 'required|string|max:255',
-            'penulis'       => 'required|string|max:255',
-            'isi'           => 'required|string',
-            'tanggal'       => 'required|date',
-            'gambar_upload' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'gambar_url'    => 'nullable|url',
+        $validated = $request->validate([
+            'judul' => ['required', 'string', 'max:255', Rule::unique('articles')->ignore($artikel->id)],
+            'penulis' => ['required', 'string', 'max:255'],
+            'isi' => ['required', 'string'],
+            'kategori' => ['required', 'string', 'in:Artikel,Opini'],
+            'gambar_upload' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif|max:10240'],
+            'gambar_url' => ['nullable', 'url'],
+            'hapus_gambar' => ['boolean'],
         ]);
+        
+        // Membuat ulang slug jika judul berubah
+        $validated['slug'] = Str::slug($validated['judul']);
 
-        $imagePath = $artikel->gambar;
+        $dataToUpdate = $validated;
 
+        // Logika untuk menangani gambar
         if ($request->hasFile('gambar_upload')) {
             if ($artikel->gambar && !Str::startsWith($artikel->gambar, 'http')) {
                 Storage::disk('public')->delete($artikel->gambar);
             }
-            $imagePath = $request->file('gambar_upload')->store('artikel', 'public');
+            $dataToUpdate['gambar'] = $request->file('gambar_upload')->store('artikel-images', 'public');
         } elseif ($request->filled('gambar_url')) {
             if ($artikel->gambar && !Str::startsWith($artikel->gambar, 'http')) {
                 Storage::disk('public')->delete($artikel->gambar);
             }
-            $imagePath = $request->gambar_url;
+            $dataToUpdate['gambar'] = $validated['gambar_url'];
         } elseif ($request->input('hapus_gambar') == '1') {
             if ($artikel->gambar && !Str::startsWith($artikel->gambar, 'http')) {
                 Storage::disk('public')->delete($artikel->gambar);
             }
-            $imagePath = null;
+            $dataToUpdate['gambar'] = null;
         }
 
-        $artikel->update([
-            'judul'   => $request->judul,
-            'penulis' => $request->penulis,
-            'isi'     => $request->isi,
-            'tanggal' => $request->tanggal,
-            'gambar'  => $imagePath,
-        ]);
+        $artikel->update($dataToUpdate);
 
         return redirect()->route('admin.artikel.index')->with('success', 'Artikel berhasil diperbarui.');
     }

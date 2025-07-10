@@ -26,6 +26,9 @@
                     <x-nav-link :href="route('admin.events.index')" :active="request()->routeIs('admin.events.*')">
                         {{ __('Galeri Acara') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('admin.rutinan.index')" :active="request()->routeIs('admin.rutinan.*')">
+                        {{ __('Jadwal Rutinan') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -88,6 +91,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('admin.events.index')" :active="request()->routeIs('admin.events.*')">
                 {{ __('Galeri Acara') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin.rutinan.index')" :active="request()->routeIs('admin.rutinan.*')">
+                {{ __('Jadwal Rutinan') }}
             </x-responsive-nav-link>
         </div>
 

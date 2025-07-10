@@ -55,13 +55,17 @@
                                     <input type="text" name="judul" id="judul" value="{{ old('judul') }}" required class="w-full px-4 py-3 border border-gray-300 rounded-lg">
                                 </div>
                                 <div>
+                                    <label for="kategori" class="block text-sm font-medium text-gray-700 mb-2">Kategori</label>
+                                    <select name="kategori" id="kategori" class="w-full px-4 py-3 border border-gray-300 rounded-lg">
+                                        <option value="Artikel" @selected(old('kategori') == 'Artikel')>Artikel</option>
+                                        <option value="Opini" @selected(old('kategori') == 'Opini')>Opini</option>
+                                    </select>
+                                </div>
+                                <div>
                                     <label for="penulis" class="block text-sm font-medium text-gray-700 mb-2">Penulis</label>
                                     <input type="text" name="penulis" id="penulis" value="{{ old('penulis') }}" required class="w-full px-4 py-3 border border-gray-300 rounded-lg">
                                 </div>
                                 <div>
-                                    <label for="tanggal" class="block text-sm font-medium text-gray-700 mb-2">Tanggal</label>
-                                    <input type="date" name="tanggal" id="tanggal" value="{{ old('tanggal', date('Y-m-d')) }}" required class="w-full px-4 py-3 border border-gray-300 rounded-lg">
-                                </div>
                             </div>
                         </div>
 

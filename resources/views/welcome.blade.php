@@ -7,6 +7,7 @@
 {{-- 3. Semua konten unik halaman ini dibungkus dalam @section('content') --}}
 @section('content')
     @include('welcome.hero')
+    @include('welcome.rutinan')
     @include('welcome.artikel')
     @include('welcome.profil')
     @include('welcome.galeri')
