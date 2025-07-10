@@ -1,4 +1,4 @@
-<section>
+{{-- <section>
     <div class="container mx-auto py-2 sm:py-4 max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="text-center pt-8">
             <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3">Jadwal Rutinan</h2>
@@ -182,4 +182,4 @@
          <div class="flex items-center text-xs sm:text-sm text-gray-600"><span class="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-emerald-500 border-2 border-white shadow mr-1 sm:mr-2"></span>Hari Ini</div>
     </div>
 </div>
-</section>
+</section> --}}
