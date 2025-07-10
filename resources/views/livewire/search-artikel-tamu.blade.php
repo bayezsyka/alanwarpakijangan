@@ -1,22 +1,11 @@
 <div class="bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         <div class="text-center mb-12 sm:mb-16">
-            <h2 class="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-5 tracking-tight">
-                <span class="relative inline-block">
-                    <span class="relative z-10 bg-gradient-to-r from-green-500 via-green-400 to-green-300 bg-clip-text text-transparent">
-                        Artikel Terbaru
-                    </span>
-                    <span class="absolute left-0 bottom-1 w-full h-3 bg-green-100 rounded-lg -z-0"></span>
-                </span>
+            <h2 class="text-4xl font-bold mb-5">
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#008362] to-green-400">
+                Artikel Terbaru
+            </span>
             </h2>
-            <p class="text-lg sm:text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed mb-2">
-                Temukan wawasan dan pengetahuan terbaru dari para ustadz dan santri <span class="font-semibold text-green-600">Pesantren Al-Anwar Pakijangan</span>.
-            </p>
-            <div class="flex justify-center gap-2 mt-4">
-                <span class="inline-block w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                <span class="inline-block w-2 h-2 bg-green-300 rounded-full animate-pulse delay-150"></span>
-                <span class="inline-block w-2 h-2 bg-green-200 rounded-full animate-pulse delay-300"></span>
-            </div>
 
             <div class="relative w-full max-w-md mx-auto mt-8">
                 <input 
@@ -24,7 +13,7 @@
                     type="search" 
                     name="search" 
                     placeholder="Cari artikel..."
-                    class="w-full pl-5 pr-12 py-3 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent shadow-sm">
+                    class="w-full pl-5 pr-12 py-3 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm">
                 <div class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" /></svg>
                 </div>
@@ -54,7 +43,7 @@
                                         class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                                 </div>
                                 <div class="p-6">
-                                    <h3 class="text-xl font-semibold text-gray-900 leading-snug group-hover:text-green-600 transition-colors duration-200">
+                                    <h3 class="text-xl font-semibold text-gray-900 leading-snug group-hover:text-[#008362] transition-colors duration-200">
                                         {{ \Illuminate\Support\Str::limit($article->judul, 60) }}
                                     </h3>
                                 </div>

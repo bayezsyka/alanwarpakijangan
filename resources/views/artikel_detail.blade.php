@@ -83,7 +83,7 @@
             </div>
 
             <div class="mt-8 border-t pt-6">
-                <a href="{{ route('artikel') }}" class="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold transition duration-300">
+                <a href="{{ route('artikel') }}" class="inline-flex items-center text-[#008362] hover:text-cyan-950 font-semibold transition duration-300">
                     &larr; Kembali ke Semua Artikel
                 </a>
             </div>

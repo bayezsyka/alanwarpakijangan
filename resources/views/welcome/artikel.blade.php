@@ -4,7 +4,7 @@
         <span class="text-xl sm:text-2xl md:text-3xl font-medium tracking-wider">ARTIKEL</span>
     </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pt-8">
             {{-- Pastikan loop menggunakan variabel $latestArticles --}}
             @forelse($latestArticles as $article)
                 <article class="bg-white rounded-xl overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300 flex flex-col group">
