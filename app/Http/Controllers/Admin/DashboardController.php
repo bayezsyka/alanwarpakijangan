@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Pendaftaran;
+use App\Models\Visitor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -12,6 +13,22 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        // ---------------------------
+        // Logika penyimpanan visitor
+        // ---------------------------
+        $ip = request()->ip();
+
+        // Cek apakah IP sudah tercatat hari ini
+        $alreadyVisited = Visitor::where('ip_address', $ip)
+            ->whereDate('created_at', now()->toDateString())
+            ->exists();
+
+        if (!$alreadyVisited) {
+            Visitor::create(['ip_address' => $ip]);
+        }
+
+        $visitorCount = Visitor::whereDate('created_at', today())->count();
+
         // 1. Data untuk Chart Artikel Terpopuler (4 teratas)
         $topArticles = Article::orderBy('views', 'desc')->take(4)->get();
         $topArticleLabels = $topArticles->pluck('judul');
@@ -39,14 +56,15 @@ class DashboardController extends Controller
 
         // 3. Kirim semua data ke view
         return view('dashboard', compact(
-            'topArticleLabels', 
+            'topArticleLabels',
             'topArticleViews',
             'pendaftarLabels',
             'pendaftarCounts',
             'totalPendaftar',
             'diterimaCount',
             'ditolakCount',
-            'pendingCount'
+            'pendingCount',
+            'visitorCount'
         ));
     }
 }
