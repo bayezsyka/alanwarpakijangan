@@ -1,12 +1,19 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        {{-- <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ isset($rutinan) ? 'Edit Jadwal Rutinan' : 'Tambah Jadwal Rutinan Baru' }}
-        </h2>
+        </h2> --}}
+        <div class="rounded-xl shadow-lg" style="background: linear-gradient(93deg, #10b981, #14b8a6)">
+            <div class="px-8 py-6">
+                <h2 class="text-2xl font-bold text-white">
+                    {{ isset($rutinan) ? 'Edit Jadwal Rutinan' : 'Tambah Jadwal Rutinan Baru' }}
+                </h2>
+                <p class="text-emerald-100 mt-2">Kelola jadwal rutinan pesantren Anda!</p>
+            </div>
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-8">
                     <form action="{{ isset($rutinan) ? route('admin.rutinan.update', $rutinan->id) : route('admin.rutinan.store') }}" method="POST" class="space-y-6">

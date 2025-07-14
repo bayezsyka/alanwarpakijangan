@@ -1,9 +1,16 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">Tambah Acara Galeri Baru</h2>
+        {{-- <h2 class="font-semibold text-xl text-gray-800 leading-tight">Tambah Acara Galeri Baru</h2> --}}
+        <div class="bg-gradient-to-r from-[#008362] to-emerald-600 rounded-xl shadow-lg">
+            <div class="px-8 py-6">
+                <h2 class="text-2xl font-bold text-white">
+                    {{ __('Tambah Acara Galeri Baru') }}
+                </h2>
+                <p class="text-emerald-100 mt-2">Tambahkan acara baru untuk publikasi galeri Anda!</p>
+            </div>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-8">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div 

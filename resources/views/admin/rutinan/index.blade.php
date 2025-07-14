@@ -1,8 +1,15 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        {{-- <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Manajemen Jadwal Rutinan') }}
-        </h2>
+        </h2> --}}
+        <div class="rounded-xl shadow-lg" style="background: linear-gradient(93deg, #10b981, #14b8a6);">
+            <div class="px-8 py-6">
+                <h2 class="text-2xl font-bold text-white">
+                    {{ __('Manajemen Jadwal Rutinan') }}
+                </h2>
+                <p class="text-emerald-100 mt-2">Kelola semua jadwal rutinan harian Anda</p>
+            </div>
     </x-slot>
 
     {{-- Komponen Alpine.js untuk mengontrol semua logika halaman --}}
@@ -26,13 +33,35 @@
                     </div>
                 @endif
                 
-                <div class="flex justify-end mb-4">
-                    <a href="{{ route('admin.rutinan.create') }}" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-sm">
+                {{-- <div class="flex justify-end mb-4">
+                    <a href="{{ route('admin.rutinan.create') }}" class="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 shadow-sm">
                         + Tambah Jadwal Baru
                     </a>
+                </div> --}}
+
+                <div class="bg-gray-50 px-8 py-6 border-b border-gray-200 rounded-t-xl">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="bg-[#10b981] p-2 sm:rounded-lg">
+                                <svg class="w-6 h-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-800">Daftar Jadwal Rutinan</h3>
+                        </div>
+                        <div class="mt-4 sm:mt-0">
+                            <a href="{{ route('admin.rutinan.create') }}" 
+                            class="inline-flex items-center px-6 py-3 bg-[#14b8a6] text-white rounded-lg font-medium hover:bg-teal-800 transition-colors duration-200 shadow-lg">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                                </svg>
+                                Tambah Jadwal Baru
+                            </a>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                <div class="bg-white overflow-hidden shadow-sm p-6">
                     <div class="space-y-8">
                         @foreach ($days as $day_of_week => $dayName)
                             <div>
