@@ -8,12 +8,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use App\Traits\LogsActivity;
 
 class ArticleController extends Controller
 {
+    use LogsActivity;
+
     public function index()
     {
-        // Mengurutkan berdasarkan data terbaru (created_at)
         $articles = Article::latest()->paginate(10);
         return view('admin.artikel.index', compact('articles'));
     }
@@ -34,17 +36,17 @@ class ArticleController extends Controller
             'gambar_url' => 'nullable|url',
         ]);
 
-        // Membuat slug secara otomatis dari judul
         $validated['slug'] = Str::slug($validated['judul']);
-        
-        // Menangani upload gambar (dari file atau URL)
+
         if ($request->hasFile('gambar_upload')) {
             $validated['gambar'] = $request->file('gambar_upload')->store('artikel-images', 'public');
         } elseif ($request->filled('gambar_url')) {
             $validated['gambar'] = $validated['gambar_url'];
         }
 
-        Article::create($validated);
+        $artikel = Article::create($validated);
+
+        $this->logActivity('buat artikel', 'Judul: ' . $artikel->judul);
 
         return redirect()->route('admin.artikel.index')->with('success', 'Artikel berhasil ditambahkan.');
     }
@@ -61,17 +63,14 @@ class ArticleController extends Controller
             'penulis' => ['required', 'string', 'max:255'],
             'isi' => ['required', 'string'],
             'kategori' => ['required', 'string', 'in:Artikel,Opini'],
-            'gambar_upload' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif|max:10240'],
+            'gambar_upload' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:10240'],
             'gambar_url' => ['nullable', 'url'],
             'hapus_gambar' => ['boolean'],
         ]);
-        
-        // Membuat ulang slug jika judul berubah
-        $validated['slug'] = Str::slug($validated['judul']);
 
+        $validated['slug'] = Str::slug($validated['judul']);
         $dataToUpdate = $validated;
 
-        // Logika untuk menangani gambar
         if ($request->hasFile('gambar_upload')) {
             if ($artikel->gambar && !Str::startsWith($artikel->gambar, 'http')) {
                 Storage::disk('public')->delete($artikel->gambar);
@@ -91,6 +90,8 @@ class ArticleController extends Controller
 
         $artikel->update($dataToUpdate);
 
+        $this->logActivity('edit artikel', 'Judul: ' . $artikel->judul);
+
         return redirect()->route('admin.artikel.index')->with('success', 'Artikel berhasil diperbarui.');
     }
 
@@ -100,7 +101,10 @@ class ArticleController extends Controller
             Storage::disk('public')->delete($artikel->gambar);
         }
 
+        $this->logActivity('hapus artikel', 'Judul: ' . $artikel->judul);
+
         $artikel->delete();
+
         return redirect()->route('admin.artikel.index')->with('success', 'Artikel berhasil dihapus.');
     }
 }

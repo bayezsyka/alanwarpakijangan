@@ -1,0 +1,1139 @@
+﻿
+=== FILE: database\migrations\0001_01_01_000000_create_users_table.php ===
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('users', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->rememberToken();
+            $table->timestamps();
+        });
+
+        Schema::create('password_reset_tokens', function (Blueprint $table) {
+            $table->string('email')->primary();
+            $table->string('token');
+            $table->timestamp('created_at')->nullable();
+        });
+
+        Schema::create('sessions', function (Blueprint $table) {
+            $table->string('id')->primary();
+            $table->foreignId('user_id')->nullable()->index();
+            $table->string('ip_address', 45)->nullable();
+            $table->text('user_agent')->nullable();
+            $table->longText('payload');
+            $table->integer('last_activity')->index();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('users');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('sessions');
+    }
+};
+
+
+
+=== FILE: database\migrations\0001_01_01_000001_create_cache_table.php ===
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('cache', function (Blueprint $table) {
+            $table->string('key')->primary();
+            $table->mediumText('value');
+            $table->integer('expiration');
+        });
+
+        Schema::create('cache_locks', function (Blueprint $table) {
+            $table->string('key')->primary();
+            $table->string('owner');
+            $table->integer('expiration');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('cache');
+        Schema::dropIfExists('cache_locks');
+    }
+};
+
+
+
+=== FILE: database\migrations\0001_01_01_000002_create_jobs_table.php ===
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('jobs', function (Blueprint $table) {
+            $table->id();
+            $table->string('queue')->index();
+            $table->longText('payload');
+            $table->unsignedTinyInteger('attempts');
+            $table->unsignedInteger('reserved_at')->nullable();
+            $table->unsignedInteger('available_at');
+            $table->unsignedInteger('created_at');
+        });
+
+        Schema::create('job_batches', function (Blueprint $table) {
+            $table->string('id')->primary();
+            $table->string('name');
+            $table->integer('total_jobs');
+            $table->integer('pending_jobs');
+            $table->integer('failed_jobs');
+            $table->longText('failed_job_ids');
+            $table->mediumText('options')->nullable();
+            $table->integer('cancelled_at')->nullable();
+            $table->integer('created_at');
+            $table->integer('finished_at')->nullable();
+        });
+
+        Schema::create('failed_jobs', function (Blueprint $table) {
+            $table->id();
+            $table->string('uuid')->unique();
+            $table->text('connection');
+            $table->text('queue');
+            $table->longText('payload');
+            $table->longText('exception');
+            $table->timestamp('failed_at')->useCurrent();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('jobs');
+        Schema::dropIfExists('job_batches');
+        Schema::dropIfExists('failed_jobs');
+    }
+};
+
+
+
+=== FILE: database\migrations\2025_07_06_152220_create_articles_table.php ===
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('articles', function (Blueprint $table) {
+            $table->id();
+            $table->string('judul');
+            $table->string('slug')->unique();
+            $table->string('penulis')->nullable();
+            $table->string('kategori')->default('Artikel');
+            $table->longText('isi');
+            $table->text('gambar')->nullable(); // Tipe TEXT untuk URL panjang
+            $table->integer('views')->default(0);
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('articles');
+    }
+};
+
+
+=== FILE: database\migrations\2025_07_07_074620_create_pendaftarans_table.php ===
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('pendaftarans', function (Blueprint $table) {
+            // ### UBAH BAGIAN INI ###
+            // Dari: $table->id();
+            // Menjadi:
+            $table->bigInteger('id')->primary(); // ID sekarang adalah BIGINT dan primary key
+
+            // Kolom lainnya tetap sama
+            $table->string('nama_lengkap');
+            $table->string('nik', 16)->unique();
+            $table->string('nisn', 10)->nullable();
+            $table->string('nomor_wa');
+            $table->string('jenis_kelamin');
+            $table->string('tempat_lahir');
+            $table->date('tanggal_lahir');
+            $table->text('alamat');
+            $table->string('nama_ayah');
+            $table->string('pekerjaan_ayah');
+            $table->string('telepon_ayah');
+            $table->string('nama_ibu');
+            $table->string('pekerjaan_ibu');
+            $table->string('telepon_ibu');
+            $table->string('nama_wali')->nullable();
+            $table->string('pekerjaan_wali')->nullable();
+            $table->string('telepon_wali')->nullable();
+            $table->string('hubungan_wali')->nullable();
+            $table->string('asal_sekolah');
+            $table->year('tahun_lulus');
+            $table->string('foto_santri');
+            $table->string('scan_kk');
+            $table->string('scan_ijazah');
+            $table->string('status')->default('pending');
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('pendaftarans');
+    }
+};
+
+
+=== FILE: database\migrations\2025_07_09_192456_create_events_table.php ===
+<?php
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    public function up(): void {
+        Schema::create('events', function (Blueprint $table) {
+            $table->id();
+            $table->string('nama_acara');
+            $table->date('tanggal')->nullable();
+            $table->text('deskripsi')->nullable();
+            $table->timestamps();
+        });
+    }
+    public function down(): void {
+        Schema::dropIfExists('events');
+    }
+};
+
+
+=== FILE: database\migrations\2025_07_09_192541_create_event_photos_table.php ===
+<?php
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    public function up(): void {
+        Schema::create('event_photos', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('event_id')->constrained()->onDelete('cascade');
+            $table->string('file_path');
+            $table->timestamps();
+        });
+    }
+    public function down(): void {
+        Schema::dropIfExists('event_photos');
+    }
+};
+
+
+=== FILE: database\migrations\2025_07_10_101901_create_rutinans_table.php ===
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('rutinans', function (Blueprint $table) {
+            $table->id();
+            $table->string('nama_acara');
+            $table->string('pengisi')->nullable();
+            $table->string('kitab')->nullable();
+            $table->text('isi')->nullable();
+            $table->string('tempat');
+            $table->time('waktu'); // Tipe TIME untuk menyimpan jam (e.g., 20:30:00)
+            $table->integer('day_of_week'); // Menyimpan hari sebagai angka (0=Minggu, 1=Senin, ..., 6=Sabtu)
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('rutinans');
+    }
+};
+
+
+=== FILE: database\migrations\2025_07_10_103859_create_rutinan_exceptions_table.php ===
+<?php
+// NAMA FILE: xxxx_xx_xx_xxxxxx_create_rutinan_exceptions_table.php
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('rutinan_exceptions', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('rutinan_id')->constrained()->onDelete('cascade');
+            $table->date('libur_date'); // Tanggal spesifik saat rutinan libur
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('rutinan_exceptions');
+    }
+};
+
+
+=== FILE: database\migrations\2025_07_14_021908_create_visitors_table.php ===
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('visitors', function (Blueprint $table) {
+            $table->id();
+            $table->string('ip_address');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('visitors');
+    }
+};
+
+
+
+=== FILE: database\migrations\2025_07_15_104115_add_user_agent_and_visited_at_to_visitors_table.php ===
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    public function up(): void
+    {
+        Schema::table('visitors', function (Blueprint $table) {
+            $table->timestamp('visited_at')->after('ip_address')->useCurrent();
+            $table->string('user_agent')->nullable()->after('visited_at');
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::table('visitors', function (Blueprint $table) {
+            $table->dropColumn(['visited_at', 'user_agent']);
+        });
+    }
+};
+
+
+
+=== FILE: database\migrations\2025_07_15_111340_create_activity_logs_table.php ===
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    public function up(): void
+    {
+        Schema::create('activity_logs', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('action');
+            $table->text('description')->nullable();
+            $table->ipAddress('ip_address')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('activity_logs');
+    }
+};
+
+
+
+=== FILE: database\migrations\export-semua-isi.txt ===
+
+=== FILE: 0001_01_01_000000_create_users_table.php ===
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('users', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->rememberToken();
+            $table->timestamps();
+        });
+
+        Schema::create('password_reset_tokens', function (Blueprint $table) {
+            $table->string('email')->primary();
+            $table->string('token');
+            $table->timestamp('created_at')->nullable();
+        });
+
+        Schema::create('sessions', function (Blueprint $table) {
+            $table->string('id')->primary();
+            $table->foreignId('user_id')->nullable()->index();
+            $table->string('ip_address', 45)->nullable();
+            $table->text('user_agent')->nullable();
+            $table->longText('payload');
+            $table->integer('last_activity')->index();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('users');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('sessions');
+    }
+};
+
+
+
+=== FILE: 0001_01_01_000001_create_cache_table.php ===
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('cache', function (Blueprint $table) {
+            $table->string('key')->primary();
+            $table->mediumText('value');
+            $table->integer('expiration');
+        });
+
+        Schema::create('cache_locks', function (Blueprint $table) {
+            $table->string('key')->primary();
+            $table->string('owner');
+            $table->integer('expiration');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('cache');
+        Schema::dropIfExists('cache_locks');
+    }
+};
+
+
+
+=== FILE: 0001_01_01_000002_create_jobs_table.php ===
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('jobs', function (Blueprint $table) {
+            $table->id();
+            $table->string('queue')->index();
+            $table->longText('payload');
+            $table->unsignedTinyInteger('attempts');
+            $table->unsignedInteger('reserved_at')->nullable();
+            $table->unsignedInteger('available_at');
+            $table->unsignedInteger('created_at');
+        });
+
+        Schema::create('job_batches', function (Blueprint $table) {
+            $table->string('id')->primary();
+            $table->string('name');
+            $table->integer('total_jobs');
+            $table->integer('pending_jobs');
+            $table->integer('failed_jobs');
+            $table->longText('failed_job_ids');
+            $table->mediumText('options')->nullable();
+            $table->integer('cancelled_at')->nullable();
+            $table->integer('created_at');
+            $table->integer('finished_at')->nullable();
+        });
+
+        Schema::create('failed_jobs', function (Blueprint $table) {
+            $table->id();
+            $table->string('uuid')->unique();
+            $table->text('connection');
+            $table->text('queue');
+            $table->longText('payload');
+            $table->longText('exception');
+            $table->timestamp('failed_at')->useCurrent();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('jobs');
+        Schema::dropIfExists('job_batches');
+        Schema::dropIfExists('failed_jobs');
+    }
+};
+
+
+
+=== FILE: 2025_07_06_152220_create_articles_table.php ===
+<?php
+// database/migrations/xxxx_xx_xx_xxxxxx_create_articles_table.php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+{
+    Schema::create('articles', function (Blueprint $table) {
+        $table->id();
+        $table->string('judul');
+        $table->string('slug')->unique();
+        $table->string('penulis')->nullable();
+        $table->longText('isi');
+        $table->text('gambar')->nullable();
+        $table->integer('views')->default(0);
+
+        // PASTIKAN BARIS INI ADA KEMBALI
+        $table->date('tanggal')->nullable();
+
+        $table->timestamps();
+    });
+}
+    public function down(): void
+    {
+        Schema::dropIfExists('articles');
+    }
+};
+
+
+=== FILE: 2025_07_06_171328_change_gambar_to_text_in_articles_table.php ===
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::table('articles', function (Blueprint $table) {
+            // Mengubah kolom 'gambar' dari VARCHAR menjadi TEXT
+            // TEXT dapat menampung URL yang sangat panjang
+            $table->text('gambar')->nullable()->change();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::table('articles', function (Blueprint $table) {
+            // Mengembalikan ke string(255) jika migrasi di-rollback
+            $table->string('gambar')->nullable()->change();
+        });
+    }
+};
+
+
+=== FILE: 2025_07_07_074620_create_pendaftarans_table.php ===
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('pendaftarans', function (Blueprint $table) {
+            // ### UBAH BAGIAN INI ###
+            // Dari: $table->id();
+            // Menjadi:
+            $table->bigInteger('id')->primary(); // ID sekarang adalah BIGINT dan primary key
+
+            // Kolom lainnya tetap sama
+            $table->string('nama_lengkap');
+            $table->string('nik', 16)->unique();
+            $table->string('nisn', 10)->nullable();
+            $table->string('nomor_wa');
+            $table->string('jenis_kelamin');
+            $table->string('tempat_lahir');
+            $table->date('tanggal_lahir');
+            $table->text('alamat');
+            $table->string('nama_ayah');
+            $table->string('pekerjaan_ayah');
+            $table->string('telepon_ayah');
+            $table->string('nama_ibu');
+            $table->string('pekerjaan_ibu');
+            $table->string('telepon_ibu');
+            $table->string('nama_wali')->nullable();
+            $table->string('pekerjaan_wali')->nullable();
+            $table->string('telepon_wali')->nullable();
+            $table->string('hubungan_wali')->nullable();
+            $table->string('asal_sekolah');
+            $table->year('tahun_lulus');
+            $table->string('foto_santri');
+            $table->string('scan_kk');
+            $table->string('scan_ijazah');
+            $table->string('status')->default('pending');
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('pendaftarans');
+    }
+};
+
+
+=== FILE: 2025_07_09_192456_create_events_table.php ===
+<?php
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    public function up(): void {
+        Schema::create('events', function (Blueprint $table) {
+            $table->id();
+            $table->string('nama_acara');
+            $table->date('tanggal')->nullable();
+            $table->text('deskripsi')->nullable();
+            $table->timestamps();
+        });
+    }
+    public function down(): void {
+        Schema::dropIfExists('events');
+    }
+};
+
+
+=== FILE: 2025_07_09_192541_create_event_photos_table.php ===
+<?php
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    public function up(): void {
+        Schema::create('event_photos', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('event_id')->constrained()->onDelete('cascade');
+            $table->string('file_path');
+            $table->timestamps();
+        });
+    }
+    public function down(): void {
+        Schema::dropIfExists('event_photos');
+    }
+};
+
+
+=== FILE: 2025_07_10_091219_add_kategori_to_articles_table.php ===
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::table('articles', function (Blueprint $table) {
+            // Menambahkan kolom 'kategori' setelah kolom 'penulis'
+            // Defaultnya adalah 'Artikel' untuk semua data lama yang sudah ada
+            $table->string('kategori')->default('Artikel')->after('penulis');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::table('articles', function (Blueprint $table) {
+            $table->dropColumn('kategori');
+        });
+    }
+};
+
+
+=== FILE: export-semua-isi.txt ===
+
+=== FILE: 0001_01_01_000000_create_users_table.php ===
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('users', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->rememberToken();
+            $table->timestamps();
+        });
+
+        Schema::create('password_reset_tokens', function (Blueprint $table) {
+            $table->string('email')->primary();
+            $table->string('token');
+            $table->timestamp('created_at')->nullable();
+        });
+
+        Schema::create('sessions', function (Blueprint $table) {
+            $table->string('id')->primary();
+            $table->foreignId('user_id')->nullable()->index();
+            $table->string('ip_address', 45)->nullable();
+            $table->text('user_agent')->nullable();
+            $table->longText('payload');
+            $table->integer('last_activity')->index();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('users');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('sessions');
+    }
+};
+
+
+
+=== FILE: 0001_01_01_000001_create_cache_table.php ===
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('cache', function (Blueprint $table) {
+            $table->string('key')->primary();
+            $table->mediumText('value');
+            $table->integer('expiration');
+        });
+
+        Schema::create('cache_locks', function (Blueprint $table) {
+            $table->string('key')->primary();
+            $table->string('owner');
+            $table->integer('expiration');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('cache');
+        Schema::dropIfExists('cache_locks');
+    }
+};
+
+
+
+=== FILE: 0001_01_01_000002_create_jobs_table.php ===
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('jobs', function (Blueprint $table) {
+            $table->id();
+            $table->string('queue')->index();
+            $table->longText('payload');
+            $table->unsignedTinyInteger('attempts');
+            $table->unsignedInteger('reserved_at')->nullable();
+            $table->unsignedInteger('available_at');
+            $table->unsignedInteger('created_at');
+        });
+
+        Schema::create('job_batches', function (Blueprint $table) {
+            $table->string('id')->primary();
+            $table->string('name');
+            $table->integer('total_jobs');
+            $table->integer('pending_jobs');
+            $table->integer('failed_jobs');
+            $table->longText('failed_job_ids');
+            $table->mediumText('options')->nullable();
+            $table->integer('cancelled_at')->nullable();
+            $table->integer('created_at');
+            $table->integer('finished_at')->nullable();
+        });
+
+        Schema::create('failed_jobs', function (Blueprint $table) {
+            $table->id();
+            $table->string('uuid')->unique();
+            $table->text('connection');
+            $table->text('queue');
+            $table->longText('payload');
+            $table->longText('exception');
+            $table->timestamp('failed_at')->useCurrent();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('jobs');
+        Schema::dropIfExists('job_batches');
+        Schema::dropIfExists('failed_jobs');
+    }
+};
+
+
+
+=== FILE: 2025_07_06_152220_create_articles_table.php ===
+<?php
+// database/migrations/xxxx_xx_xx_xxxxxx_create_articles_table.php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+{
+    Schema::create('articles', function (Blueprint $table) {
+        $table->id();
+        $table->string('judul');
+        $table->string('slug')->unique();
+        $table->string('penulis')->nullable();
+        $table->longText('isi');
+        $table->text('gambar')->nullable();
+        $table->integer('views')->default(0);
+
+        // PASTIKAN BARIS INI ADA KEMBALI
+        $table->date('tanggal')->nullable();
+
+        $table->timestamps();
+    });
+}
+    public function down(): void
+    {
+        Schema::dropIfExists('articles');
+    }
+};
+
+
+=== FILE: 2025_07_06_171328_change_gambar_to_text_in_articles_table.php ===
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::table('articles', function (Blueprint $table) {
+            // Mengubah kolom 'gambar' dari VARCHAR menjadi TEXT
+            // TEXT dapat menampung URL yang sangat panjang
+            $table->text('gambar')->nullable()->change();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::table('articles', function (Blueprint $table) {
+            // Mengembalikan ke string(255) jika migrasi di-rollback
+            $table->string('gambar')->nullable()->change();
+        });
+    }
+};
+
+
+=== FILE: 2025_07_07_074620_create_pendaftarans_table.php ===
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('pendaftarans', function (Blueprint $table) {
+            // ### UBAH BAGIAN INI ###
+            // Dari: $table->id();
+            // Menjadi:
+            $table->bigInteger('id')->primary(); // ID sekarang adalah BIGINT dan primary key
+
+            // Kolom lainnya tetap sama
+            $table->string('nama_lengkap');
+            $table->string('nik', 16)->unique();
+            $table->string('nisn', 10)->nullable();
+            $table->string('nomor_wa');
+            $table->string('jenis_kelamin');
+            $table->string('tempat_lahir');
+            $table->date('tanggal_lahir');
+            $table->text('alamat');
+            $table->string('nama_ayah');
+            $table->string('pekerjaan_ayah');
+            $table->string('telepon_ayah');
+            $table->string('nama_ibu');
+            $table->string('pekerjaan_ibu');
+            $table->string('telepon_ibu');
+            $table->string('nama_wali')->nullable();
+            $table->string('pekerjaan_wali')->nullable();
+            $table->string('telepon_wali')->nullable();
+            $table->string('hubungan_wali')->nullable();
+            $table->string('asal_sekolah');
+            $table->year('tahun_lulus');
+            $table->string('foto_santri');
+            $table->string('scan_kk');
+            $table->string('scan_ijazah');
+            $table->string('status')->default('pending');
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('pendaftarans');
+    }
+};
+
+
+=== FILE: 2025_07_09_192456_create_events_table.php ===
+<?php
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    public function up(): void {
+        Schema::create('events', function (Blueprint $table) {
+            $table->id();
+            $table->string('nama_acara');
+            $table->date('tanggal')->nullable();
+            $table->text('deskripsi')->nullable();
+            $table->timestamps();
+        });
+    }
+    public function down(): void {
+        Schema::dropIfExists('events');
+    }
+};
+
+
+=== FILE: 2025_07_09_192541_create_event_photos_table.php ===
+<?php
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    public function up(): void {
+        Schema::create('event_photos', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('event_id')->constrained()->onDelete('cascade');
+            $table->string('file_path');
+            $table->timestamps();
+        });
+    }
+    public function down(): void {
+        Schema::dropIfExists('event_photos');
+    }
+};
+
+
+=== FILE: 2025_07_10_091219_add_kategori_to_articles_table.php ===
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::table('articles', function (Blueprint $table) {
+            // Menambahkan kolom 'kategori' setelah kolom 'penulis'
+            // Defaultnya adalah 'Artikel' untuk semua data lama yang sudah ada
+            $table->string('kategori')->default('Artikel')->after('penulis');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::table('articles', function (Blueprint $table) {
+            $table->dropColumn('kategori');
+        });
+    }
+};
+
+
+
+
+
+
+
+

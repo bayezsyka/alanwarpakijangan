@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Pendaftaran;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage; // <-- TAMBAHKAN INI
+use Illuminate\Support\Facades\Storage;
+use App\Traits\LogsActivity;
 
 class PendaftaranController extends Controller
 {
+    use LogsActivity;
+
     public function index()
     {
         $pendaftarans = Pendaftaran::latest()->paginate(15);
@@ -20,24 +23,23 @@ class PendaftaranController extends Controller
         return view('admin.pendaftaran.show', compact('pendaftaran'));
     }
 
-    // ... (method updateStatus tetap ada) ...
     public function updateStatus(Request $request, Pendaftaran $pendaftaran)
     {
         $request->validate([
             'status' => 'required|in:pending,diterima,ditolak',
         ]);
+
         $pendaftaran->status = $request->input('status');
         $pendaftaran->save();
+
+        $this->logActivity('ubah status pendaftaran', 'Nama: ' . $pendaftaran->nama_lengkap . ' | Status: ' . $pendaftaran->status);
+
         return back()->with('success', 'Status pendaftaran berhasil diperbarui!');
     }
 
-
-    /**
-     * ### METHOD BARU UNTUK MENGHAPUS DATA ###
-     */
     public function destroy(Pendaftaran $pendaftaran)
     {
-        // 1. Hapus file-file yang terhubung untuk menghemat storage
+        // Hapus file terkait
         if ($pendaftaran->foto_santri) {
             Storage::disk('public')->delete($pendaftaran->foto_santri);
         }
@@ -48,10 +50,10 @@ class PendaftaranController extends Controller
             Storage::disk('public')->delete($pendaftaran->scan_ijazah);
         }
 
-        // 2. Hapus data dari database
+        $this->logActivity('hapus pendaftaran', 'Nama: ' . $pendaftaran->nama_lengkap);
+
         $pendaftaran->delete();
 
-        // 3. Kembali ke halaman daftar dengan pesan sukses
         return redirect()->route('admin.pendaftaran.index')->with('success', 'Data pendaftar berhasil dihapus.');
     }
 }

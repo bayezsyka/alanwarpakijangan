@@ -5,13 +5,15 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Rutinan;
 use Illuminate\Http\Request;
+use App\Traits\LogsActivity;
 
 class RutinanController extends Controller
 {
+    use LogsActivity;
+
     public function index()
     {
         $days = [6 => 'Sabtu', 0 => 'Minggu', 1 => 'Senin', 2 => 'Selasa', 3 => 'Rabu', 4 => 'Kamis', 5 => 'Jumat'];
-        $rutinans = Rutinan::all()->sortBy('waktu');
         $rutinans = Rutinan::with('exceptions')->get()->sortBy('waktu');
         $groupedRutinans = $rutinans->groupBy('day_of_week');
 
@@ -35,14 +37,16 @@ class RutinanController extends Controller
             'day_of_week' => 'required|integer|between:0,6',
         ]);
 
-        Rutinan::create($validated);
+        $rutinan = Rutinan::create($validated);
+
+        $this->logActivity('buat rutinan', 'Acara: ' . $rutinan->nama_acara);
 
         return redirect()->route('admin.rutinan.index')->with('success', 'Jadwal rutinan berhasil ditambahkan.');
     }
 
     public function edit(Rutinan $rutinan)
     {
-        $rutinan->load('exceptions'); // <-- TAMBAHKAN BARIS INI
+        $rutinan->load('exceptions');
         return view('admin.rutinan.edit', compact('rutinan'));
     }
 
@@ -59,11 +63,16 @@ class RutinanController extends Controller
         ]);
 
         $rutinan->update($validated);
+
+        $this->logActivity('edit rutinan', 'Acara: ' . $rutinan->nama_acara);
+
         return redirect()->route('admin.rutinan.index')->with('success', 'Jadwal berhasil diperbarui.');
     }
 
     public function destroy(Rutinan $rutinan)
     {
+        $this->logActivity('hapus rutinan', 'Acara: ' . $rutinan->nama_acara);
+
         $rutinan->delete();
         return redirect()->route('admin.rutinan.index')->with('success', 'Jadwal rutinan berhasil dihapus.');
     }

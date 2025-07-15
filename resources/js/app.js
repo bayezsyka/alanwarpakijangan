@@ -1,7 +1,12 @@
+// resources/js/app.js
+
 import './bootstrap';
 
-import Alpine from 'alpinejs';
+// Chart.js dan plugin matrix
+import Chart from 'chart.js/auto';
+import { MatrixController, MatrixElement } from 'chartjs-chart-matrix';
 
-window.Alpine = Alpine;
+Chart.register(MatrixController, MatrixElement);
 
-Alpine.start();
+// ⬅️ Tambahkan ini agar Chart bisa diakses dari window (global di Blade)
+window.Chart = Chart;

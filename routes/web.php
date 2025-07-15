@@ -54,7 +54,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('events', AdminEventController::class);
         Route::resource('rutinan', AdminRutinanController::class); // <-- TAMBAHKAN INI
 
-        
+        Route::get('/logs', [\App\Http\Controllers\Admin\ActivityLogController::class, 'index'])->name('logs.index');
         Route::get('/pendaftaran', [AdminPendaftaranController::class, 'index'])->name('pendaftaran.index');
         Route::get('/pendaftaran/{pendaftaran}', [AdminPendaftaranController::class, 'show'])->name('pendaftaran.show');
         Route::patch('/pendaftaran/{pendaftaran}/status', [AdminPendaftaranController::class, 'updateStatus'])->name('pendaftaran.update_status');

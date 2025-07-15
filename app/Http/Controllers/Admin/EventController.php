@@ -7,10 +7,13 @@ use App\Models\Event;
 use App\Models\EventPhoto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rule; // <-- 1. TAMBAHKAN IMPORT INI
+use Illuminate\Validation\Rule;
+use App\Traits\LogsActivity;
 
 class EventController extends Controller
 {
+    use LogsActivity;
+
     public function index()
     {
         $events = Event::withCount('photos')->latest()->paginate(10);
@@ -25,7 +28,6 @@ class EventController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            // 2. TAMBAHKAN ATURAN 'unique:events'
             'nama_acara' => 'required|string|max:255|unique:events,nama_acara',
             'tanggal' => 'nullable|date',
             'deskripsi' => 'nullable|string',
@@ -41,12 +43,13 @@ class EventController extends Controller
                 $event->photos()->create(['file_path' => $path]);
             }
         }
-        
-         // Jika request adalah AJAX, kita bisa beri response JSON
+
+        $this->logActivity('buat galeri acara', 'Acara: ' . $event->nama_acara);
+
         if ($request->wantsJson()) {
             return response()->json(['message' => 'Acara berhasil dibuat!']);
         }
-        // 3. PASTIKAN REDIRECT INI SELALU ADA DI AKHIR
+
         return redirect()->route('admin.events.index')->with('success', 'Acara galeri berhasil ditambahkan.');
     }
 
@@ -59,7 +62,6 @@ class EventController extends Controller
     public function update(Request $request, Event $event)
     {
         $validated = $request->validate([
-            // 4. ATURAN UNIQUE YANG MENGABAIKAN EVENT SAAT INI
             'nama_acara' => ['required', 'string', 'max:255', Rule::unique('events')->ignore($event->id)],
             'tanggal' => 'nullable|date',
             'deskripsi' => 'nullable|string',
@@ -87,20 +89,22 @@ class EventController extends Controller
                 $event->photos()->create(['file_path' => $path]);
             }
         }
-        
-        // 5. PASTIKAN REDIRECT INI SELALU ADA DI AKHIR
+
+        $this->logActivity('edit galeri acara', 'Acara: ' . $event->nama_acara);
+
         return redirect()->route('admin.events.index')->with('success', 'Acara galeri berhasil diperbarui.');
     }
+
     public function destroy(Event $event)
     {
-        // 1. Hapus semua file foto dari storage terlebih dahulu
         foreach ($event->photos as $photo) {
             if (Storage::disk('public')->exists($photo->file_path)) {
                 Storage::disk('public')->delete($photo->file_path);
             }
         }
 
-        // 2. Hapus data acara (ini akan otomatis menghapus data foto terkait karena onDelete('cascade'))
+        $this->logActivity('hapus galeri acara', 'Acara: ' . $event->nama_acara);
+
         $event->delete();
 
         return redirect()->route('admin.events.index')->with('success', 'Acara galeri berhasil dihapus.');
