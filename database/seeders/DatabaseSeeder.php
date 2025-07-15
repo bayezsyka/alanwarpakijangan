@@ -15,9 +15,9 @@ class DatabaseSeeder extends Seeder
     {
         // 3. Buat satu user default secara langsung di sini
         User::factory()->create([
-            'name' => 'Direktorat Pengembangan', // Ganti dengan nama Anda
-            'email' => 'admin@alanwar.id', // Ganti dengan email login Anda
-            'password' => Hash::make('Pakijangan@67'), // GANTI 'password' DENGAN PASSWORD YANG AMAN
+            'name' => 'Direktorat Pengembangan', 
+            'email' => 'admin@alanwar.id', 
+            'password' => Hash::make('Pakijangan@67'), 
         ]);
     }
 }

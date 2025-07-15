@@ -4,6 +4,11 @@
             <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3">Jadwal Rutinan</h2>
             <div class="w-16 sm:w-20 h-1 bg-emerald-500 mx-auto rounded-full"></div>
         </div>
+        <div class="flex justify-center mt-1 sm:mt-2">
+         <div class="flex items-center text-xs sm:text-sm text-gray-600"><span class="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-emerald-500 border-2 border-white shadow mr-1 sm:mr-2"></span>
+            Hari Ini
+        </div>
+        </div>
     </div>
 <style>
 .timeline-wrapper { position: relative; padding: 4rem 0; margin-left: 0.5rem; margin-right: 0.5rem; }
@@ -124,8 +129,10 @@
 </style>
 
 <div class="container mx-auto py-32 sm:py-42 max-w-7xl px-4 sm:px-6 lg:px-8">
+    
     <div class="timeline-wrapper">
         <div class="timeline-line"></div>
+        
         <div class="timeline-nodes">
             @foreach($rollingDays as $day)
                 <div class="timeline-node-container">
@@ -177,9 +184,6 @@
                 </div>
             @endforeach
         </div>
-    </div>
-    <div class="flex justify-center mt-4 sm:mt-6">
-         <div class="flex items-center text-xs sm:text-sm text-gray-600"><span class="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-emerald-500 border-2 border-white shadow mr-1 sm:mr-2"></span>Hari Ini</div>
     </div>
 </div>
 </section>

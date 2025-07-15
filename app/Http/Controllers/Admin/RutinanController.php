@@ -50,17 +50,16 @@ class RutinanController extends Controller
     {
         $validated = $request->validate([
             'nama_acara' => 'required|string|max:255',
+            'day_of_week' => 'required|integer|between:0,6',
+            'waktu' => 'required|date_format:H:i',
+            'tempat' => 'required|string|max:255',
             'pengisi' => 'nullable|string|max:255',
             'kitab' => 'nullable|string|max:255',
             'isi' => 'nullable|string',
-            'tempat' => 'required|string|max:255',
-            'waktu' => 'required|date_format:H:i',
-            'day_of_week' => 'required|integer|between:0,6',
         ]);
 
         $rutinan->update($validated);
-
-        return redirect()->route('admin.rutinan.index')->with('success', 'Jadwal rutinan berhasil diperbarui.');
+        return redirect()->route('admin.rutinan.index')->with('success', 'Jadwal berhasil diperbarui.');
     }
 
     public function destroy(Rutinan $rutinan)
