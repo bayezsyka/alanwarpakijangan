@@ -98,7 +98,7 @@
                     </div>
                     <h3 class="text-xl font-semibold text-gray-800">Heatmap Kunjungan</h3>
                 </div>
-                <div class="relative h-[350px]">
+                <div class="relative h-[480px]">
                     <canvas id="heatmapChart"></canvas>
                 </div>
             </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\Event;
 use App\Models\Rutinan;
+use App\Models\Announcement; // <-- 1. IMPORT MODEL BARU
 use App\Models\UpcomingEvent;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -42,11 +43,12 @@ class ArtikelController extends Controller
         
         $groupedRutinans = Rutinan::with('exceptions')->get()->sortBy('waktu')->groupBy('day_of_week');
 
+        // Kirim semua data ke view
         return view('welcome', compact(
             'latestArticles',
             'latestEvents',
             'groupedRutinans',
-            'rollingDays'
+            'rollingDays',
         ));
     }
 

@@ -12,9 +12,7 @@ use App\Http\Controllers\Admin\PendaftaranController as AdminPendaftaranControll
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\Admin\RutinanController as AdminRutinanController;
-use App\Http\Controllers\Admin\RutinanExceptionController; // <-- Tambahkan ini
-
-
+use App\Http\Controllers\Admin\RutinanExceptionController; 
 
 /*
 |--------------------------------------------------------------------------
