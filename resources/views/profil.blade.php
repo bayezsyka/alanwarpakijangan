@@ -13,248 +13,373 @@
                 extend: {
                     colors: {
                         secondary: '#008362',
+                        dark: '#1a1a1a',
                     },
                     fontFamily: {
                         'sans': ['Poppins', 'sans-serif'],
                     },
+                    boxShadow: {
+                        'card': '0 4px 20px rgba(0, 131, 98, 0.1)',
+                    }
                 }
             }
         }
     </script>
     <style>
-        .hero-pattern {
-            background-image: radial-gradient(#00836222 1px, transparent 1px);
-            background-size: 20px 20px;
+        .gradient-text {
+            background: linear-gradient(90deg, #008362 0%, #00a381 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
-        .mission-list {
-            counter-reset: mission-counter;
-        }
-        .mission-item {
+        .section-divider {
             position: relative;
-            padding-left: 2rem;
-            margin-bottom: 1rem;
+            height: 80px;
+            overflow: hidden;
         }
-        .mission-item:before {
-            counter-increment: mission-counter;
-            content: counter(mission-counter) ".";
+        .section-divider::before {
+            content: "";
             position: absolute;
             left: 0;
-            font-weight: bold;
-            color: #008362;
+            right: 0;
+            top: 0;
+            height: 100%;
+            background: linear-gradient(135deg, #00836222 0%, transparent 70%);
+            transform: skewY(-2deg);
+            transform-origin: top left;
         }
     </style>
 </head>
-<body class="bg-white font-sans text-gray-800">
-    <!-- Header -->
-    <header class="relative">
-        <div class="hero-pattern h-64 w-full flex items-center justify-center">
-            <div class="text-center px-4 max-w-2xl">
-                <h1 class="text-4xl md:text-5xl font-bold text-secondary mb-2">Pondok Pesantren Al-Anwar Pakijangan</h1>
-                <p class="text-xl text-gray-600">"Kubah Jawa"</p>
-            </div>
+<body class="bg-gray-50 font-sans text-gray-800 antialiased">
+    <!-- Header with Hero Image -->
+    <header class="relative overflow-hidden">
+        <div class="absolute inset-0 bg-blue-950 z-0"></div>
+        
+        <div class="relative z-10 max-w-4xl mx-auto px-6 py-24 md:py-32 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-3">Pondok Pesantren <span class="gradient-text">Al-Anwar</span></h1>
+            <p class="text-xl text-white/90 font-light">Pakijangan, Brebes - "Kubah Jawa"</p>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="container mx-auto px-4 py-8 max-w-5xl">
+    <!-- Back Button -->
+    <div class="max-w-4xl mx-auto px-6 pt-8">
+        <a href="/" class="inline-flex items-center gap-2 text-secondary hover:text-secondary/80 transition-colors">
+            <i class="fas fa-arrow-left"></i>
+            <span class="font-medium">Kembali ke Beranda</span>
+        </a>
+    </div>
+
+    <main class="max-w-4xl mx-auto px-6 py-8">
         <!-- Identity Section -->
-        <section class="mb-12 bg-gray-50 p-6 rounded-lg">
-            <h2 class="text-3xl font-semibold mb-6 text-secondary border-b pb-2">Identitas & Legalitas</h2>
-            <div class="grid md:grid-cols-2 gap-6">
-                <div>
-                    <div class="mb-4">
-                        <h3 class="text-lg font-medium text-gray-700">Nama Resmi</h3>
-                        <p class="text-gray-600">Pondok Pesantren Al-Anwar Pakijangan</p>
-                    </div>
-                    <div class="mb-4">
-                        <h3 class="text-lg font-medium text-gray-700">Julukan</h3>
-                        <p class="text-gray-600">Kubah Jawa</p>
-                    </div>
-                    <div class="mb-4">
-                        <h3 class="text-lg font-medium text-gray-700">Pendiri</h3>
-                        <p class="text-gray-600">KH. Anwar Mukhtar</p>
-                    </div>
-                    <div class="mb-4">
-                        <h3 class="text-lg font-medium text-gray-700">Pimpinan/Pengasuh</h3>
-                        <p class="text-gray-600">KH. Muhammad Miftah</p>
+        <section class="mb-16">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="h-1 w-12 bg-secondary"></div>
+                <h2 class="text-2xl md:text-3xl font-bold text-dark">Identitas & Legalitas</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-xl p-6 shadow-card">
+                    <div class="space-y-5">
+                        <div>
+                            <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">Nama Resmi</h3>
+                            <p class="text-lg font-medium">Pondok Pesantren Al-Anwar Pakijangan</p>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">Julukan</h3>
+                            <p class="text-lg font-medium">Kubah Jawa</p>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">Pendiri</h3>
+                            <p class="text-lg font-medium">KH. Anwar Mukhtar</p>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">Pimpinan/Pengasuh</h3>
+                            <p class="text-lg font-medium">KH. Muhammad Miftah</p>
+                        </div>
                     </div>
                 </div>
-                <div>
-                    <div class="mb-4">
-                        <h3 class="text-lg font-medium text-gray-700">Alamat</h3>
-                        <p class="text-gray-600">Jalan Raya Pakijangan-Bulakamba No. 08. RT/RW 04/02. Brebes, Jawa Tengah</p>
-                    </div>
-                    <div class="mb-4">
-                        <h3 class="text-lg font-medium text-gray-700">Kontak</h3>
-                        <ul class="text-gray-600 space-y-1">
-                            <li><i class="fas fa-phone-alt mr-2 text-secondary"></i>085161603362</li>
-                            <li><i class="fas fa-envelope mr-2 text-secondary"></i>ppkubahjawa@gmail.com</li>
-                            <li><i class="fas fa-globe mr-2 text-secondary"></i>alanwarpakijangan.com</li>
-                            <li><i class="fab fa-instagram mr-2 text-secondary"></i>@pesantrenalanwar</li>
-                        </ul>
+                
+                <div class="bg-white rounded-xl p-6 shadow-card">
+                    <div class="space-y-5">
+                        <div>
+                            <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">Alamat</h3>
+                            <p class="text-lg">Jalan Raya Pakijangan-Bulakamba No. 08. RT/RW 04/02. Brebes, Jawa Tengah</p>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">Kontak</h3>
+                            <ul class="space-y-2 text-lg">
+                                <li class="flex items-center gap-3">
+                                    <i class="fas fa-phone-alt text-secondary w-5"></i>
+                                    <span>085161603362</span>
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <i class="fas fa-envelope text-secondary w-5"></i>
+                                    <span>ppkubahjawa@gmail.com</span>
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <i class="fas fa-globe text-secondary w-5"></i>
+                                    <span>alanwarpakijangan.com</span>
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <i class="fab fa-instagram text-secondary w-5"></i>
+                                    <span>@pesantrenalanwar</span>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Vision & Mission Section -->
-        <section class="mb-12">
-            <h2 class="text-3xl font-semibold mb-6 text-secondary border-b pb-2">Landasan Filosofis & Spiritual</h2>
-            
-            <div class="bg-secondary bg-opacity-5 p-6 rounded-lg mb-6">
-                <h3 class="text-2xl font-semibold mb-3 text-secondary">Visi</h3>
-                <p class="text-gray-700 italic">"Menjadi lembaga yang menumbuhkan potensi setiap santri secara personal dan reflektif, membentuk karakter yang kokoh dan bijaksana, serta menguatkan ilmu sebagai cahaya hidup yang menuntun mereka menapaki jalan dunia dan akhirat secara seimbang dan bermakna."</p>
+        <section class="mb-16">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="h-1 w-12 bg-secondary"></div>
+                <h2 class="text-2xl md:text-3xl font-bold text-dark">Landasan Filosofis & Spiritual</h2>
             </div>
             
-            <div>
-                <h3 class="text-2xl font-semibold mb-3 text-secondary">Misi</h3>
-                <ul class="mission-list pl-4">
-                    <li class="mission-item text-gray-700 mb-3">Mengembangkan sistem pendidikan yang holistik dan terpadu, yang mengoptimalkan potensi spiritual, intelektual, emocional, dan keterampilan santri melalui pendekatan pembelajaran yang reflektif dan bermakna.</li>
-                    <li class="mission-item text-gray-700 mb-3">Menyelenggarakan pembinaan akidah, ibadah, dan akhlak mulia yang kokoh dan konsisten, dengan menjadikan seluruh aspek kehidupan santri sebagai medan pendidikan ruhani.</li>
-                    <li class="mission-item text-gray-700 mb-3">Menanamkan nilai-nilai kemandirian, kepedulian, kedisiplinan, dan kejujuran melalui budaya pembiasaan, keteladanan, serta relasi keseharian yang bermansa tarbawi.</li>
-                    <li class="mission-item text-gray-700 mb-3">Mendorong pola pikir inovatif, adaptif, dan reflektif dalam diri santri agar mampu menghadapi tantangan zaman dengan kecakapan berpikir yang berlandaskan ajaran Islam.</li>
-                    <li class="mission-item text-gray-700 mb-3">Menguatkan tradisi kelimuan dan literasi sebagai bagian dari ibadah dan jalan menuju kemuliaan dunia dan keselamatan akhirat, melalui pembelajaran aktif dan berkesadaran.</li>
-                    <li class="mission-item text-gray-700 mb-3">Menyelenggarakan sistem pendampingan individu yang mendalam dan berkelanjutan untuk menggali, membina, dan mengarahkan potensi unik setiap santri.</li>
-                    <li class="mission-item text-gray-700 mb-3">Memberkali santri dengan keterampilan berdakwah, kemampuan berkomunikasi, berpikir sistemik, dan berkontribusi positif di tengah masyarakat dengan tetap menjaga identitas keislamannya.</li>
-                    <li class="mission-item text-gray-700">Membentuk komunitas belajar yang sehat, terbuka, dan suportif, tempat santri merasa dihargai, tertantang untuk bertumbuh, dan terbiasa menilai keberhasilan dari proses, bukan semata hasil.</li>
-                </ul>
+            <div class="bg-gradient-to-r from-secondary/5 to-white rounded-xl p-8 mb-8 border border-secondary/10">
+                <div class="flex items-start gap-4">
+                    <div class="bg-secondary/10 p-3 rounded-lg text-secondary">
+                        <i class="fas fa-eye text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-dark mb-3">Visi</h3>
+                        <p class="text-gray-700 italic">"Menjadi lembaga yang menumbuhkan potensi setiap santri secara personal dan reflektif, membentuk karakter yang kokoh dan bijaksana, serta menguatkan ilmu sebagai cahaya hidup yang menuntun mereka menapaki jalan dunia dan akhirat secara seimbang dan bermakna."</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl p-8 shadow-card">
+                <div class="flex items-start gap-4 mb-6">
+                    <div class="bg-secondary/10 p-3 rounded-lg text-secondary">
+                        <i class="fas fa-bullseye text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-dark">Misi</h3>
+                    </div>
+                </div>
+                
+                <ol class="space-y-4">
+                    <li class="flex gap-4">
+                        <div class="flex-shrink-0 h-8 w-8 rounded-full bg-secondary/10 flex items-center justify-center text-secondary font-bold mt-1">1</div>
+                        <p class="text-gray-700">Mengembangkan sistem pendidikan yang holistik dan terpadu, yang mengoptimalkan potensi spiritual, intelektual, emocional, dan keterampilan santri melalui pendekatan pembelajaran yang reflektif dan bermakna.</p>
+                    </li>
+                    <li class="flex gap-4">
+                        <div class="flex-shrink-0 h-8 w-8 rounded-full bg-secondary/10 flex items-center justify-center text-secondary font-bold mt-1">2</div>
+                        <p class="text-gray-700">Menyelenggarakan pembinaan akidah, ibadah, dan akhlak mulia yang kokoh dan konsisten, dengan menjadikan seluruh aspek kehidupan santri sebagai medan pendidikan ruhani.</p>
+                    </li>
+                    <li class="flex gap-4">
+                        <div class="flex-shrink-0 h-8 w-8 rounded-full bg-secondary/10 flex items-center justify-center text-secondary font-bold mt-1">3</div>
+                        <p class="text-gray-700">Menanamkan nilai-nilai kemandirian, kepedulian, kedisiplinan, dan kejujuran melalui budaya pembiasaan, keteladanan, serta relasi keseharian yang bermansa tarbawi.</p>
+                    </li>
+                    <li class="flex gap-4">
+                        <div class="flex-shrink-0 h-8 w-8 rounded-full bg-secondary/10 flex items-center justify-center text-secondary font-bold mt-1">4</div>
+                        <p class="text-gray-700">Mendorong pola pikir inovatif, adaptif, dan reflektif dalam diri santri agar mampu menghadapi tantangan zaman dengan kecakapan berpikir yang berlandaskan ajaran Islam.</p>
+                    </li>
+                    <li class="flex gap-4">
+                        <div class="flex-shrink-0 h-8 w-8 rounded-full bg-secondary/10 flex items-center justify-center text-secondary font-bold mt-1">5</div>
+                        <p class="text-gray-700">Menguatkan tradisi kelimuan dan literasi sebagai bagian dari ibadah dan jalan menuju kemuliaan dunia dan keselamatan akhirat, melalui pembelajaran aktif dan berkesadaran.</p>
+                    </li>
+                    <li class="flex gap-4">
+                        <div class="flex-shrink-0 h-8 w-8 rounded-full bg-secondary/10 flex items-center justify-center text-secondary font-bold mt-1">6</div>
+                        <p class="text-gray-700">Menyelenggarakan sistem pendampingan individu yang mendalam dan berkelanjutan untuk menggali, membina, dan mengarahkan potensi unik setiap santri.</p>
+                    </li>
+                    <li class="flex gap-4">
+                        <div class="flex-shrink-0 h-8 w-8 rounded-full bg-secondary/10 flex items-center justify-center text-secondary font-bold mt-1">7</div>
+                        <p class="text-gray-700">Memberkali santri dengan keterampilan berdakwah, kemampuan berkomunikasi, berpikir sistemik, dan berkontribusi positif di tengah masyarakat dengan tetap menjaga identitas keislamannya.</p>
+                    </li>
+                    <li class="flex gap-4">
+                        <div class="flex-shrink-0 h-8 w-8 rounded-full bg-secondary/10 flex items-center justify-center text-secondary font-bold mt-1">8</div>
+                        <p class="text-gray-700">Membentuk komunitas belajar yang sehat, terbuka, dan suportif, tempat santri merasa dihargai, tertantang untuk bertumbuh, dan terbiasa menilai keberhasilan dari proses, bukan semata hasil.</p>
+                    </li>
+                </ol>
             </div>
         </section>
 
         <!-- Education System Section -->
-        <section class="mb-12">
-            <h2 class="text-3xl font-semibold mb-6 text-secondary border-b pb-2">Sistem & Program Pendidikan</h2>
+        <section class="mb-16">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="h-1 w-12 bg-secondary"></div>
+                <h2 class="text-2xl md:text-3xl font-bold text-dark">Sistem & Program Pendidikan</h2>
+            </div>
             
             <div class="grid md:grid-cols-2 gap-6 mb-8">
-                <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
-                    <h3 class="text-xl font-semibold mb-3 text-secondary">Nilai-Nilai Utama</h3>
-                    <ul class="space-y-3">
-                        <li class="flex items-start">
-                            <div class="bg-secondary bg-opacity-10 p-1 rounded-full mr-3 mt-1">
-                                <i class="fas fa-user-shield text-secondary text-sm"></i>
+                <div class="bg-white rounded-xl p-6 shadow-card">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="bg-secondary/10 p-2 rounded-lg text-secondary">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-dark">Nilai-Nilai Utama</h3>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="flex gap-4">
+                            <div class="flex-shrink-0 mt-1">
+                                <div class="bg-secondary/10 p-2 rounded-full text-secondary">
+                                    <i class="fas fa-user-shield text-sm"></i>
+                                </div>
                             </div>
-                            <span class="text-gray-700"><strong>Kemandirian:</strong> Santri diajarkan untuk mandiri, menghadapi cepatnya perkembangan zaman dengan tetap memegang teguh prinsip-prinsip agama</span>
-                        </li>
-                        <li class="flex items-start">
-                            <div class="bg-secondary bg-opacity-10 p-1 rounded-full mr-3 mt-1">
-                                <i class="fas fa-hands-helping text-secondary text-sm"></i>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Kemandirian</h4>
+                                <p class="text-gray-600 text-sm">Santri diajarkan untuk mandiri, menghadapi cepatnya perkembangan zaman dengan tetap memegang teguh prinsip-prinsip agama</p>
                             </div>
-                            <span class="text-gray-700"><strong>Kepedulian:</strong> Santri memiliki rasa kepedulian, kasih sayang yang tinggi terhadap sesama manusia</span>
-                        </li>
-                        <li class="flex items-start">
-                            <div class="bg-secondary bg-opacity-10 p-1 rounded-full mr-3 mt-1">
-                                <i class="fas fa-clock text-secondary text-sm"></i>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="flex-shrink-0 mt-1">
+                                <div class="bg-secondary/10 p-2 rounded-full text-secondary">
+                                    <i class="fas fa-hands-helping text-sm"></i>
+                                </div>
                             </div>
-                            <span class="text-gray-700"><strong>Kedisiplinan:</strong> Santri memiliki sifat yang tegas, profesional, dan menghargai waktu</span>
-                        </li>
-                        <li class="flex items-start">
-                            <div class="bg-secondary bg-opacity-10 p-1 rounded-full mr-3 mt-1">
-                                <i class="fas fa-hand-holding-heart text-secondary text-sm"></i>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Kepedulian</h4>
+                                <p class="text-gray-600 text-sm">Santri memiliki rasa kepedulian, kasih sayang yang tinggi terhadap sesama manusia</p>
                             </div>
-                            <span class="text-gray-700"><strong>Kejujuran:</strong> Santri memiliki sifat jujur, amanah, dan dapat dipercaya</span>
-                        </li>
-                        <li class="flex items-start">
-                            <div class="bg-secondary bg-opacity-10 p-1 rounded-full mr-3 mt-1">
-                                <i class="fas fa-lightbulb text-secondary text-sm"></i>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="flex-shrink-0 mt-1">
+                                <div class="bg-secondary/10 p-2 rounded-full text-secondary">
+                                    <i class="fas fa-clock text-sm"></i>
+                                </div>
                             </div>
-                            <span class="text-gray-700"><strong>Inovatif:</strong> Santri memiliki pandangan terbuka dan mampu memperbaharui metode berdakwah seiring berkembangnya zaman</span>
-                        </li>
-                    </ul>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Kedisiplinan</h4>
+                                <p class="text-gray-600 text-sm">Santri memiliki sifat yang tegas, profesional, dan menghargai waktu</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="flex-shrink-0 mt-1">
+                                <div class="bg-secondary/10 p-2 rounded-full text-secondary">
+                                    <i class="fas fa-hand-holding-heart text-sm"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Kejujuran</h4>
+                                <p class="text-gray-600 text-sm">Santri memiliki sifat jujur, amanah, dan dapat dipercaya</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="flex-shrink-0 mt-1">
+                                <div class="bg-secondary/10 p-2 rounded-full text-secondary">
+                                    <i class="fas fa-lightbulb text-sm"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Inovatif</h4>
+                                <p class="text-gray-600 text-sm">Santri memiliki pandangan terbuka dan mampu memperbaharui metode berdakwah seiring berkembangnya zaman</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
-                    <h3 class="text-xl font-semibold mb-3 text-secondary">Struktur Pendidikan</h3>
-                    <div class="mb-4">
-                        <h4 class="font-medium text-gray-700 mb-1">Model Kurikulum</h4>
-                        <p class="text-gray-600">Salaf Modern</p>
+                <div class="bg-white rounded-xl p-6 shadow-card">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="bg-secondary/10 p-2 rounded-lg text-secondary">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-dark">Struktur Pendidikan</h3>
                     </div>
-                    <div class="mb-4">
-                        <h4 class="font-medium text-gray-700 mb-1">Jenjang Pendidikan Formal</h4>
-                        <p class="text-gray-600">SMP</p>
-                    </div>
-                    <div class="mb-4">
-                        <h4 class="font-medium text-gray-700 mb-1">Pendidikan Non-Formal</h4>
-                        <p class="text-gray-600">Madrasah Diniyah</p>
-                    </div>
-                    <div>
-                        <h4 class="font-medium text-gray-700 mb-1">Program Unggulan</h4>
-                        <ul class="text-gray-600 list-disc pl-5">
-                            <li>POTENSI (Program Orientasi Santri)</li>
-                            <li>Ilmu Bahasa Arab (Nahwu Shorof)</li>
-                        </ul>
+                    
+                    <div class="space-y-5">
+                        <div>
+                            <h4 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">Model Kurikulum</h4>
+                            <p class="text-lg font-medium">Salaf Modern</p>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">Jenjang Pendidikan Formal</h4>
+                            <p class="text-lg font-medium">SMP</p>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">Pendidikan Non-Formal</h4>
+                            <p class="text-lg font-medium">Madrasah Diniyah</p>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">Program Unggulan</h4>
+                            <ul class="mt-2 space-y-2">
+                                <li class="flex items-center gap-2">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-secondary"></div>
+                                    <span>POTENSI (Program Orientasi Santri)</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-secondary"></div>
+                                    <span>Ilmu Bahasa Arab (Nahwu Shorof)</span>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
-                <h3 class="text-xl font-semibold mb-3 text-secondary">Ekstrakurikuler</h3>
+            <div class="bg-white rounded-xl p-6 shadow-card">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="bg-secondary/10 p-2 rounded-lg text-secondary">
+                        <i class="fas fa-futbol"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-dark">Ekstrakurikuler</h3>
+                </div>
+                
                 <div class="grid sm:grid-cols-3 gap-4">
-                    <div class="bg-secondary bg-opacity-5 p-4 rounded-lg text-center">
-                        <i class="fas fa-newspaper text-3xl text-secondary mb-2"></i>
-                        <p class="font-medium">Jurnalistik</p>
+                    <div class="bg-gradient-to-br from-secondary/5 to-white p-5 rounded-lg border border-secondary/10 text-center transition-all hover:shadow-md">
+                        <div class="bg-secondary/10 p-3 rounded-full inline-flex text-secondary mb-3">
+                            <i class="fas fa-newspaper text-xl"></i>
+                        </div>
+                        <p class="font-semibold">Jurnalistik</p>
                     </div>
-                    <div class="bg-secondary bg-opacity-5 p-4 rounded-lg text-center">
-                        <i class="fas fa-laptop-code text-3xl text-secondary mb-2"></i>
-                        <p class="font-medium">Teknologi Informasi dan Komunikasi</p>
+                    <div class="bg-gradient-to-br from-secondary/5 to-white p-5 rounded-lg border border-secondary/10 text-center transition-all hover:shadow-md">
+                        <div class="bg-secondary/10 p-3 rounded-full inline-flex text-secondary mb-3">
+                            <i class="fas fa-laptop-code text-xl"></i>
+                        </div>
+                        <p class="font-semibold">Teknologi Informasi dan Komunikasi</p>
                     </div>
-                    <div class="bg-secondary bg-opacity-5 p-4 rounded-lg text-center">
-                        <i class="fas fa-flask text-3xl text-secondary mb-2"></i>
-                        <p class="font-medium">Sains</p>
+                    <div class="bg-gradient-to-br from-secondary/5 to-white p-5 rounded-lg border border-secondary/10 text-center transition-all hover:shadow-md">
+                        <div class="bg-secondary/10 p-3 rounded-full inline-flex text-secondary mb-3">
+                            <i class="fas fa-flask text-xl"></i>
+                        </div>
+                        <p class="font-semibold">Sains</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Profile Section -->
-        <section class="mb-12">
-            <h2 class="text-3xl font-semibold mb-6 text-secondary border-b pb-2">Profil Lulusan & SDM</h2>
+        <!-- Graduate Profile Section -->
+        <section class="mb-16">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="h-1 w-12 bg-secondary"></div>
+                <h2 class="text-2xl md:text-3xl font-bold text-dark">Profil Lulusan & SDM</h2>
+            </div>
             
             <div class="grid md:grid-cols-2 gap-6">
-                <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
-                    <h3 class="text-xl font-semibold mb-3 text-secondary">Profil Santri (Target)</h3>
+                <div class="bg-white rounded-xl p-6 shadow-card">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="bg-secondary/10 p-2 rounded-lg text-secondary">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-dark">Profil Santri (Target)</h3>
+                    </div>
                     <p class="text-gray-700">Santri yang diharapkan adalah pribadi mandiri dan adaptif terhadap perkembangan zaman, teguh memegang prinsip agama. Mereka dicirikan oleh kepedulian sosial, kedisiplinan tinggi, serta kejujuran dan integritas. Dengan pola pikir inovatif, santri mampu menciptakan solusi relevan dan memperbaharui pendekatan dakwah selaras dengan konteks kekinian.</p>
                 </div>
                 
-                <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
-                    <h3 class="text-xl font-semibold mb-3 text-secondary">Profil Lulusan Ideal</h3>
+                <div class="bg-white rounded-xl p-6 shadow-card">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="bg-secondary/10 p-2 rounded-lg text-secondary">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-dark">Profil Lulusan Ideal</h3>
+                    </div>
                     <p class="text-gray-700">Lulusan ideal kami adalah pribadi yang berintegritas spiritual, tercermin dalam akhlak mulia dan ketekunan beribadah. Secara intelektual, mereka menguasai ilmu pengetahuan dan hafalan Al-Qur'an, serta memiliki keterampilan praktis yang relevan. Di tengah masyarakat, mereka berperan aktif dan positif, menunjukkan kepedulian sosial dan kontribusi nyata.</p>
                 </div>
                 
-                <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm md:col-span-2">
-                    <h3 class="text-xl font-semibold mb-3 text-secondary">Profil Tenaga Pendidikan</h3>
+                <div class="bg-white rounded-xl p-6 shadow-card md:col-span-2">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="bg-secondary/10 p-2 rounded-lg text-secondary">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-dark">Profil Tenaga Pendidikan</h3>
+                    </div>
                     <p class="text-gray-700">Tenaga pendidikan kami adalah individu profesional dan berdedikasi yang mengintegrasikan kelimuan dengan nilai-nilai spiritual. Mereka memiliki kompetensi pedagogik yang mumpuni, mampu menciptakan lingkungan belajar yang inspiratif dan inovatif. Dengan pemahaman mendalam tentang karakter peserta didik, mereka berperan sebagai fasilitator, motivator, sekaligus teladan dalam pengembangan intelektual, spiritual, dan sosial bagi generasi penerus.</p>
                 </div>
             </div>
         </section>
     </main>
-
-    <!-- Footer -->
-    <footer class="bg-gray-50 py-8 border-t">
-        <div class="container mx-auto px-4 max-w-5xl">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-4 md:mb-0">
-                    <h3 class="text-xl font-bold text-secondary mb-2">Pondok Pesantren Al-Anwar Pakijangan</h3>
-                    <p class="text-gray-600">"Kubah Jawa" - Brebes, Jawa Tengah</p>
-                </div>
-                <div class="flex space-x-4">
-                    <a href="#" class="text-gray-500 hover:text-secondary text-xl">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a href="#" class="text-gray-500 hover:text-secondary text-xl">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="#" class="text-gray-500 hover:text-secondary text-xl">
-                        <i class="fab fa-youtube"></i>
-                    </a>
-                    <a href="#" class="text-gray-500 hover:text-secondary text-xl">
-                        <i class="fab fa-whatsapp"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="mt-6 pt-6 border-t border-gray-200 text-center text-gray-500 text-sm">
-                <p>© 2023 Pondok Pesantren Al-Anwar Pakijangan. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
 </body>
 </html>
