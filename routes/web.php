@@ -13,7 +13,6 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\Admin\RutinanController as AdminRutinanController;
 use App\Http\Controllers\Admin\RutinanExceptionController; 
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -60,7 +59,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         
         Route::post('/rutinan/{rutinan}/exceptions', [RutinanExceptionController::class, 'store'])->name('rutinan.exceptions.store');
         Route::delete('/rutinan/exceptions/{exception}', [RutinanExceptionController::class, 'destroy'])->name('rutinan.exceptions.destroy');
-
+        
     
     });
 });

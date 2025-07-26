@@ -1,2 +1,7 @@
 User-agent: *
-Disallow:
+Disallow: /admin/
+Disallow: /keuangan/
+
+Allow: /
+
+Sitemap: https://alanwarpakijangan.com/sitemap.xml
