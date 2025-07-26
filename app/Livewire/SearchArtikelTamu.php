@@ -13,6 +13,7 @@ class SearchArtikelTamu extends Component
 
     #[Url(as: 'q')]
     public $search = '';
+    public $viewMode = 'grid'; // <-- TAMBAHKAN BARIS INI
 
     #[Url(as: 'kategori')]
     public $kategori = ''; 
