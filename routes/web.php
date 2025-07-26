@@ -13,6 +13,9 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\Admin\RutinanController as AdminRutinanController;
 use App\Http\Controllers\Admin\RutinanExceptionController; 
+use Spatie\Sitemap\Sitemap;
+use Spatie\Sitemap\Tags\Url;
+use App\Models\Article;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -64,5 +67,25 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 });
 
+Route::get('/generate-sitemap-now', function () {
+    $sitemap = Sitemap::create();
+
+    // Mengambil URL dari konfigurasi .env (https://alanwarpakijangan.com)
+    $sitemap->add(Url::create('/')->setPriority(1.0));
+    $sitemap->add(Url::create('/artikel')->setPriority(0.8));
+    $sitemap->add(Url::create('/galeri-acara')->setPriority(0.8));
+
+    // Mengambil artikel dari database HOSTING
+    Article::all()->each(function (Article $article) use ($sitemap) {
+        $sitemap->add(
+            Url::create(route('artikel.detail', $article->slug))
+                ->setLastModificationDate($article->updated_at)
+        );
+    });
+
+    $sitemap->writeToFile(public_path('sitemap.xml'));
+
+    return "Sitemap untuk alanwarpakijangan.com berhasil dibuat!";
+});
 // --- Rute Otentikasi Bawaan ---
 require __DIR__.'/auth.php';
