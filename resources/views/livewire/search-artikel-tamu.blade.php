@@ -1,19 +1,33 @@
-<div class="max-w-4xl mx-auto px-4 py-8">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 py-12 lg:py-16">
     {{-- Header Section --}}
-    <div class="text-center mb-12">
-        <h2 class="text-4xl font-bold mb-5">
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#008362] to-green-400">
+    <div class="text-center mb-16">
+        <h1 class="text-4xl md:text-5xl font-bold mb-6 tracking-tighter">
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-400">
                 Artikel & Opini
             </span>
-        </h2>
+        </h1>
         
+        {{-- Search Bar --}}
+        <div class="relative w-full max-w-2xl mx-auto mb-12">
+            <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-gray-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+            </div>
+            <input 
+                wire:model.live.debounce.400ms="search"
+                type="search" 
+                name="search" 
+                placeholder="Cari artikel atau opini..."
+                class="w-full pl-14 pr-6 py-4 border-0 rounded-xl bg-gray-50 focus:ring-2 focus:ring-emerald-400 focus:bg-white shadow-sm text-lg placeholder-gray-400 transition-all duration-200">
+        </div>
+
         {{-- Filter and View Toggle --}}
-        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-8">
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-6 mb-10 px-4">
             {{-- Filter Kategori --}}
-            <div class="flex items-center bg-white p-1 rounded-full shadow-sm border border-gray-200 space-x-1">
-                {{-- TOMBOL HOME --}}
+            <div class="flex items-center space-x-2 bg-gray-50 rounded-xl p-1.5 shadow-inner">
                 <a href="{{ route('welcome') }}" 
-                class="p-2 rounded-full text-gray-500 hover:bg-gray-100 transition-colors" 
+                class="p-2 rounded-lg text-gray-500 hover:bg-white hover:text-gray-700 transition-colors duration-200" 
                 aria-label="Kembali ke Beranda"
                 title="Beranda">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -21,13 +35,15 @@
                     </svg>
                 </a>
 
+                <div class="h-6 border-l border-gray-200"></div>
+
                 {{-- Filter Buttons --}}
                 <button 
                     wire:click="filterKategori('')"
                     @class([
-                        'px-4 py-1.5 rounded-full text-sm transition-colors',
-                        'bg-gray-100 text-gray-900 font-medium' => $kategori === '',
-                        'text-gray-500 hover:bg-gray-50' => $kategori !== '',
+                        'px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200',
+                        'bg-white shadow-md text-emerald-600' => $kategori === '',
+                        'text-gray-500 hover:bg-white hover:text-gray-700' => $kategori !== '',
                     ])>
                     Semua
                 </button>
@@ -35,9 +51,9 @@
                 <button 
                     wire:click="filterKategori('Artikel')"
                     @class([
-                        'px-4 py-1.5 rounded-full text-sm transition-colors',
-                        'bg-gray-100 text-gray-900 font-medium' => $kategori === 'Artikel',
-                        'text-gray-500 hover:bg-gray-50' => $kategori !== 'Artikel',
+                        'px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200',
+                        'bg-white shadow-md text-emerald-600' => $kategori === 'Artikel',
+                        'text-gray-500 hover:bg-white hover:text-gray-700' => $kategori !== 'Artikel',
                     ])>
                     Artikel
                 </button>
@@ -45,22 +61,22 @@
                 <button 
                     wire:click="filterKategori('Opini')"
                     @class([
-                        'px-4 py-1.5 rounded-full text-sm transition-colors',
-                        'bg-gray-100 text-gray-900 font-medium' => $kategori === 'Opini',
-                        'text-gray-500 hover:bg-gray-50' => $kategori !== 'Opini',
+                        'px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200',
+                        'bg-white shadow-md text-emerald-600' => $kategori === 'Opini',
+                        'text-gray-500 hover:bg-white hover:text-gray-700' => $kategori !== 'Opini',
                     ])>
                     Opini
                 </button>
             </div>
             
             {{-- View Toggle --}}
-            <div class="flex items-center bg-white p-1 rounded-full shadow-sm border border-gray-200">
+            <div class="flex items-center space-x-1 bg-gray-50 p-1.5 rounded-xl shadow-inner">
                 <button 
                     wire:click="$set('viewMode', 'grid')"
                     @class([
-                        'p-2 rounded-full transition-colors',
-                        'bg-gray-100 text-gray-900' => $viewMode === 'grid',
-                        'text-gray-500 hover:bg-gray-50' => $viewMode !== 'grid',
+                        'p-2 rounded-lg transition-all duration-200',
+                        'bg-white shadow-md text-emerald-600' => $viewMode === 'grid',
+                        'text-gray-500 hover:bg-white hover:text-gray-700' => $viewMode !== 'grid',
                     ])
                     aria-label="Grid View"
                     title="Tampilan Grid">
@@ -71,9 +87,9 @@
                 <button 
                     wire:click="$set('viewMode', 'list')"
                     @class([
-                        'p-2 rounded-full transition-colors',
-                        'bg-gray-100 text-gray-900' => $viewMode === 'list',
-                        'text-gray-500 hover:bg-gray-50' => $viewMode !== 'list',
+                        'p-2 rounded-lg transition-all duration-200',
+                        'bg-white shadow-md text-emerald-600' => $viewMode === 'list',
+                        'text-gray-500 hover:bg-white hover:text-gray-700' => $viewMode !== 'list',
                     ])
                     aria-label="List View"
                     title="Tampilan List">
@@ -83,38 +99,29 @@
                 </button>
             </div>
         </div>
-
-        {{-- Search Bar --}}
-        <div class="relative w-full max-w-md mx-auto mb-8">
-            <input 
-                wire:model.live.debounce.300ms="search"
-                type="search" 
-                name="search" 
-                placeholder="Cari artikel..."
-                class="w-full pl-5 pr-12 py-3 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm">
-            <div class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
-                </svg>
-            </div>
-        </div>
     </div>
 
     {{-- Articles List --}}
-    <div class="flex-1">
+    <div class="flex-1 px-2">
         @if ($articles->isEmpty())
-            <div class="bg-white rounded-xl shadow-sm p-8 text-center max-w-md mx-auto border">
-                <h3 class="text-lg font-medium text-gray-700 mb-2">Artikel tidak ditemukan</h3>
-                <p class="text-gray-500">Coba kata kunci atau filter lain.</p>
+            <div class="bg-white rounded-2xl shadow-sm p-12 text-center max-w-md mx-auto border border-gray-100">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h3 class="text-xl font-medium text-gray-700 mb-3">Tidak ada hasil ditemukan</h3>
+                <p class="text-gray-500 mb-4">Coba kata kunci atau filter yang berbeda</p>
+                <button wire:click="resetFilters" class="px-5 py-2 bg-emerald-50 text-emerald-600 rounded-lg text-sm font-medium hover:bg-emerald-100 transition-colors">
+                    Reset Filter
+                </button>
             </div>
         @else
             @if($viewMode === 'grid')
-                {{-- Compact Grid View - 3 columns --}}
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {{-- Grid View --}}
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     @foreach ($articles as $article)
-                        <article class="bg-white rounded-lg overflow-hidden border border-gray-100 hover:shadow-md transition-all duration-200 flex flex-col">
-                            <a href="{{ route('artikel.detail', $article->slug) }}" class="block">
-                                <div class="w-full aspect-[4/3] bg-gray-100 overflow-hidden">
+                        <article class="group bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 flex flex-col h-full transform hover:-translate-y-1">
+                            <a href="{{ route('artikel.detail', $article->slug) }}" class="block h-full flex flex-col">
+                                <div class="w-full aspect-[4/3] bg-gray-50 overflow-hidden relative">
                                     @php
                                         $imageUrl = $article->gambar && Illuminate\Support\Str::startsWith($article->gambar, 'http')
                                             ? $article->gambar
@@ -123,19 +130,26 @@
                                     <img 
                                         src="{{ $imageUrl }}" 
                                         alt="{{ $article->judul }}" 
-                                        class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                    <div class="absolute top-4 right-4">
+                                        <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full 
+                                            {{ $article->kategori === 'Opini' ? 'bg-purple-600 text-white' : 'bg-emerald-600 text-white' }}">
+                                            {{ $article->kategori }}
+                                        </span>
+                                    </div>
                                 </div>
-                                <div class="p-4">
-                                    <span class="inline-block px-2 py-1 text-xs font-medium rounded-full mb-2 
-                                        {{ $article->kategori === 'Opini' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800' }}">
-                                        {{ $article->kategori }}
-                                    </span>
-                                    <h3 class="text-lg font-semibold text-gray-900 leading-tight mb-3 line-clamp-2">
+                                <div class="p-6 flex-grow flex flex-col">
+                                    <h3 class="text-xl font-bold text-gray-900 leading-snug mb-3 line-clamp-2">
                                         {{ $article->judul }}
                                     </h3>
-                                    <div class="flex items-center justify-between text-xs text-gray-500 pt-2 border-t border-gray-100">
-                                        <span class="font-medium">{{ $article->penulis }}</span>
-                                        <span>{{ $article->created_at->format('d M Y') }}</span>
+                                    <p class="text-gray-600 mb-4 line-clamp-2 text-sm">
+                                        {{ Str::limit(strip_tags($article->konten), 100) }}
+                                    </p>
+                                    <div class="mt-auto pt-4 border-t border-gray-100">
+                                        <div class="flex items-center justify-between text-sm">
+                                            <span class="font-medium text-gray-700">{{ $article->penulis }}</span>
+                                            <span class="text-gray-500">{{ $article->created_at->format('d M Y') }}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </a>
@@ -143,12 +157,12 @@
                     @endforeach
                 </div>
             @else
-                {{-- Compact List View --}}
-                <div class="space-y-3">
+                {{-- List View --}}
+                <div class="space-y-4">
                     @foreach ($articles as $article)
-                        <article class="bg-white rounded-lg overflow-hidden border border-gray-100 hover:shadow-md transition-all duration-200">
-                            <a href="{{ route('artikel.detail', $article->slug) }}" class="block sm:flex items-center">
-                                <div class="w-full sm:w-1/5 aspect-[4/3] bg-gray-100 overflow-hidden">
+                        <article class="group bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5">
+                            <a href="{{ route('artikel.detail', $article->slug) }}" class="flex flex-col sm:flex-row">
+                                <div class="w-full sm:w-1/4 aspect-[4/3] bg-gray-50 overflow-hidden relative">
                                     @php
                                         $imageUrl = $article->gambar && Illuminate\Support\Str::startsWith($article->gambar, 'http')
                                             ? $article->gambar
@@ -157,22 +171,25 @@
                                     <img 
                                         src="{{ $imageUrl }}" 
                                         alt="{{ $article->judul }}" 
-                                        class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                                 </div>
-                                <div class="p-4 sm:w-4/5">
-                                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                                        <div>
-                                            <span class="inline-block px-2 py-1 text-xs font-medium rounded-full mb-1 sm:mb-0
-                                                {{ $article->kategori === 'Opini' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800' }}">
-                                                {{ $article->kategori }}
-                                            </span>
-                                            <h3 class="text-lg font-semibold text-gray-900 leading-tight">
-                                                {{ $article->judul }}
-                                            </h3>
-                                        </div>
-                                        <div class="text-xs text-gray-500 text-right">
-                                            <div class="font-medium">{{ $article->penulis }}</div>
-                                            <div>{{ $article->created_at->format('d M Y') }}</div>
+                                <div class="p-6 sm:w-3/4 flex flex-col h-full">
+                                    <div class="mb-2">
+                                        <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full 
+                                            {{ $article->kategori === 'Opini' ? 'bg-purple-600 text-white' : 'bg-emerald-600 text-white' }}">
+                                            {{ $article->kategori }}
+                                        </span>
+                                    </div>
+                                    <h3 class="text-xl font-bold text-gray-900 leading-snug mb-2">
+                                        {{ $article->judul }}
+                                    </h3>
+                                    <p class="text-gray-600 mb-4 line-clamp-2 text-sm">
+                                        {{ Str::limit(strip_tags($article->konten), 150) }}
+                                    </p>
+                                    <div class="mt-auto pt-4 border-t border-gray-100">
+                                        <div class="flex items-center justify-between text-sm">
+                                            <span class="font-medium text-gray-700">{{ $article->penulis }}</span>
+                                            <span class="text-gray-500">{{ $article->created_at->format('d M Y') }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -186,8 +203,8 @@
 
     {{-- Pagination --}}
     @if ($articles->hasPages())
-        <div class="mt-8">
-            {{ $articles->links() }}
+        <div class="mt-16 px-4">
+            {{ $articles->onEachSide(1)->links('vendor.pagination.tailwind-custom') }}
         </div>
     @endif
 </div>

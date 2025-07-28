@@ -186,17 +186,12 @@
     
     @include('layouts.nav')
     
-    <!-- Table of Contents (hidden by default) -->
-    <div class="toc" id="tableOfContents">
-        <h3 class="font-bold mb-3">Daftar Isi</h3>
-        <ul id="tocList"></ul>
-    </div>
-    
     <!-- Floating share buttons -->
     <div class="floating-share">
         <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}" target="_blank" class="w-10 h-10 flex items-center justify-center bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300 shadow-md" aria-label="Share ke Facebook"><i class="fab fa-facebook-f"></i></a>
         <a href="https://twitter.com/intent/tweet?url={{ urlencode(url()->current()) }}&text={{ urlencode($article->judul) }}" target="_blank" class="w-10 h-10 flex items-center justify-center bg-blue-400 text-white rounded-full hover:bg-blue-500 transition duration-300 shadow-md" aria-label="Share ke Twitter"><i class="fab fa-twitter"></i></a>
         <a href="https://wa.me/?text={{ urlencode($article->judul . ' ' . url()->current()) }}" target="_blank" class="w-10 h-10 flex items-center justify-center bg-green-500 text-white rounded-full hover:bg-green-600 transition duration-300 shadow-md" aria-label="Share ke WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        <button onclick="copyToClipboard('{{ url()->current() }}')" class="w-10 h-10 flex items-center justify-center bg-gray-600 text-white rounded-full hover:bg-gray-700 transition duration-300 shadow-md" aria-label="Copy link"><i class="fas fa-link"></i></button>
     </div>
     
     <main class="flex-grow container mx-auto px-4 py-16 max-w-3xl">
@@ -238,12 +233,6 @@
                     @endphp
                     <img src="{{ $imageUrl }}" alt="{{ $article->judul }}" class="w-full h-auto max-h-96 object-cover rounded-lg mb-6 shadow-md">
                 @endif
-                
-                <!-- Reading meta -->
-                <div class="reading-meta">
-                    <span id="readingTime"></span>
-                    <span id="readingProgressText">0% selesai</span>
-                </div>
             </header>
             
             <!-- Article content with improved typography -->
@@ -255,9 +244,6 @@
             <footer class="px-6 py-6 border-t border-gray-100">
                 <div class="flex flex-col sm:flex-row justify-between items-center">
                     <div class="mb-4 sm:mb-0">
-                        <button onclick="toggleToc()" class="flex items-center text-gray-600 hover:text-[#008362] transition duration-300">
-                            <i class="fas fa-list mr-2"></i> Daftar Isi
-                        </button>
                     </div>
                     <div class="flex space-x-4">
                         <button onclick="scrollToTop()" class="flex items-center text-gray-600 hover:text-[#008362] transition duration-300">
@@ -271,15 +257,7 @@
     
     @include('layouts.footer')
 
-    <script>
-        // Calculate reading time
-        function calculateReadingTime() {
-            const text = document.querySelector('.article-content').textContent;
-            const wordCount = text.trim().split(/\s+/).length;
-            const readingTime = Math.ceil(wordCount / 200); // 200 words per minute
-            document.getElementById('readingTime').textContent = `⏱️ ${readingTime} menit membaca`;
-        }
-        
+    <script>        
         // Reading progress indicator
         function updateReadingProgress() {
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
