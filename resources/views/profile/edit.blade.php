@@ -1,8 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Profile') }}
-        </h2>
+        <div class="rounded-xl shadow-lg" style="background: linear-gradient(93deg, #64748b, #06b6d4)">
+            <div class="px-8 py-6">
+                <h2 class="text-2xl font-bold text-white">
+                    {{ __('Profile') }}
+                </h2>
+                <p class="text-emerald-100 mt-2">Kelola informasi profil Anda di halaman ini</p>
+            </div>
+        </div>
     </x-slot>
 
     <div class="py-12">
