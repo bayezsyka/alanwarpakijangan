@@ -48,8 +48,8 @@
     </head>
     <body class="font-sans text-gray-900 antialiased">
         <div
-            class="min-h-screen flex items-center justify-center bg-cover bg-center"
-            style="background-image: url('{{ asset('images/landingpage/bgppdb.png') }}');"
+            class="min-h-screen flex items-center justify-center bg-no-repeat bg-cover bg-center relative"
+            style="background-image: linear-gradient(rgba(0, 131, 98, 0.4), rgba(0, 131, 98, 0.4)), url('{{ asset('images/landingpage/bgppdb.png') }}');"
         >
             <div class="w-full max-w-5xl flex flex-col md:flex-row items-center justify-center p-10">
                 <!-- Logo & Text -->
