@@ -50,7 +50,7 @@
 </footer> --}}
 
 {{-- INI FOOTER BARU --}}
-<footer class="bg-gray-50 text-gray-900 pt-12 rounded-t-3xl">
+<footer class="bg-gray-100 dark:bg-gray-900 text-gray-900 pt-12 rounded-t-3xl">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-3 gap-14">
         <!-- Kiri -->
         <div>

@@ -98,7 +98,7 @@
                     </div>
                     <h3 class="text-xl font-semibold text-gray-800">Heatmap Kunjungan</h3>
                 </div>
-                <div class="relative h-[480px]">
+                <div class="relative h-[480px] p-4">
                     <canvas id="heatmapChart"></canvas>
                 </div>
             </div>
@@ -172,10 +172,12 @@
                             return `rgba(5, 150, 105, ${alpha})`;
                         },
                         width: ctx => 20,
-                        height: ctx => 30
+                        height: ctx => 20
                     }]
                 },
                 options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
                     scales: {
                         x: {
                             type: 'linear',
@@ -208,7 +210,10 @@
                             callbacks: {
                                 label: ctx => `Jumlah: ${ctx.raw.v}`
                             }
-                        }
+                        },
+                        legend: { 
+                          position: 'bottom',  
+                         }
                     }
                 }
             });
