@@ -26,14 +26,6 @@ Route::get('/artikel', [ArtikelController::class, 'index'])->name('artikel');
 Route::get('/artikel/{article:slug}', [ArtikelController::class, 'show'])->name('artikel.detail');
 Route::get('/galeri-acara', [GalleryController::class, 'index'])->name('galeri.index');
 Route::get('/profil', function () { return view('profil'); })->name('profil');
-Route::get('/informasipendaftaran', function () { return view('psb'); })->name('informasipendaftaran');
-
-// --- Pendaftaran Santri Baru & OTP ---
-Route::get('/pendaftaran', [PendaftaranController::class, 'create'])->name('pendaftaran.create');
-Route::post('/pendaftaran', [PendaftaranController::class, 'store'])->name('pendaftaran.store');
-Route::post('/otp/send', [OtpController::class, 'send'])->name('otp.send');
-Route::post('/otp/verify', [OtpController::class, 'verify'])->name('otp.verify');
-
 
 // == RUTE BACKEND (MEMERLUKAN LOGIN) ==
 Route::middleware(['auth', 'verified'])->group(function () {
