@@ -6,6 +6,7 @@ use App\Models\Article;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Url;
+use App\Models\Category;
 
 class SearchArtikelTamu extends Component
 {
@@ -29,7 +30,9 @@ class SearchArtikelTamu extends Component
         $query = Article::query();
 
         if ($this->kategori) {
-            $query->where('kategori', $this->kategori);
+            $query->whereHas('category', function($q) {
+                $q->where('slug', $this->kategori);
+            });
         }
         
         if ($this->search) {
@@ -37,9 +40,11 @@ class SearchArtikelTamu extends Component
         }
 
         $articles = $query->latest()->paginate(9);
+        $categories = Category::all();
 
         return view('livewire.search-artikel-tamu', [
-            'articles' => $articles
+            'articles' => $articles,
+            'categories' => $categories,
         ]);
     }
 }

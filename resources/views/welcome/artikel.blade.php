@@ -1,4 +1,4 @@
-<section class="bg-gray-50 py-16 sm:py-24">
+<section class="py-16 sm:py-24">
     <div class="container text-center mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
     <div class="inline-block bg-[#008362] text-white px-4 md:px-6 py-2 md:py-3 rounded-full shadow-lg">
         <span class="text-xl sm:text-2xl md:text-3xl font-medium tracking-wider">ARTIKEL</span>

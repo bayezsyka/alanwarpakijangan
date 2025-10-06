@@ -7,6 +7,7 @@ use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use App\Models\Category;
 use Illuminate\Validation\Rule;
 use App\Traits\LogsActivity;
 
@@ -22,7 +23,8 @@ class ArticleController extends Controller
 
     public function create()
     {
-        return view('admin.artikel.create');
+        $categories = Category::all();
+        return view('admin.artikel.create', compact('categories'));
     }
 
     public function store(Request $request)
@@ -31,7 +33,7 @@ class ArticleController extends Controller
             'judul' => 'required|string|max:255|unique:articles,judul',
             'penulis' => 'required|string|max:255',
             'isi' => 'required|string',
-            'kategori' => 'required|string|in:Artikel,Opini',
+            'category_id' => 'required|exists:categories,id',
             'gambar_upload' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
             'gambar_url' => 'nullable|url',
         ]);
@@ -53,7 +55,8 @@ class ArticleController extends Controller
 
     public function edit(Article $artikel)
     {
-        return view('admin.artikel.edit', compact('artikel'));
+        $categories = Category::all(); // <-- LAKUKAN HAL YANG SAMA UNTUK EDIT
+        return view('admin.artikel.edit', compact('artikel', 'categories'));
     }
 
     public function update(Request $request, Article $artikel)
@@ -62,7 +65,7 @@ class ArticleController extends Controller
             'judul' => ['required', 'string', 'max:255', Rule::unique('articles')->ignore($artikel->id)],
             'penulis' => ['required', 'string', 'max:255'],
             'isi' => ['required', 'string'],
-            'kategori' => ['required', 'string', 'in:Artikel,Opini'],
+            'category_id' => 'required|exists:categories,id', // <-- UBAH VALIDASI
             'gambar_upload' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:10240'],
             'gambar_url' => ['nullable', 'url'],
             'hapus_gambar' => ['boolean'],

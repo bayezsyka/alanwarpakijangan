@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Article;
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Models\Category; // <-- 1. IMPORT MODEL CATEGORY
 use Livewire\Attributes\Url;
 use Livewire\Attributes\Layout; // Import Layout jika menggunakan layout khusus 
 
@@ -32,7 +33,9 @@ class ArticleList extends Component
 
         // Filter berdasarkan kategori jika ada
         if ($this->kategori) {
-            $query->where('kategori', $this->kategori);
+            $query->whereHas('category', function($q) {
+                $q->where('slug', $this->kategori);
+            });
         }
         
         // Filter berdasarkan pencarian jika ada
@@ -41,9 +44,11 @@ class ArticleList extends Component
         }
 
         $articles = $query->latest()->paginate(9);
+        $categories = Category::all(); // <-- 2. AMBIL SEMUA KATEGORI
 
         return view('livewire.article-list', [
-            'articles' => $articles
+            'articles' => $articles,
+            'categories' => $categories,
         ]);
     }
 }

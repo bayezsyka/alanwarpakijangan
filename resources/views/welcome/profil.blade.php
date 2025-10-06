@@ -1,4 +1,4 @@
-<section class="py-12 md:py-20 px-2 md:px-4 bg-gradient-to-b from-white to-green-50">
+<section class="py-12 md:py-20 px-2 md:px-4">
     <div class="max-w-4xl mx-auto">
         <div class="text-center mb-10 md:mb-16">
             <div class="inline-block bg-[#008362] text-white px-4 md:px-6 py-2 md:py-3 rounded-full shadow-lg mb-8">

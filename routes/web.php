@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\Admin\RutinanController as AdminRutinanController;
 use App\Http\Controllers\Admin\RutinanExceptionController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -49,7 +50,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('artikel', AdminArticleController::class);
         Route::resource('users', AdminUserController::class);
         Route::resource('events', AdminEventController::class);
-        Route::resource('rutinan', AdminRutinanController::class); // <-- TAMBAHKAN INI
+        Route::resource('rutinan', AdminRutinanController::class);
+        Route::resource('categories', AdminCategoryController::class); // <-- TAMBAHKAN INI
+
 
         Route::get('/logs', [\App\Http\Controllers\Admin\ActivityLogController::class, 'index'])->name('logs.index');
         Route::get('/pendaftaran', [AdminPendaftaranController::class, 'index'])->name('pendaftaran.index');

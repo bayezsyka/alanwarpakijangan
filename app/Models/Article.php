@@ -35,7 +35,7 @@ class Article extends Model
         'judul',
         'slug',
         'penulis',
-        'kategroi',
+        'category_id',
         'isi',
         'gambar',
         'tanggal',
@@ -95,5 +95,13 @@ class Article extends Model
      public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Mendefinisikan relasi bahwa satu Artikel milik satu Kategori.
+     */
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
     }
 }

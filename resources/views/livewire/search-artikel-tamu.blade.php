@@ -48,25 +48,17 @@
                     Semua
                 </button>
 
-                <button 
-                    wire:click="filterKategori('Artikel')"
-                    @class([
-                        'px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200',
-                        'bg-white shadow-md text-emerald-600' => $kategori === 'Artikel',
-                        'text-gray-500 hover:bg-white hover:text-gray-700' => $kategori !== 'Artikel',
-                    ])>
-                    Artikel
-                </button>
-
-                <button 
-                    wire:click="filterKategori('Opini')"
-                    @class([
-                        'px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200',
-                        'bg-white shadow-md text-emerald-600' => $kategori === 'Opini',
-                        'text-gray-500 hover:bg-white hover:text-gray-700' => $kategori !== 'Opini',
-                    ])>
-                    Opini
-                </button>
+                @foreach($categories as $category)
+                    <button 
+                        wire:click="filterKategori('{{ $category->slug }}')"
+                        @class([
+                            'px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200',
+                            'bg-white shadow-md text-emerald-600' => $kategori === $category->slug,
+                            'text-gray-500 hover:bg-white hover:text-gray-700' => $kategori !== $category->slug,
+                        ])>
+                        {{ $category->name }}
+                    </button>
+                @endforeach
             </div>
             
             {{-- View Toggle --}}
@@ -131,19 +123,20 @@
                                         src="{{ $imageUrl }}" 
                                         alt="{{ $article->judul }}" 
                                         class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                                    <div class="absolute top-4 right-4">
-                                        <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full 
-                                            {{ $article->kategori === 'Opini' ? 'bg-purple-600 text-white' : 'bg-emerald-600 text-white' }}">
-                                            {{ $article->kategori }}
-                                        </span>
-                                    </div>
+                                    @if($article->category)
+                                        <div class="absolute top-4 right-4">
+                                            <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full bg-emerald-600 text-white">
+                                                {{ $article->category->name }}
+                                            </span>
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="p-6 flex-grow flex flex-col">
                                     <h3 class="text-xl font-bold text-gray-900 leading-snug mb-3 line-clamp-2">
                                         {{ $article->judul }}
                                     </h3>
                                     <p class="text-gray-600 mb-4 line-clamp-2 text-sm">
-                                        {{ Str::limit(strip_tags($article->konten), 100) }}
+                                        {{ Str::limit(strip_tags($article->isi), 100) }}
                                     </p>
                                     <div class="mt-auto pt-4 border-t border-gray-100">
                                         <div class="flex items-center justify-between text-sm">
@@ -174,17 +167,18 @@
                                         class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                                 </div>
                                 <div class="p-6 sm:w-3/4 flex flex-col h-full">
-                                    <div class="mb-2">
-                                        <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full 
-                                            {{ $article->kategori === 'Opini' ? 'bg-purple-600 text-white' : 'bg-emerald-600 text-white' }}">
-                                            {{ $article->kategori }}
-                                        </span>
-                                    </div>
+                                    @if($article->category)
+                                        <div class="mb-2">
+                                            <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full bg-emerald-600 text-white">
+                                                {{ $article->category->name }}
+                                            </span>
+                                        </div>
+                                    @endif
                                     <h3 class="text-xl font-bold text-gray-900 leading-snug mb-2">
                                         {{ $article->judul }}
                                     </h3>
                                     <p class="text-gray-600 mb-4 line-clamp-2 text-sm">
-                                        {{ Str::limit(strip_tags($article->konten), 150) }}
+                                        {{ Str::limit(strip_tags($article->isi), 150) }}
                                     </p>
                                     <div class="mt-auto pt-4 border-t border-gray-100">
                                         <div class="flex items-center justify-between text-sm">

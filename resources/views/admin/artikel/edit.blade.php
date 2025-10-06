@@ -57,10 +57,16 @@
                                     <input type="text" name="judul" id="judul" value="{{ old('judul', $artikel->judul) }}" required class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm">
                                 </div>
                                 <div>
-                                    <label for="kategori" class="block text-sm font-medium text-gray-700 mb-2">Kategori</label>
-                                    <select name="kategori" id="kategori" class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm">
-                                        <option value="Artikel" @selected(old('kategori', $artikel->kategori) == 'Artikel')>Artikel</option>
-                                        <option value="Opini" @selected(old('kategori', $artikel->kategori) == 'Opini')>Opini</option>
+                                    <label for="category_id" class="block text-sm font-medium text-gray-700 mb-2">Kategori</label>
+                                    <select name="category_id" id="category_id" class="w-full ...">
+                                        @foreach($categories as $category)
+                                            <option value="{{ $category->id }}" 
+                                                {{-- Untuk form edit --}}
+                                                @if(isset($article) && $article->category_id == $category->id) selected @endif
+                                            >
+                                                {{ $category->name }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div>

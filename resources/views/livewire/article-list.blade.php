@@ -2,24 +2,29 @@
     {{-- Sub-Navigasi untuk Filter Kategori --}}
     <div class="mb-12 flex justify-center">
         <div class="inline-flex items-center bg-gray-100 p-2 rounded-full shadow-sm space-x-2">
+            {{-- Tombol "Semua" --}}
             <button 
-                wire:click="filterKategori('Artikel')"
+                wire:click="filterKategori('')"
                 @class([
                     'px-6 py-2 rounded-full text-sm font-semibold transition-colors',
-                    'bg-white text-green-700 shadow' => $kategori === 'Artikel',
-                    'text-gray-600 hover:bg-gray-200' => $kategori !== 'Artikel',
+                    'bg-white text-green-700 shadow' => $kategori === '',
+                    'text-gray-600 hover:bg-gray-200' => $kategori !== '',
                 ])>
-                Artikel
+                Semua
             </button>
-            <button 
-                wire:click="filterKategori('Opini')"
-                @class([
-                    'px-6 py-2 rounded-full text-sm font-semibold transition-colors',
-                    'bg-white text-green-700 shadow' => $kategori === 'Opini',
-                    'text-gray-600 hover:bg-gray-200' => $kategori !== 'Opini',
-                ])>
-                Opini
-            </button>
+
+            {{-- Loop untuk menampilkan semua kategori dari database --}}
+            @foreach($categories as $category)
+                <button 
+                    wire:click="filterKategori('{{ $category->slug }}')"
+                    @class([
+                        'px-6 py-2 rounded-full text-sm font-semibold transition-colors',
+                        'bg-white text-green-700 shadow' => $kategori === $category->slug,
+                        'text-gray-600 hover:bg-gray-200' => $kategori !== $category->slug,
+                    ])>
+                    {{ $category->name }}
+                </button>
+            @endforeach
         </div>
     </div>
     
@@ -35,11 +40,11 @@
                         <img src="{{ $imageUrl }}" alt="{{ $article->judul }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                     </div>
                     <div class="p-6">
-                        <span @class([
-                            'inline-block px-2 py-1 text-xs font-semibold rounded-full mb-3',
-                            'bg-sky-100 text-sky-800' => $article->kategori == 'Artikel',
-                            'bg-amber-100 text-amber-800' => $article->kategori == 'Opini',
-                        ])>{{ $article->kategori }}</span>
+                        @if($article->category)
+                            <span class="inline-block px-2 py-1 text-xs font-semibold rounded-full mb-3 bg-sky-100 text-sky-800">
+                                {{ $article->category->name }}
+                            </span>
+                        @endif
                         <h3 class="text-xl font-semibold text-gray-900 leading-snug group-hover:text-green-600 transition-colors duration-200">
                             {{ \Illuminate\Support\Str::limit($article->judul, 60) }}
                         </h3>
