@@ -65,7 +65,7 @@
             </p>
 
             <!-- Admin -->
-            <div class="mt-6">
+            {{-- <div class="mt-6">
                 <h4 class="text-md font-bold mb-3 border-b border-gray-300 pb-1 w-fit">Admin</h4>
                 <ul class="text-sm space-y-2">
                     @guest
@@ -78,7 +78,7 @@
                         </li>
                     @endguest
                 </ul>
-            </div>
+            </div> --}}
         </div>
 
         <!-- Tengah -->
