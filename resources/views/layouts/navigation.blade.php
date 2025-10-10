@@ -167,10 +167,7 @@
                 </div>
             </div>
             
-            <x-responsive-nav-link :href="route('admin.pendaftaran.index')" :active="request()->routeIs('admin.pendaftaran.*')" class="flex items-center px-3 py-2 rounded-md">
-                <i class="fas fa-user-plus mr-3 text-gray-400"></i>
-                {{ __('Registrations') }}
-            </x-responsive-nav-link>
+            
             
             <x-responsive-nav-link :href="route('admin.events.index')" :active="request()->routeIs('admin.events.*')" class="flex items-center px-3 py-2 rounded-md">
                 <i class="fas fa-calendar-alt mr-3 text-gray-400"></i>
