@@ -35,7 +35,7 @@
             {{-- Grafik Statistik Pendaftar & Artikel --}}
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {{-- Statistik Pendaftar --}}
-                <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 space-y-6">
+                {{-- <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 space-y-6">
                     <div class="flex items-center space-x-3">
                         <div class="bg-[#059568] p-2 rounded-lg">
                             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -61,14 +61,14 @@
                             <div class="text-sm text-yellow-600">Pending</div>
                         </div>
                         <div class="bg-red-50 p-4 rounded-lg">
-                            <div class="text-2xl font-bold text-red-700">{{ $ditolakCount }}</div>
+                            <div class="text-2xl font-bold text-red-700">{{s $ditolakCount }}</div>
                             <div class="text-sm text-red-600">Ditolak</div>
                         </div>
                     </div>
                     <div class="relative h-64">
                         <canvas id="pendaftarChart"></canvas>
                     </div>
-                </div>
+                </div> --}}
 
                 {{-- Artikel Terpopuler --}}
                 <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 space-y-6">
@@ -108,8 +108,6 @@
     @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const pendaftarLabels = @json($pendaftarLabels);
-            const pendaftarCounts = @json($pendaftarCounts);
             const topArticleLabels = @json($topArticleLabels);
             const topArticleViews = @json($topArticleViews);
             const heatmapRaw = @json($heatmapData);
@@ -121,23 +119,23 @@
                 v: parseInt(row.total)
             }));
 
-            new Chart(document.getElementById('pendaftarChart'), {
-                type: 'doughnut',
-                data: {
-                    labels: pendaftarLabels,
-                    datasets: [{
-                        label: 'Jumlah Pendaftar',
-                        data: pendaftarCounts,
-                        backgroundColor: [
-                            'rgb(253, 224, 71)',
-                            'rgb(34, 197, 94)',
-                            'rgb(239, 68, 68)'
-                        ],
-                        hoverOffset: 4
-                    }]
-                },
-                options: { responsive: true, maintainAspectRatio: false }
-            });
+            // new Chart(document.getElementById('pendaftarChart'), {
+            //     type: 'doughnut',
+            //     data: {
+            //         labels: pendaftarLabels,
+            //         datasets: [{
+            //             label: 'Jumlah Pendaftar',
+            //             data: pendaftarCounts,
+            //             backgroundColor: [
+            //                 'rgb(253, 224, 71)',
+            //                 'rgb(34, 197, 94)',
+            //                 'rgb(239, 68, 68)'
+            //             ],
+            //             hoverOffset: 4
+            //         }]
+            //     },
+            //     options: { responsive: true, maintainAspectRatio: false }
+            // });
 
             new Chart(document.getElementById('artikelChart'), {
                 type: 'bar',
