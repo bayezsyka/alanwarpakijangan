@@ -1,4 +1,4 @@
-<header id="navbar" class="fixed top-0 right-0 w-full p-3 text-sm transform -translate-y-full transition-transform duration-300 ease-in-out z-50 bg-white dark:bg-gray-900 shadow-md">
+<header id="navbar" class="fixed top-0 right-0 w-full p-3 text-sm transform -translate-y-full transition-transform duration-300 ease-in-out z-50 bg-white shadow-md">
     <nav class="grid grid-cols-3 items-center w-full">
         <!-- Kolom Kiri -->
         <div>
@@ -17,14 +17,14 @@
 
         <!-- Kolom Kanan: Menu -->
         <div class="flex justify-end items-center space-x-2">
-            <a href="{{ url('artikel') }}" class="flex items-center gap-2 px-4 py-2 text-gray-900 dark:text-white rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">
+            <a href="{{ url('artikel') }}" class="flex items-center gap-2 px-4 py-2 text-gray-900 rounded-md hover:bg-gray-100 focus:outline-none">
                 Artikel
             </a>
 
             <!-- Dropdown Tentang Kami -->
             <div class="relative">
                 <button id="dropdownNavbarLink" type="button"
-                    class="flex items-center gap-2 px-4 py-2 text-gray-900 dark:text-white rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none"
+                    class="flex items-center gap-2 px-4 py-2 text-gray-900 rounded-md hover:bg-gray-100 focus:outline-none"
                     onclick="document.getElementById('dropdownNavbar').classList.toggle('hidden')">
                     Tentang Kami
                     <svg class="w-3 h-3" aria-hidden="true" fill="none" viewBox="0 0 10 6">
@@ -34,16 +34,16 @@
                 </button>
 
                 <div id="dropdownNavbar"
-                    class="absolute right-0 mt-2 z-20 hidden bg-white dark:bg-gray-700 rounded-lg shadow-lg w-44 divide-y divide-gray-100 dark:divide-gray-600">
-                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
+                    class="absolute right-0 mt-2 z-20 hidden bg-white rounded-lg shadow-lg w-44 divide-y divide-gray-100">
+                    <ul class="py-2 text-sm text-gray-700">
                         <li>
                             <a href="/profil"
-                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Profil
+                                class="block px-4 py-2 hover:bg-gray-100">Profil
                                 Pesantren</a>
                         </li>
                         <li>
                             <a href="/galeri-acara"
-                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Galeri</a>
+                                class="block px-4 py-2 hover:bg-gray-100">Galeri</a>
                         </li>
                     </ul>
                 </div>

@@ -11,7 +11,36 @@
     <!-- Fonts dan Tailwind (boleh tetap CDN jika tidak pakai PostCSS) -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com"></script>
+<!-- FORCE LIGHT MODE (jalankan sebelum CSS/Tailwind untuk cegah FOUC) -->
+<script>
+  (function () {
+    // Buang jejak dark mode sebelumnya & paksa terang
+    document.documentElement.classList.remove('dark');
+    try { localStorage.setItem('theme', 'light'); } catch (e) {}
+  })();
+</script>
+
+<!-- Konfigurasi Tailwind CDN: dark mode berbasis class (tidak otomatis ikut OS) -->
+<script>
+  window.tailwind = {
+    config: {
+      darkMode: 'class',
+      theme: { extend: {} }
+    }
+  };
+</script>
+
+<!-- Tailwind (CDN) - PASTIKAN HANYA ADA SATU INI DI SELURUH APLIKASI -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+
+<!-- Paksa komponen bawaan browser pakai tema terang -->
+<style>
+  :root { color-scheme: light; } /* form, scrollbar, input caret, dll tetap terang */
+</style>
+
+<!-- (Opsional) Warna address bar/toolbar mobile -->
+<meta name="theme-color" content="#FDFDFC">
+
 
     <!-- SweetAlert dan Quill tetap CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
