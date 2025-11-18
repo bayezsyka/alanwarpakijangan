@@ -216,11 +216,6 @@
                         </div>
                         <div class="flex flex-col sm:items-end">
                             <span>Diterbitkan: {{ $article->created_at->translatedFormat('d F Y, H:i') }} WIB</span>
-                            @if($article->updated_at->gt($article->created_at))
-                                <span class="text-gray-500 text-xs mt-1">
-                                    Diperbarui: {{ $article->updated_at->translatedFormat('d F Y, H:i') }} WIB
-                                </span>
-                            @endif
                         </div>
                     </div>
                 </div>
