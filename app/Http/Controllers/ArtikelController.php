@@ -67,9 +67,15 @@ class ArtikelController extends Controller
     {
         $viewedKey = 'viewed_article_' . $article->id;
         if (!session()->has($viewedKey)) {
-            $article->increment('views');
+            Article::withoutTimestamps(function () use ($article) {
+                $article->increment('views');
+            });
+
+            // Pastikan tampilan mendapatkan nilai view terbaru tanpa mengubah informasi pembaruan
+            $article->refresh();
             session()->put($viewedKey, true);
         }
+
         return view('artikel_detail', compact('article'));
     }
 }
