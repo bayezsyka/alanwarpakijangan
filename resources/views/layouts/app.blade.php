@@ -29,19 +29,7 @@
     }
   };
 </script>
-
-<!-- Tailwind (CDN) - PASTIKAN HANYA ADA SATU INI DI SELURUH APLIKASI -->
-<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
-
-<!-- Paksa komponen bawaan browser pakai tema terang -->
-<style>
-  :root { color-scheme: light; } /* form, scrollbar, input caret, dll tetap terang */
-</style>
-
-<!-- (Opsional) Warna address bar/toolbar mobile -->
-<meta name="theme-color" content="#FDFDFC">
-
-
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.0/dist/tailwind.min.css" rel="stylesheet">
     <!-- SweetAlert dan Quill tetap CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">

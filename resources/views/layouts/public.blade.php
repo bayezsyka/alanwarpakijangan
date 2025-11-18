@@ -23,28 +23,8 @@
     try { localStorage.setItem('theme', 'light'); } catch (e) {}
   })();
 </script>
-
-<!-- Konfigurasi Tailwind CDN: dark mode berbasis class (tidak otomatis ikut OS) -->
-<script>
-  window.tailwind = {
-    config: {
-      darkMode: 'class',
-      theme: { extend: {} }
-    }
-  };
-</script>
-
-<!-- Tailwind (CDN) - PASTIKAN HANYA ADA SATU INI DI SELURUH APLIKASI -->
-<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
-
-<!-- Paksa komponen bawaan browser pakai tema terang -->
-<style>
-  :root { color-scheme: light; } /* form, scrollbar, input caret, dll tetap terang */
-</style>
-
-<!-- (Opsional) Warna address bar/toolbar mobile -->
-<meta name="theme-color" content="#FDFDFC">
-
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.0/dist/tailwind.min.css" rel="stylesheet">
 </head>
 
 <body class="bg-[#FDFDFC] text-[#1b1b18] min-h-screen flex flex-col">
