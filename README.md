@@ -1,61 +1,71 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<div align="center">
+  <img src="favicon.png" alt="Logo" width="120" />
+  <h1>Pondok Pesantren Al Anwar Pakijangan</h1>
+  <p>Platform informasi resmi untuk publik dan panel administrasi internal.</p>
+  <p>
+    <a href="#fitur-utama">Fitur</a> ·
+    <a href="#alur-pengguna">Alur Pengguna</a> ·
+    <a href="#tampilan-admin">Panel Admin</a> ·
+    <a href="#kontak">Kontak</a>
+  </p>
+</div>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+---
 
-## About Laravel
+## Sekilas Platform
+> Website ini menyediakan etalase digital bagi kegiatan Pondok Pesantren Al Anwar Pakijangan. Pengunjung dapat membaca artikel, mengecek jadwal rutinan, dan menjelajahi galeri acara; sementara pengelola mengelola konten melalui panel admin modern.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Highlights Cepat
+- 📚 **Artikel Terbaru** – Halaman utama menonjolkan berita dan artikel populer beserta statistik kunjungan.
+- 🗓️ **Jadwal Rutinan Dinamis** – Kalender pekanan lengkap dengan info libur atau pengecualian khusus.
+- 🖼️ **Galeri Kegiatan** – Dokumentasi foto acara yang rapi, terhubung dengan detail agenda.
+- 🔐 **Area Admin Terproteksi** – Dashboard statistik, log aktivitas, dan seluruh modul manajemen tersedia setelah login.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Fitur Utama
 
-## Learning Laravel
+| Area | Pengalaman Pengguna |
+| --- | --- |
+| **Beranda** | Hero informatif dengan highlight agenda, kartu artikel terbaru, serta ringkasan rutinan mingguan yang otomatis menandai jadwal libur. |
+| **Daftar Artikel** | Daftar paginasi + pencarian instan, filter kategori, dan tampilan grid/list yang bisa diubah oleh pengunjung. |
+| **Detail Artikel** | Slug ramah SEO, penghitung kunjungan, dan tombol berbagi cepat. |
+| **Galeri Event** | Carousel foto tiap acara, informasi tanggal/tema, dan navigasi antar event. |
+| **Landing Page Event** | Penjelasan singkat kegiatan, dokumentasi foto, dan tombol CTA menuju kontak pesantren. |
+| **Form Kontak/Informasi Pesantren** | Informasi alamat, media sosial, dan kanal komunikasi resmi. |
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Alur Pengguna
+1. **Tamu mengakses beranda** → melihat ringkasan artikel, jadwal rutinan (dengan status libur), serta ajakan bergabung pada kegiatan.
+2. **Pengunjung tertarik** → membuka halaman artikel/galeri untuk mendapatkan detail lengkap dan foto kegiatan.
+3. **Calon santri atau donatur** → menggunakan informasi kontak untuk tindak lanjut atau mendaftar kegiatan.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Diagram alur sederhana:
+```
+Beranda ➜ Artikel / Jadwal ➜ Galeri ➜ Kontak
+            ▲                │
+            └──── Pencarian & Filter ────┘
+```
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Tampilan Admin
+> Seluruh fitur admin berada di balik autentikasi dan verifikasi email sehingga aman dari akses publik.
 
-### Premium Partners
+### Modul yang Dapat Diakses Admin
+- **Dashboard** – Grafik kunjungan harian, heatmap jam ramai, dan daftar artikel terpopuler.
+- **Manajemen Artikel & Kategori** – CRUD penuh, unggah gambar hero, serta pencarian real-time.
+- **Event & Galeri** – Input detail acara, unggah banyak foto, dan pengelolaan dokumentasi.
+- **Jadwal Rutinan & Libur** – Penjadwalan pekanan dengan kemampuan menandai tanggal libur khusus.
+- **User & Hak Akses** – Pengelolaan akun admin termasuk reset password dan pengaturan peran.
+- **Activity Log** – Rekam jejak aksi penting sebagai audit trail.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+---
 
-## Contributing
+## Kontak
+- 🌐 Website: [alanwarpakijangan.test](https://alanwarpakijangan.test) *(ganti dengan domain produksi saat rilis)*
+- 📧 Email: admin@alanwarpakijangan.test
+- 📍 Lokasi: Pakijangan, Kabupaten Tegal, Jawa Tengah
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+> README ini hanya merangkum luaran/tampilan situs untuk kebutuhan presentasi dan dokumentasi publik.
