@@ -38,6 +38,8 @@ class ArticleController extends Controller
             'gambar_url' => 'nullable|url',
         ]);
 
+        $validated['slug'] = Str::slug($validated['judul']);
+
         if ($request->hasFile('gambar_upload')) {
             $validated['gambar'] = $request->file('gambar_upload')->store('artikel-images', 'public');
         } elseif ($request->filled('gambar_url')) {
@@ -69,6 +71,7 @@ class ArticleController extends Controller
             'hapus_gambar' => ['boolean'],
         ]);
 
+        $validated['slug'] = Str::slug($validated['judul']);
         $dataToUpdate = $validated;
 
         if ($request->hasFile('gambar_upload')) {
