@@ -38,8 +38,6 @@ class ArticleController extends Controller
             'gambar_url' => 'nullable|url',
         ]);
 
-        $validated['slug'] = Str::slug($validated['judul']);
-
         if ($request->hasFile('gambar_upload')) {
             $validated['gambar'] = $request->file('gambar_upload')->store('artikel-images', 'public');
         } elseif ($request->filled('gambar_url')) {
@@ -61,8 +59,14 @@ class ArticleController extends Controller
 
     public function update(Request $request, Article $artikel)
     {
+        $judulRules = ['required', 'string', 'max:255'];
+
+        if ($request->input('judul') !== $artikel->judul) {
+            $judulRules[] = Rule::unique('articles', 'judul')->ignore($artikel->id);
+        }
+
         $validated = $request->validate([
-            'judul' => ['required', 'string', 'max:255', Rule::unique('articles')->ignore($artikel->id)],
+            'judul' => $judulRules,
             'penulis' => ['required', 'string', 'max:255'],
             'isi' => ['required', 'string'],
             'category_id' => 'required|exists:categories,id', // <-- UBAH VALIDASI
@@ -71,7 +75,6 @@ class ArticleController extends Controller
             'hapus_gambar' => ['boolean'],
         ]);
 
-        $validated['slug'] = Str::slug($validated['judul']);
         $dataToUpdate = $validated;
 
         if ($request->hasFile('gambar_upload')) {
