@@ -25,6 +25,13 @@ class SearchArtikelTamu extends Component
         $this->resetPage();
     }
 
+    public function resetFilters()
+    {
+        $this->reset(['search', 'kategori']);
+        $this->viewMode = 'grid';
+        $this->resetPage();
+    }
+
     public function render()
     {
         $query = Article::query();
