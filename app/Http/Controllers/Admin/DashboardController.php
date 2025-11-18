@@ -28,9 +28,27 @@ class DashboardController extends Controller
 
         $visitorCount = Visitor::whereDate('visited_at', today())->count();
 
+        $weeklyVisitors = Visitor::whereBetween('visited_at', [
+            now()->copy()->startOfWeek(),
+            now()->copy()->endOfWeek(),
+        ])->count();
+
+        $monthlyVisitors = Visitor::whereBetween('visited_at', [
+            now()->copy()->startOfMonth(),
+            now()->copy()->endOfMonth(),
+        ])->count();
+
+        $totalVisitors = Visitor::count();
+
         $topArticles = Article::orderBy('views', 'desc')->take(4)->get();
         $topArticleLabels = $topArticles->pluck('judul');
         $topArticleViews = $topArticles->pluck('views');
+        $articleCount = Article::count();
+        $mostViewedArticle = $topArticles->first();
+
+        $recentVisitors = Visitor::orderByDesc('visited_at')
+            ->limit(6)
+            ->get();
 
         // $pendaftarStats = Pendaftaran::query()
         //     ->select('status', DB::raw('count(*) as total'))
@@ -61,6 +79,7 @@ class DashboardController extends Controller
         return view('dashboard', compact(
             'topArticleLabels',
             'topArticleViews',
+            'topArticles',
             // 'pendaftarLabels',
             // 'pendaftarCounts',
             // 'totalPendaftar',
@@ -68,6 +87,12 @@ class DashboardController extends Controller
             // 'ditolakCount',
             // 'pendingCount',
             'visitorCount',
+            'weeklyVisitors',
+            'monthlyVisitors',
+            'totalVisitors',
+            'articleCount',
+            'mostViewedArticle',
+            'recentVisitors',
             'heatmapData'
         ));
     }
