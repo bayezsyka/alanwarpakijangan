@@ -1,6 +1,7 @@
 // resources/js/app.js
 
 import './bootstrap';
+import './performance';
 
 // Chart.js dan plugin matrix
 import Chart from 'chart.js/auto';
