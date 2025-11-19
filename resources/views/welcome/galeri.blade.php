@@ -2,7 +2,7 @@
 
 <section class=" py-16 sm:py-24">
 
-    <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="container mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         {{-- Header Section --}}
         <div class="text-center mb-16">
             <h1 class="text-xl sm:text-2xl md:text-3xl font-medium tracking-wider">
