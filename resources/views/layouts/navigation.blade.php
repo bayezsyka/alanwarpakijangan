@@ -33,49 +33,63 @@
                         <span class="text-xs text-emerald-100/80">Ikhtisar</span>
                     </a>
                 </div>
-
-                <div class="mt-6 px-5 text-xs uppercase tracking-[0.2em] text-emerald-100/70">Konten</div>
-                <div class="mt-3 space-y-2 px-3">
-                    <a href="{{ route('admin.artikel.index') }}" class="{{ $linkBase }} {{ request()->routeIs('admin.artikel.*') ? $linkActive : $linkIdle }}">
-                        <span class="inline-flex items-center justify-center w-9 h-9 mr-3 rounded-lg bg-white/10 text-white">
-                            <i class="fas fa-newspaper"></i>
-                        </span>
-                        <span>Artikel</span>
-                    </a>
-                    <a href="{{ route('admin.categories.index') }}" class="{{ $linkBase }} {{ request()->routeIs('admin.categories.*') ? $linkActive : $linkIdle }}">
-                        <span class="inline-flex items-center justify-center w-9 h-9 mr-3 rounded-lg bg-white/10 text-white">
-                            <i class="fas fa-tags"></i>
-                        </span>
-                        <span>Kategori</span>
-                    </a>
-                    <a href="{{ route('admin.users.index') }}" class="{{ $linkBase }} {{ request()->routeIs('admin.users.*') ? $linkActive : $linkIdle }}">
-                        <span class="inline-flex items-center justify-center w-9 h-9 mr-3 rounded-lg bg-white/10 text-white">
-                            <i class="fas fa-users"></i>
-                        </span>
-                        <span>Pengguna</span>
-                    </a>
-                </div>
-
-                <div class="mt-6 px-5 text-xs uppercase tracking-[0.2em] text-emerald-100/70">Program & Jadwal</div>
-                <div class="mt-3 space-y-2 px-3 pb-4">
-                    <a href="{{ route('admin.events.index') }}" class="{{ $linkBase }} {{ request()->routeIs('admin.events.*') ? $linkActive : $linkIdle }}">
-                        <span class="inline-flex items-center justify-center w-9 h-9 mr-3 rounded-lg bg-white/10 text-white">
-                            <i class="fas fa-images"></i>
-                        </span>
-                        <span>Galeri & Acara</span>
-                    </a>
-                    <a href="{{ route('admin.rutinan.index') }}" class="{{ $linkBase }} {{ request()->routeIs('admin.rutinan.*') ? $linkActive : $linkIdle }}">
-                        <span class="inline-flex items-center justify-center w-9 h-9 mr-3 rounded-lg bg-white/10 text-white">
-                            <i class="fas fa-clock"></i>
-                        </span>
-                        <span>Jadwal Rutinan</span>
-                    </a>
-                    <a href="{{ route('admin.logs.index') }}" class="{{ $linkBase }} {{ request()->routeIs('admin.logs.index') ? $linkActive : $linkIdle }}">
-                        <span class="inline-flex items-center justify-center w-9 h-9 mr-3 rounded-lg bg-white/10 text-white">
-                            <i class="fas fa-history"></i>
-                        </span>
-                        <span>Log Aktivitas</span>
-                    </a>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden sm:ml-10 sm:flex space-x-1">
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="px-3 py-2 rounded-lg hover:bg-gray-50 transition-all">
+                        <i class="fas fa-tachometer-alt mr-2 text-gray-400"></i>
+                        {{ __('Dashboard') }}
+                    </x-nav-link>
+                    
+                    <!-- Dropdown for Management -->
+                    <div class="relative" x-data="{ open: false }">
+                        <button @click="open = !open" class="flex items-center px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-all"
+                                :class="{ 'bg-gray-100 text-gray-900': open || {{ request()->routeIs('admin.artikel.*') || request()->routeIs('admin.categories.*') || request()->routeIs('admin.users.*') ? 'true' : 'false' }} }">
+                            <i class="fas fa-cog mr-2 text-gray-400"></i>
+                            {{ __('Management') }}
+                            <svg class="ml-1 h-4 w-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                        
+                        <div x-show="open" @click.away="open = false" 
+                             class="absolute z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none transition-all duration-200"
+                             x-transition:enter="transition ease-out duration-200"
+                             x-transition:enter-start="opacity-0 scale-95"
+                             x-transition:enter-end="opacity-100 scale-100"
+                             x-transition:leave="transition ease-in duration-150"
+                             x-transition:leave-start="opacity-100 scale-100"
+                             x-transition:leave-end="opacity-0 scale-95">
+                            <div class="py-1">
+                                <x-dropdown-link :href="route('admin.artikel.index')" class="flex items-center px-4 py-2 hover:bg-gray-50">
+                                    <i class="fas fa-newspaper mr-2 text-gray-400"></i>
+                                    {{ __('Article Management') }}
+                                </x-dropdown-link>
+                                <x-dropdown-link :href="route('admin.categories.index')" class="flex items-center px-4 py-2 hover:bg-gray-50">
+                                    <i class="fas fa-tags mr-2 text-gray-400"></i>
+                                    {{ __('Category Management') }}
+                                </x-dropdown-link>
+                                <x-dropdown-link :href="route('admin.users.index')" class="flex items-center px-4 py-2 hover:bg-gray-50">
+                                    <i class="fas fa-users mr-2 text-gray-400"></i>
+                                    {{ __('User Management') }}
+                                </x-dropdown-link>
+                            </div>
+                        </div>
+                    </div>
+                    <x-nav-link :href="route('admin.events.index')" :active="request()->routeIs('admin.events.*')" class="px-3 py-2 rounded-lg hover:bg-gray-50 transition-all">
+                        <i class="fas fa-calendar-alt mr-2 text-gray-400"></i>
+                        {{ __('Events Gallery') }}
+                    </x-nav-link>
+                    
+                    <x-nav-link :href="route('admin.rutinan.index')" :active="request()->routeIs('admin.rutinan.*')" class="px-3 py-2 rounded-lg hover:bg-gray-50 transition-all">
+                        <i class="fas fa-clock mr-2 text-gray-400"></i>
+                        {{ __('Regular Schedule') }}
+                    </x-nav-link>
+                    
+                    <x-nav-link :href="route('admin.logs.index')" :active="request()->routeIs('admin.logs.index')" class="px-3 py-2 rounded-lg hover:bg-gray-50 transition-all">
+                        <i class="fas fa-history mr-2 text-gray-400"></i>
+                        {{ __('Activity Log') }}
+                    </x-nav-link>
                 </div>
             </div>
 
