@@ -32,44 +32,8 @@
                 </div>
             </div>
 
-            {{-- Grafik Statistik Pendaftar & Artikel --}}
+            {{-- Grafik Artikel --}}
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {{-- Statistik Pendaftar --}}
-                {{-- <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 space-y-6">
-                    <div class="flex items-center space-x-3">
-                        <div class="bg-[#059568] p-2 rounded-lg">
-                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M10.5 6a7.5 7.5 0 1 0 7.5 7.5h-7.5V6Z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M13.5 10.5H21A7.5 7.5 0 0 0 13.5 3v7.5Z" />
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-semibold text-gray-800">Statistik Pendaftar</h3>
-                    </div>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                        <div class="bg-emerald-50 p-4 rounded-lg">
-                            <div class="text-2xl font-bold text-emerald-700">{{ $totalPendaftar }}</div>
-                            <div class="text-sm text-emerald-600">Total</div>
-                        </div>
-                        <div class="bg-green-50 p-4 rounded-lg">
-                            <div class="text-2xl font-bold text-green-700">{{ $diterimaCount }}</div>
-                            <div class="text-sm text-green-600">Diterima</div>
-                        </div>
-                        <div class="bg-yellow-50 p-4 rounded-lg">
-                            <div class="text-2xl font-bold text-yellow-700">{{ $pendingCount }}</div>
-                            <div class="text-sm text-yellow-600">Pending</div>
-                        </div>
-                        <div class="bg-red-50 p-4 rounded-lg">
-                            <div class="text-2xl font-bold text-red-700">{{s $ditolakCount }}</div>
-                            <div class="text-sm text-red-600">Ditolak</div>
-                        </div>
-                    </div>
-                    <div class="relative h-64">
-                        <canvas id="pendaftarChart"></canvas>
-                    </div>
-                </div> --}}
-
                 {{-- Artikel Terpopuler --}}
                 <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 space-y-6">
                     <div class="flex items-center space-x-3">
@@ -118,24 +82,6 @@
                 y: parseInt(row.day),
                 v: parseInt(row.total)
             }));
-
-            // new Chart(document.getElementById('pendaftarChart'), {
-            //     type: 'doughnut',
-            //     data: {
-            //         labels: pendaftarLabels,
-            //         datasets: [{
-            //             label: 'Jumlah Pendaftar',
-            //             data: pendaftarCounts,
-            //             backgroundColor: [
-            //                 'rgb(253, 224, 71)',
-            //                 'rgb(34, 197, 94)',
-            //                 'rgb(239, 68, 68)'
-            //             ],
-            //             hoverOffset: 4
-            //         }]
-            //     },
-            //     options: { responsive: true, maintainAspectRatio: false }
-            // });
 
             new Chart(document.getElementById('artikelChart'), {
                 type: 'bar',

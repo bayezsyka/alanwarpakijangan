@@ -53,12 +53,6 @@
                             </div>
                         </div>
                     </div>
-                    
-                    {{-- <x-nav-link :href="route('admin.pendaftaran.index')" :active="request()->routeIs('admin.pendaftaran.*')" class="px-3 py-2 rounded-lg hover:bg-gray-50 transition-all">
-                        <i class="fas fa-user-plus mr-2 text-gray-400"></i>
-                        {{ __('Registrations') }}
-                    </x-nav-link> --}}
-                    
                     <x-nav-link :href="route('admin.events.index')" :active="request()->routeIs('admin.events.*')" class="px-3 py-2 rounded-lg hover:bg-gray-50 transition-all">
                         <i class="fas fa-calendar-alt mr-2 text-gray-400"></i>
                         {{ __('Events Gallery') }}
