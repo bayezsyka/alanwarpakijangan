@@ -1,11 +1,12 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="rounded-xl shadow-lg" style="background: linear-gradient(93deg, #64748b, #06b6d4)">
-            <div class="px-8 py-6">
-                <h2 class="text-2xl font-bold text-white">
-                    {{ __('Manajemen User') }}
-                </h2>
-                <p class="text-emerald-100 mt-2">Daftar Pengguna Terdaftar di Sistem Anda</p>
+        <div>
+            <h1 class="text-2xl font-semibold">
+                Manajemen Pengguna
+            </h1>
+            <p class="mt-1 text-sm text-emerald-50/90">
+                Kelola akun dan peran pengguna pada sistem admin.
+            </p>
         </div>
     </x-slot>
 

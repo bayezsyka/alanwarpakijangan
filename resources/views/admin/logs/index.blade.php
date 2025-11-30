@@ -1,12 +1,12 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="rounded-xl shadow-lg bg-gradient-to-r from-indigo-800 to-purple-600">
-            <div class="px-8 py-6">
-                <h2 class="text-2xl font-bold text-white">
-                    {{ __('Log Aktivitas Admin') }}
-                </h2>
-                <p class="text-indigo-100 mt-2">Riwayat semua aktivitas penting yang dilakukan oleh admin</p>
-            </div>
+        <div>
+            <h1 class="text-2xl font-semibold">
+                Log Aktivitas
+            </h1>
+            <p class="mt-1 text-sm text-emerald-50/90">
+                Pantau aktivitas penting yang terjadi di sistem.
+            </p>
         </div>
     </x-slot>
 

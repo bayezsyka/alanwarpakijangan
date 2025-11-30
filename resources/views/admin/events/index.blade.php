@@ -1,12 +1,12 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="bg-gradient-to-r from-[#008362] to-emerald-600 rounded-xl shadow-lg">
-            <div class="px-8 py-6">
-                <h2 class="text-2xl font-bold text-white">
-                    {{ __('Manajemen Galeri Acara') }}
-                </h2>
-                <p class="text-emerald-100 mt-2">Kelola semua galeri acara publikasi Anda</p>
-            </div>
+        <div>
+            <h1 class="text-2xl font-semibold">
+                Manajemen Agenda &amp; Kegiatan
+            </h1>
+            <p class="mt-1 text-sm text-emerald-50/90">
+                Atur jadwal kegiatan dan agenda pesantren.
+            </p>
         </div>
     </x-slot>
 

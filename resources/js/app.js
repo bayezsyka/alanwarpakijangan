@@ -1,10 +1,10 @@
 // resources/js/app.js
 
-import './bootstrap';
+import "./bootstrap";
 
 // Chart.js dan plugin matrix
-import Chart from 'chart.js/auto';
-import { MatrixController, MatrixElement } from 'chartjs-chart-matrix';
+import Chart from "chart.js/auto";
+import { MatrixController, MatrixElement } from "chartjs-chart-matrix";
 
 Chart.register(MatrixController, MatrixElement);
 

@@ -1,5 +1,14 @@
 <x-app-layout>
-    <x-slot name="header"><h2 class="font-semibold text-xl text-gray-800">Manajemen Kategori</h2></x-slot>
+    <x-slot name="header">
+        <div>
+            <h1 class="text-2xl font-semibold">
+                Manajemen Kategori
+            </h1>
+            <p class="mt-1 text-sm text-emerald-50/90">
+                Kelola kategori untuk pengelompokan artikel dan konten.
+            </p>
+        </div>
+    </x-slot>
     <div class="py-12"><div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="flex justify-end mb-4"><a href="{{ route('admin.categories.create') }}" class="px-4 py-2 bg-blue-600 text-white rounded-lg">+ Tambah Kategori</a></div>
         <div class="bg-white shadow-sm sm:rounded-lg">

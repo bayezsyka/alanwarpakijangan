@@ -1,12 +1,12 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="bg-gradient-to-r from-[#059568] to-emerald-600 rounded-xl shadow-lg">
-            <div class="px-8 py-6">
-                <h2 class="text-2xl font-bold text-white">
-                    {{ __('Manajemen Artikel') }}
-                </h2>
-                <p class="text-emerald-100 mt-2">Kelola semua artikel publikasi Anda</p>
-            </div>
+        <div>
+            <h1 class="text-2xl font-semibold">
+                Manajemen Artikel
+            </h1>
+            <p class="mt-1 text-sm text-emerald-50/90">
+                Kelola semua artikel publikasi Anda
+            </p>
         </div>
     </x-slot>
 

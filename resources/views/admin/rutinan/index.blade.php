@@ -1,10 +1,12 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="rounded-xl shadow-lg" style="background: linear-gradient(93deg, #10b981, #14b8a6);">
-            <div class="px-8 py-6">
-                <h2 class="text-2xl font-bold text-white">{{ __('Manajemen Jadwal Rutinan') }}</h2>
-                <p class="text-emerald-100 mt-2">Kelola semua jadwal rutinan dan hari liburnya.</p>
-            </div>
+        <div>
+            <h1 class="text-2xl font-semibold">
+                Manajemen Rutinan
+            </h1>
+            <p class="mt-1 text-sm text-emerald-50/90">
+                Atur jadwal rutinan harian dan mingguan.
+            </p>
         </div>
     </x-slot>
 
