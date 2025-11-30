@@ -40,21 +40,22 @@
 
     @livewireScripts
 </head>
-<body class="font-sans antialiased">
-    <div class="min-h-screen bg-gray-100">
+<body class="font-sans antialiased bg-gradient-to-br from-green-50 via-white to-green-50 text-gray-800">
+    <div class="min-h-screen">
         @include('layouts.navigation')
 
-        <!-- Page Heading -->
         @isset($header)
-            <header class="bg-white shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    {{ $header }}
+            <header class="bg-white/80 backdrop-blur border-b border-green-100 shadow-sm">
+                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+                    <div class="space-y-1">
+                        <p class="text-xs uppercase tracking-wide text-green-500 font-semibold">Panel Admin</p>
+                        <div class="text-2xl font-semibold text-gray-800">{{ $header }}</div>
+                    </div>
                 </div>
             </header>
         @endisset
 
-        <!-- Page Content -->
-        <main>
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
             {{ $slot }}
         </main>
     </div>

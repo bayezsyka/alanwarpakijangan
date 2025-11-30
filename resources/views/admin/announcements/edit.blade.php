@@ -12,7 +12,7 @@
             </div>
             <div class="flex justify-between items-center">
                 <form action="{{ route('admin.announcements.destroy', $announcement->id) }}" method="POST" onsubmit="return confirm('Yakin?');">@csrf @method('DELETE')<button type="submit" class="text-red-600 hover:text-red-900">Hapus</button></form>
-                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg">Perbarui</button>
+                <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 transition">Perbarui</button>
             </div>
         </form>
     </div></div></div>

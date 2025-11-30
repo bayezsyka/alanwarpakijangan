@@ -9,7 +9,7 @@
                 <div><label for="published_at">Tampilkan Mulai (Opsional)</label><input type="datetime-local" name="published_at" id="published_at" class="w-full mt-1"></div>
                 <div><label for="expires_at">Sembunyikan Mulai (Opsional)</label><input type="datetime-local" name="expires_at" id="expires_at" class="w-full mt-1"></div>
             </div>
-            <div class="flex justify-end"><button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg">Simpan</button></div>
+            <div class="flex justify-end"><button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 transition">Simpan</button></div>
         </form>
     </div></div></div>
 </x-app-layout>

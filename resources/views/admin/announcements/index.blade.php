@@ -5,7 +5,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="flex justify-end mb-4">
-                <a href="{{ route('admin.announcements.create') }}" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">+ Tambah Pengumuman</a>
+                <a href="{{ route('admin.announcements.create') }}" class="px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 transition">+ Tambah Pengumuman</a>
             </div>
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <table class="min-w-full divide-y divide-gray-200">
@@ -36,7 +36,7 @@
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 text-sm font-medium">
-                                    <a href="{{ route('admin.announcements.edit', $announcement->id) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                    <a href="{{ route('admin.announcements.edit', $announcement->id) }}" class="text-green-600 hover:text-green-800 font-semibold">Ubah</a>
                                 </td>
                             </tr>
                         @empty

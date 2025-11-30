@@ -67,7 +67,7 @@
                         </div>
 
                         <div class="flex justify-end pt-6 border-t">
-                            <button type="submit" :disabled="uploading" class="px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 shadow-md disabled:bg-gray-400">
+                            <button type="submit" :disabled="uploading" class="px-6 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 shadow-md disabled:bg-gray-400 transition">
                                 <span x-show="!uploading">Perbarui Acara</span>
                                 <span x-show="uploading">Memperbarui...</span>
                             </button>

@@ -68,7 +68,7 @@
 
                         <div class="flex justify-end pt-4 border-t">
                             <a href="{{ route('admin.rutinan.index') }}" class="px-4 py-2 text-sm text-gray-700">Batal</a>
-                            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700">Simpan Jadwal</button>
+                            <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium shadow hover:bg-green-700 transition">Simpan Jadwal</button>
                         </div>
                     </form>
                 </div>

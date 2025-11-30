@@ -45,8 +45,8 @@
                                 <h3 class="text-xl font-semibold text-gray-800">Daftar Akun Admin</h3>
                             </div>
                             <div class="mt-4 sm:mt-0">
-                                <a href="{{ route('admin.users.create') }}" 
-                                class="inline-flex items-center px-6 py-3 bg-[#06b6d4] text-white rounded-lg font-medium hover:bg-cyan-600 transition-colors duration-200 shadow-lg">
+                                <a href="{{ route('admin.users.create') }}"
+                                   class="inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors duration-200 shadow-lg">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                                     </svg>
@@ -74,7 +74,7 @@
                                         <td class="py-4 px-6 whitespace-nowrap text-gray-600">{{ $user->created_at->format('d M Y') }}</td>
                                         <td class="py-4 px-6 whitespace-nowrap text-sm font-medium">
                                             {{-- TOMBOL EDIT --}}
-                                            <a href="{{ route('admin.users.edit', $user->id) }}" class="text-indigo-600 hover:text-indigo-900 font-semibold">Edit</a>
+                                            <a href="{{ route('admin.users.edit', $user->id) }}" class="text-green-600 hover:text-green-800 font-semibold">Ubah</a>
                                             
                                             @if(auth()->id() !== $user->id)
                                                 <span class="mx-2 text-gray-300">|</span>
