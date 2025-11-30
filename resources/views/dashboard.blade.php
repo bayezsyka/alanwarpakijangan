@@ -1,68 +1,175 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="bg-gradient-to-r from-[#059568] to-emerald-600 rounded-xl shadow-lg">
-            <div class="px-8 py-6">
-                <h2 class="text-2xl font-bold text-white">
-                    {{ __('Dashboard Analisis') }}
-                </h2>
-                <p class="text-emerald-100 mt-2">Pantau dan Kendalikan Data Anda Secara Real-Time</p>
+        <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-500 shadow-2xl">
+            <div class="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top,_#ffffff_0,_transparent_40%),_radial-gradient(circle_at_20%_20%,_#d1fae5_0,_transparent_25%)]"></div>
+            <div class="relative px-8 py-8">
+                <p class="text-sm uppercase tracking-[0.3em] text-emerald-50">Dashboard Analisis</p>
+                <div class="mt-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <h2 class="text-3xl font-extrabold text-white">Pantau Data Real-Time</h2>
+                        <p class="text-emerald-50/80 mt-1">Insight pengunjung dan konten terbaik dalam satu layar.</p>
+                    </div>
+                    <div class="inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-semibold text-white shadow-inner">
+                        <span class="h-2 w-2 rounded-full bg-emerald-200 animate-pulse"></span>
+                        Sistem aktif & terbarui otomatis
+                    </div>
+                </div>
             </div>
         </div>
     </x-slot>
 
-    <div class="py-8">
+    @php
+        $articleCount = count($topArticleLabels);
+        $averageViews = $articleCount > 0 ? round(array_sum($topArticleViews) / $articleCount) : 0;
+        $topHighlight = $articleCount > 0 ? $topArticleLabels[0] : '-';
+    @endphp
+
+    <div class="py-10 bg-gradient-to-b from-gray-50 via-white to-gray-50">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
 
-            {{-- Kartu Jumlah Pengunjung --}}
-            <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center space-x-3">
-                        <div class="bg-[#059568] p-2 rounded-lg">
-                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                            </svg>
+            {{-- Ringkasan Cepat --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+                <div class="relative overflow-hidden rounded-2xl bg-white shadow-lg ring-1 ring-gray-100 p-6">
+                    <div class="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-emerald-100"></div>
+                    <div class="relative flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-500">Pengunjung Hari Ini</p>
+                            <p class="text-3xl font-extrabold text-gray-900">{{ $visitorCount }}</p>
+                            <p class="text-xs text-emerald-600 font-semibold mt-2">Pertumbuhan stabil</p>
                         </div>
-                        <h3 class="text-xl font-semibold text-gray-800">Jumlah Pengunjung Hari ini</h3>
+                        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
                     </div>
-                    <div class="text-right">
-                        <div class="text-3xl font-bold text-emerald-600">{{ $visitorCount }}</div>
-                        <div class="text-sm text-emerald-500">Total Kunjungan</div>
+                </div>
+
+                <div class="relative overflow-hidden rounded-2xl bg-white shadow-lg ring-1 ring-gray-100 p-6">
+                    <div class="absolute -left-4 -top-6 h-24 w-24 rounded-full bg-teal-100"></div>
+                    <div class="relative flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-500">Artikel Dipantau</p>
+                            <p class="text-3xl font-extrabold text-gray-900">{{ $articleCount }}</p>
+                            <p class="text-xs text-teal-600 font-semibold mt-2">Total artikel populer</p>
+                        </div>
+                        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-teal-50 text-teal-600">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative overflow-hidden rounded-2xl bg-white shadow-lg ring-1 ring-gray-100 p-6">
+                    <div class="absolute -right-6 -bottom-8 h-24 w-24 rounded-full bg-sky-100"></div>
+                    <div class="relative flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-500">Rata-rata View</p>
+                            <p class="text-3xl font-extrabold text-gray-900">{{ $averageViews }}</p>
+                            <p class="text-xs text-sky-600 font-semibold mt-2">Per artikel populer</p>
+                        </div>
+                        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-sky-50 text-sky-600">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-600 shadow-lg p-6 text-white">
+                    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_20%_20%,_#ffffff_0,_transparent_30%)]"></div>
+                    <div class="relative flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-emerald-100">Sorotan</p>
+                            <p class="text-xl font-bold">{{ $topHighlight }}</p>
+                            <p class="text-xs text-emerald-50 mt-2">Artikel dengan performa terbaik</p>
+                        </div>
+                        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-white/15 text-white">
+                            <i class="fas fa-star"></i>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            {{-- Grafik Artikel --}}
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {{-- Artikel Terpopuler --}}
-                <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 space-y-6">
-                    <div class="flex items-center space-x-3">
-                        <div class="bg-[#059568] p-2 rounded-lg">
-                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5m.75-9 3-3 2.148 2.148A12.061 12.061 0 0 1 16.5 7.605" />
-                            </svg>
+            {{-- Grafik Artikel & Ringkasan --}}
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                <div class="xl:col-span-2 bg-white rounded-3xl shadow-xl ring-1 ring-gray-100 p-6 space-y-6">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <div class="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
+                                <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                Artikel Terpopuler
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-900 mt-2">Performa Konten</h3>
+                            <p class="text-sm text-gray-500">Pantau artikel paling banyak dibaca secara real-time.</p>
                         </div>
-                        <h3 class="text-xl font-semibold text-gray-800">Artikel Terpopuler</h3>
+                        <div class="flex items-center gap-2 text-xs text-gray-500">
+                            <span class="h-2 w-2 rounded-full bg-emerald-500"></span> View terbanyak
+                        </div>
                     </div>
-                    <div class="relative h-[325px]">
+                    <div class="relative h-[360px]">
                         <canvas id="artikelChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="bg-white rounded-3xl shadow-xl ring-1 ring-gray-100 p-6 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500">Urutan Teratas</p>
+                                <h4 class="text-lg font-bold text-gray-900">3 Artikel Populer</h4>
+                            </div>
+                            <span class="rounded-full bg-emerald-50 text-emerald-700 px-3 py-1 text-xs font-semibold">Live</span>
+                        </div>
+                        <div class="space-y-3">
+                            @foreach (array_slice($topArticleLabels, 0, 3) as $index => $title)
+                                <div class="flex items-start gap-3 rounded-xl border border-gray-100 p-3 hover:border-emerald-100">
+                                    <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 font-semibold">
+                                        #{{ $index + 1 }}
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="text-sm font-semibold text-gray-900">{{ $title }}</p>
+                                        <p class="text-xs text-gray-500">{{ $topArticleViews[$index] ?? 0 }} total views</p>
+                                    </div>
+                                    <span class="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2 py-1 rounded-full">Trending</span>
+                                </div>
+                            @endforeach
+                            @if ($articleCount === 0)
+                                <p class="text-sm text-gray-500">Belum ada data artikel.</p>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-slate-900 via-emerald-900 to-emerald-700 rounded-3xl shadow-xl p-6 text-white">
+                        <div class="flex items-center gap-3">
+                            <div class="h-11 w-11 rounded-2xl bg-white/10 flex items-center justify-center">
+                                <i class="fas fa-bell text-white"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-emerald-100">Notifikasi singkat</p>
+                                <p class="text-lg font-semibold">Pastikan jadwal rutinan selalu terbarui.</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-emerald-50/80 mt-3">Gunakan menu Rutinan dan Log Aktivitas untuk memantau update jadwal dan histori perubahan konten.</p>
+                        <div class="mt-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold">
+                            <span class="h-2 w-2 rounded-full bg-emerald-300"></span>
+                            Terhubung dengan sistem keamanan
+                        </div>
                     </div>
                 </div>
             </div>
 
             {{-- Heatmap --}}
-            <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 space-y-6">
-                <div class="flex items-center space-x-3">
-                    <div class="bg-[#059568] p-2 rounded-lg">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 7V3m8 4V3m-9 4h10M5 21h14a2 2 0 002-2V7H3v12a2 2 0 002 2z" />
-                        </svg>
+            <div class="bg-white rounded-3xl shadow-xl ring-1 ring-gray-100 p-6 space-y-6">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <div class="inline-flex items-center gap-2 rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-700">
+                            <span class="h-2 w-2 rounded-full bg-sky-500"></span>
+                            Heatmap Kunjungan
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 mt-2">Jam & Hari Tersibuk</h3>
+                        <p class="text-sm text-gray-500">Identifikasi waktu paling ramai untuk penjadwalan konten.</p>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-800">Heatmap Kunjungan</h3>
+                    <div class="flex items-center gap-2 text-xs text-gray-500">
+                        <span class="h-3 w-3 rounded-full bg-emerald-500"></span> Intensitas kunjungan
+                    </div>
                 </div>
-                <div class="relative h-[480px] p-4">
+                <div class="relative h-[480px] p-4 bg-gradient-to-br from-gray-50 to-white rounded-2xl">
                     <canvas id="heatmapChart"></canvas>
                 </div>
             </div>
@@ -90,16 +197,21 @@
                     datasets: [{
                         label: 'Total Views',
                         data: topArticleViews,
-                        backgroundColor: 'rgba(5, 149, 104, 0.6)',
+                        backgroundColor: 'rgba(16, 185, 129, 0.75)',
                         borderColor: 'rgba(5, 149, 104, 1)',
-                        borderWidth: 1
+                        borderRadius: 12,
+                        borderWidth: 1.5,
+                        barThickness: 18,
                     }]
                 },
                 options: {
                     indexAxis: 'y',
                     responsive: true,
                     maintainAspectRatio: false,
-                    scales: { x: { beginAtZero: true, ticks: { precision: 0 } } },
+                    scales: {
+                        x: { beginAtZero: true, ticks: { precision: 0, color: '#6b7280' }, grid: { color: '#f3f4f6' } },
+                        y: { ticks: { color: '#6b7280' } }
+                    },
                     plugins: { legend: { display: false } }
                 }
             });
@@ -116,7 +228,9 @@
                             return `rgba(5, 150, 105, ${alpha})`;
                         },
                         width: ctx => 20,
-                        height: ctx => 20
+                        height: ctx => 20,
+                        borderRadius: 6,
+                        borderWidth: 0,
                     }]
                 },
                 options: {
@@ -128,11 +242,15 @@
                             min: 0,
                             max: 23,
                             ticks: {
-                                callback: val => `${val}:00`
+                                callback: val => `${val}:00`,
+                                color: '#6b7280'
                             },
+                            grid: { color: '#f3f4f6' },
                             title: {
                                 display: true,
-                                text: 'Jam'
+                                text: 'Jam',
+                                color: '#111827',
+                                font: { weight: 'bold' }
                             }
                         },
                         y: {
@@ -141,11 +259,15 @@
                             max: 6,
                             reverse: true,
                             ticks: {
-                                callback: val => days[val]
+                                callback: val => days[val],
+                                color: '#6b7280'
                             },
+                            grid: { color: '#f3f4f6' },
                             title: {
                                 display: true,
-                                text: 'Hari'
+                                text: 'Hari',
+                                color: '#111827',
+                                font: { weight: 'bold' }
                             }
                         }
                     },
@@ -155,8 +277,8 @@
                                 label: ctx => `Jumlah: ${ctx.raw.v}`
                             }
                         },
-                        legend: { 
-                          position: 'bottom',  
+                        legend: {
+                          position: 'bottom',
                          }
                     }
                 }
