@@ -11,24 +11,24 @@
     <!-- Fonts dan Tailwind (boleh tetap CDN jika tidak pakai PostCSS) -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-<!-- FORCE LIGHT MODE (jalankan sebelum CSS/Tailwind untuk cegah FOUC) -->
-<script>
-  (function () {
-    // Buang jejak dark mode sebelumnya & paksa terang
-    document.documentElement.classList.remove('dark');
-    try { localStorage.setItem('theme', 'light'); } catch (e) {}
-  })();
-</script>
+    <!-- FORCE LIGHT MODE (jalankan sebelum CSS/Tailwind untuk cegah FOUC) -->
+    <script>
+      (function () {
+        // Buang jejak dark mode sebelumnya & paksa terang
+        document.documentElement.classList.remove('dark');
+        try { localStorage.setItem('theme', 'light'); } catch (e) {}
+      })();
+    </script>
 
-<!-- Konfigurasi Tailwind CDN: dark mode berbasis class (tidak otomatis ikut OS) -->
-<script>
-  window.tailwind = {
-    config: {
-      darkMode: 'class',
-      theme: { extend: {} }
-    }
-  };
-</script>
+    <!-- Konfigurasi Tailwind CDN: dark mode berbasis class (tidak otomatis ikut OS) -->
+    <script>
+      window.tailwind = {
+        config: {
+          darkMode: 'class',
+          theme: { extend: {} }
+        }
+      };
+    </script>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.0/dist/tailwind.min.css" rel="stylesheet">
     <!-- SweetAlert dan Quill tetap CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -41,22 +41,42 @@
     @livewireScripts
 </head>
 <body class="font-sans antialiased">
-    <div class="min-h-screen bg-gray-100">
+    <div x-data="{ sidebarOpen: false }" class="min-h-screen bg-gray-50 flex">
         @include('layouts.navigation')
 
-        <!-- Page Heading -->
-        @isset($header)
-            <header class="bg-white shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    {{ $header }}
+        <div class="flex-1 flex flex-col min-h-screen lg:ml-72">
+            <!-- Topbar untuk mobile -->
+            <div class="lg:hidden sticky top-0 z-20 bg-white shadow-sm border-b border-gray-100">
+                <div class="flex items-center justify-between px-4 py-3">
+                    <div class="flex items-center space-x-3">
+                        <button @click="sidebarOpen = true" class="p-2 rounded-lg text-emerald-600 hover:bg-emerald-50 focus:outline-none focus:ring-2 focus:ring-emerald-200">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </button>
+                        <div>
+                            <p class="text-sm text-gray-500">Panel Admin</p>
+                            <p class="text-base font-semibold text-emerald-700">Al-Anwar</p>
+                        </div>
+                    </div>
+                    <a href="{{ route('profile.edit') }}" class="inline-flex items-center px-3 py-2 rounded-lg text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-200">
+                        Profil
+                    </a>
                 </div>
-            </header>
-        @endisset
+            </div>
 
-        <!-- Page Content -->
-        <main>
-            {{ $slot }}
-        </main>
+            @isset($header)
+                <header class="bg-white shadow-sm border-b border-gray-100">
+                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                        {{ $header }}
+                    </div>
+                </header>
+            @endisset
+
+            <main class="flex-1">
+                {{ $slot }}
+            </main>
+        </div>
     </div>
 
     <!-- Flash Message -->
