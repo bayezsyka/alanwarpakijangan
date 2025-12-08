@@ -49,7 +49,7 @@
         @include('layouts.navigation')
 
         {{-- Wrapper konten: geser karena sidebar --}}
-        <div class="pt-14 lg:pt-0 lg:ml-64 transition-all duration-300">
+        <div class="{{ (Auth::check() && Auth::user()->isAdmin()) ? 'pt-14 lg:pt-0 lg:ml-64' : 'pt-20' }} transition-all duration-300">
 
             {{-- HEADER GLOBAL: kartu hijau untuk semua halaman --}}
             @isset($header)
@@ -70,7 +70,11 @@
 
             <!-- Page Content -->
             <main class="py-4">
-                {{ $slot }}
+                @if(isset($slot) && $slot->isNotEmpty())
+                    {{ $slot }}
+                @else
+                    @yield('content')
+                @endif
             </main>
         </div>
     </div>

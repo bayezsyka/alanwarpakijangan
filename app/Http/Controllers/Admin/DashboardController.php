@@ -11,6 +11,10 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        if (auth()->user()->isPenulis()) {
+            return redirect()->route('penulis.articles.index');
+        }
+
         $ip = request()->ip();
 
         $alreadyVisited = Visitor::where('ip_address', $ip)

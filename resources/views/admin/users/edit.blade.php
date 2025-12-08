@@ -34,7 +34,20 @@
                             <x-input-label for="email" :value="__('Email')" />
                             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $user->email)" required autocomplete="username" />
                         </div>
-
+                        
+                        <div class="mb-4">
+                            <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
+                            <select name="role" id="role"
+                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm text-sm" required>
+                                <option value="admin" {{ old('role', $user->role ?? 'admin') === 'admin' ? 'selected' : '' }}>
+                                    Admin
+                                </option>
+                                <option value="penulis" {{ old('role', $user->role ?? '') === 'penulis' ? 'selected' : '' }}>
+                                    Penulis
+                                </option>
+                            </select>
+                        </div>
+                        
                         <div class="mt-4">
                             <x-input-label for="password" :value="__('Password (Opsional)')" />
                             <x-text-input id="password" class="block mt-1 w-full"

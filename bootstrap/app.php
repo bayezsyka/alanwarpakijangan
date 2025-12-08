@@ -16,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role'     => \App\Http\Middleware\CheckRole::class,
             'auth.api' => \App\Http\Middleware\ApiTokenMiddleware::class, // ⬅️ AUTH API TOKEN
+            'penulis'  => \App\Http\Middleware\EnsureUserIsPenulis::class,
         ]);
 
         // Middleware visitor log untuk web

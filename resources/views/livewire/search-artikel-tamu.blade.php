@@ -140,7 +140,7 @@
                                     </p>
                                     <div class="mt-auto pt-4 border-t border-gray-100">
                                         <div class="flex items-center justify-between text-sm">
-                                            <span class="font-medium text-gray-700">{{ $article->penulis }}</span>
+                                            <span class="font-medium text-gray-700">Oleh: {{ $article->penulis ?? $article->user->name ?? 'Admin' }}</span>
                                             <span class="text-gray-500">{{ $article->created_at->format('d M Y') }}</span>
                                         </div>
                                     </div>
@@ -182,7 +182,7 @@
                                     </p>
                                     <div class="mt-auto pt-4 border-t border-gray-100">
                                         <div class="flex items-center justify-between text-sm">
-                                            <span class="font-medium text-gray-700">{{ $article->penulis }}</span>
+                                            <span class="font-medium text-gray-700">Oleh: {{ $article->penulis ?? $article->user->name ?? 'Admin' }}</span>
                                             <span class="text-gray-500">{{ $article->created_at->format('d M Y') }}</span>
                                         </div>
                                     </div>

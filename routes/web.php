@@ -11,6 +11,8 @@ use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\Admin\RutinanController as AdminRutinanController;
 use App\Http\Controllers\Admin\RutinanExceptionController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Penulis\PenulisArticleController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -35,7 +37,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
     // --- Grup untuk semua rute Admin ---
-    Route::prefix('admin')->name('admin.')->group(function () {
+    Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::resource('artikel', AdminArticleController::class);
         Route::resource('users', AdminUserController::class);
         Route::resource('events', AdminEventController::class);
@@ -50,6 +52,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
         
     
     });
+
+    // === BACKEND PENULIS ===
+Route::middleware(['auth', 'verified', 'penulis'])
+    ->prefix('penulis')
+    ->name('penulis.')
+    ->group(function () {
+        Route::get('/artikel', [PenulisArticleController::class, 'index'])->name('articles.index');
+        Route::get('/artikel/create', [PenulisArticleController::class, 'create'])->name('articles.create');
+        Route::post('/artikel', [PenulisArticleController::class, 'store'])->name('articles.store');
+        Route::get('/artikel/{article}/edit', [PenulisArticleController::class, 'edit'])->name('articles.edit');
+        Route::put('/artikel/{article}', [PenulisArticleController::class, 'update'])->name('articles.update');
+        Route::delete('/artikel/{article}', [PenulisArticleController::class, 'destroy'])->name('articles.destroy');
+    });
 });
-// --- Rute Otentikasi Bawaan ---
+
+
 require __DIR__.'/auth.php';

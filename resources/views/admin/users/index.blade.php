@@ -71,6 +71,7 @@
                                 @forelse ($users as $user)
                                     <tr>
                                         <td class="py-4 px-6 whitespace-nowrap font-medium text-gray-900">{{ $user->name }}</td>
+                                        <td class="py-4 px-6 whitespace-nowrap font-medium text-gray-900">{{ $user->role }}</td>
                                         <td class="py-4 px-6 whitespace-nowrap text-gray-600">{{ $user->email }}</td>
                                         <td class="py-4 px-6 whitespace-nowrap text-gray-600">{{ $user->created_at->format('d M Y') }}</td>
                                         <td class="py-4 px-6 whitespace-nowrap text-sm font-medium">

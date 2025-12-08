@@ -206,8 +206,13 @@
                     
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-sm text-gray-600 mb-6">
                         <div class="flex items-center">
-                            <span class="font-medium mr-2">Oleh:</span>
-                            <span>{{ $article->penulis }}</span>
+                            @php
+                                $authorName = $article->penulis ?? $article->user->name ?? 'Admin';
+                                $avatarUrl = "https://ui-avatars.com/api/?name=" . urlencode($authorName) . "&background=0D9488&color=fff";
+                            @endphp
+                            <img src="{{ $avatarUrl }}" class="w-6 h-6 rounded-full mr-2" alt="{{ $authorName }}">
+                            <span class="font-medium mr-1">Oleh:</span>
+                            <span>{{ $authorName }}</span>
                             <span class="mx-2 text-gray-400">•</span>
                             <span class="flex items-center">
                                 <i class="far fa-eye mr-1.5"></i>
