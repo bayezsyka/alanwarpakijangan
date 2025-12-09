@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\Event;
 use App\Models\Rutinan;
+use App\Models\Announcement; // <-- TAMBAHAN
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -41,12 +42,29 @@ class ArtikelController extends Controller
         
         $groupedRutinans = Rutinan::with('exceptions')->get()->sortBy('waktu')->groupBy('day_of_week');
 
+        // >>> PENGUMUMAN POPUP: ambil pengumuman aktif (dalam rentang tanggal & is_active = true)
+        $announcements = Announcement::active()
+            ->orderBy('start_date', 'desc')
+            ->get();
+
+        // Transform announcements for JavaScript
+        $announcementsData = $announcements->map(function ($a) {
+            return [
+                'id'        => $a->id,
+                'title'     => $a->title,
+                'image_url' => $a->image_url,
+                'link'      => $a->link,
+            ];
+        })->toArray();
+
         // Kirim semua data ke view
         return view('welcome', compact(
             'latestArticles',
             'latestEvents',
             'groupedRutinans',
             'rollingDays',
+            'announcements', // <-- TAMBAHAN (untuk kondisi blade)
+            'announcementsData' // <-- Data yang sudah di-transform untuk JavaScript
         ));
     }
 

@@ -52,6 +52,12 @@
                         <i class="fas fa-calendar-alt mr-3 text-emerald-200 group-hover:text-emerald-100"></i>
                         <span>Agenda / Kegiatan</span>
                     </a>
+
+                    <a href="{{ route('admin.announcements.index') }}"
+                       class="{{ request()->routeIs('admin.announcements.*') ? $linkBase.' '.$linkActive : $linkBase.' '.$linkInactive }}">
+                        <i class="fas fa-bullhorn mr-3 text-emerald-200 group-hover:text-emerald-100"></i>
+                        <span>Pengumuman</span>
+                    </a>
                 </nav>
             </div>
 
@@ -204,6 +210,15 @@
                                         : 'text-emerald-100/90 border-transparent hover:bg-emerald-900/30 hover:border-emerald-300/30' }}">
                             <i class="fas fa-calendar-alt mr-3 text-emerald-200 group-hover:text-emerald-100"></i>
                             <span>Agenda / Kegiatan</span>
+                        </a>
+
+                        <a href="{{ route('admin.announcements.index') }}"
+                           class="group flex items-center px-3 py-2.5 rounded-xl text-sm font-medium border
+                                  {{ request()->routeIs('admin.announcements.*')
+                                        ? 'bg-emerald-900/40 text-white border-emerald-300/60'
+                                        : 'text-emerald-100/90 border-transparent hover:bg-emerald-900/30 hover:border-emerald-300/30' }}">
+                            <i class="fas fa-bullhorn mr-3 text-emerald-200 group-hover:text-emerald-100"></i>
+                            <span>Pengumuman</span>
                         </a>
 
                         <a href="{{ route('admin.categories.index') }}"

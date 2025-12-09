@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\RutinanController as AdminRutinanController;
 use App\Http\Controllers\Admin\RutinanExceptionController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Penulis\PenulisArticleController;
+use App\Http\Controllers\Admin\AnnouncementController as AdminAnnouncementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,15 +43,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('users', AdminUserController::class);
         Route::resource('events', AdminEventController::class);
         Route::resource('rutinan', AdminRutinanController::class);
-        Route::resource('categories', AdminCategoryController::class); // <-- TAMBAHKAN INI
-
-
+        Route::resource('categories', AdminCategoryController::class);
+        Route::resource('announcements', AdminAnnouncementController::class)->except(['show']);
         Route::get('/logs', [\App\Http\Controllers\Admin\ActivityLogController::class, 'index'])->name('logs.index');
-
         Route::post('/rutinan/{rutinan}/exceptions', [RutinanExceptionController::class, 'store'])->name('rutinan.exceptions.store');
         Route::delete('/rutinan/exceptions/{exception}', [RutinanExceptionController::class, 'destroy'])->name('rutinan.exceptions.destroy');
-        
-    
     });
 
     // === BACKEND PENULIS ===
@@ -66,6 +63,4 @@ Route::middleware(['auth', 'verified', 'penulis'])
         Route::delete('/artikel/{article}', [PenulisArticleController::class, 'destroy'])->name('articles.destroy');
     });
 });
-
-
 require __DIR__.'/auth.php';

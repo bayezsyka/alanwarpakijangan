@@ -11,4 +11,5 @@
     @include('welcome.artikel')
     @include('welcome.profil')
     @include('welcome.galeri')
+    @include('welcome.announcement-modal')
 @endsection

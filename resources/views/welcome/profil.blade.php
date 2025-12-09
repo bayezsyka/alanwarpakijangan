@@ -3,15 +3,9 @@
     <div class="grid gap-10 md:grid-cols-[1.5fr,1.2fr] items-center">
       <!-- Teks utama -->
       <div>
-        <div class="inline-flex items-center gap-2 bg-secondary/10 border border-secondary/30 text-secondary px-3 py-1 rounded-full text-xs font-medium mb-4">
-          <span class="w-5 h-5 rounded-full bg-white flex items-center justify-center shadow-sm">
-            <i class="fas fa-mosque text-[11px]"></i>
-          </span>
-          Pondok Pesantren Al-Anwar Pakijangan
-        </div>
 
         <h2 class="text-2xl sm:text-3xl lg:text-4xl font-semibold text-dark mb-3">
-          Lembaga Pendidikan Islam <span class="text-secondary">"Kubah Jawa"</span>
+          Pondok Pesantren <span class="text-secondary">"Al-Anwar Pakijangan"</span>
         </h2>
         <p class="text-sm sm:text-base text-gray-700 mb-5 max-w-xl">
           Pesantren berbasis kurikulum salaf modern yang memadukan penguatan akidah, akhlak, dan ilmu pengetahuan
