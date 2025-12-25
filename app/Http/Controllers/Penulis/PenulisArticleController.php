@@ -4,11 +4,17 @@ namespace App\Http\Controllers\Penulis;
 
 use App\Http\Controllers\Controller;
 use App\Models\Article;
+use App\Services\ImageUploadService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class PenulisArticleController extends Controller
 {
+    public function __construct(private readonly ImageUploadService $imageUpload)
+    {
+    }
+
     /**
      * Tampilkan semua artikel milik penulis yang sedang login.
      * Route: GET /penulis/artikel
@@ -45,10 +51,10 @@ class PenulisArticleController extends Controller
         $user = $request->user();
 
         $validated = $request->validate([
-            'judul'       => ['required', 'string', 'max:255'],
-            'isi'         => ['required', 'string'],
-            'category_id' => ['nullable', 'integer'], // sesuaikan dengan tabel kamu
-            'gambar_upload' => ['nullable', 'image', 'max:2048'],
+            'judul'         => ['required', 'string', 'max:255'],
+            'isi'           => ['required', 'string'],
+            'category_id'   => ['nullable', 'integer'], // sesuaikan dengan tabel kamu
+            'gambar_upload' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
             'gambar_url'    => ['nullable', 'string', 'url'],
         ]);
 
@@ -61,8 +67,14 @@ class PenulisArticleController extends Controller
 
         // Handle Image Upload
         if ($request->hasFile('gambar_upload')) {
-            $path = $request->file('gambar_upload')->store('articles', 'public');
-            $article->gambar = $path;
+            $article->gambar = $this->imageUpload->storeAsWebp(
+                $request->file('gambar_upload'),
+                'articles',
+                disk: 'public',
+                quality: 80,
+                maxWidth: 2000,
+                maxHeight: 2000,
+            );
         } elseif ($request->filled('gambar_url')) {
             $article->gambar = $request->gambar_url;
         }
@@ -83,7 +95,7 @@ class PenulisArticleController extends Controller
         $user = $request->user();
 
         $this->authorizeArticle($user->id, $article);
-        
+
         $categories = \App\Models\Category::all();
 
         return view('penulis.articles.edit', compact('article', 'user', 'categories'));
@@ -100,31 +112,38 @@ class PenulisArticleController extends Controller
         $this->authorizeArticle($user->id, $article);
 
         $validated = $request->validate([
-            'judul'       => ['required', 'string', 'max:255'],
-            'isi'         => ['required', 'string'],
-            'category_id' => ['nullable', 'integer'],
-            'gambar_upload' => ['nullable', 'image', 'max:2048'],
+            'judul'         => ['required', 'string', 'max:255'],
+            'isi'           => ['required', 'string'],
+            'category_id'   => ['nullable', 'integer'],
+            'gambar_upload' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
             'gambar_url'    => ['nullable', 'string', 'url'],
         ]);
 
-        $article->judul       = $validated['judul'];
+        $article->judul = $validated['judul'];
         if ($article->isDirty('judul')) {
-             $article->slug = Str::slug($validated['judul']);
+            $article->slug = Str::slug($validated['judul']);
         }
-        $article->isi         = $validated['isi'];
+        $article->isi = $validated['isi'];
         $article->category_id = $validated['category_id'] ?? null;
 
         // Handle Image Upload
         if ($request->hasFile('gambar_upload')) {
             // Delete old image if it exists and is a file (not a URL)
             if ($article->gambar && !Str::startsWith($article->gambar, 'http')) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($article->gambar);
+                Storage::disk('public')->delete($article->gambar);
             }
-            $path = $request->file('gambar_upload')->store('articles', 'public');
-            $article->gambar = $path;
+
+            $article->gambar = $this->imageUpload->storeAsWebp(
+                $request->file('gambar_upload'),
+                'articles',
+                disk: 'public',
+                quality: 80,
+                maxWidth: 2000,
+                maxHeight: 2000,
+            );
         } elseif ($request->filled('gambar_url')) {
-             if ($article->gambar && !Str::startsWith($article->gambar, 'http')) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($article->gambar);
+            if ($article->gambar && !Str::startsWith($article->gambar, 'http')) {
+                Storage::disk('public')->delete($article->gambar);
             }
             $article->gambar = $request->gambar_url;
         }

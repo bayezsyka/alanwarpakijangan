@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Selasanan;
 
 use App\Http\Controllers\Controller;
 use App\Models\SelasananEntry;
+use App\Services\ImageUploadService;
 use App\Traits\LogsActivity;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -16,6 +17,10 @@ class SelasananManageController extends Controller
 
     private const DEFAULT_SPEAKER = 'KH. Muhammad Miftah';
     private const DEFAULT_TIME_WIB = '20:00';
+
+    public function __construct(private readonly ImageUploadService $imageUpload)
+    {
+    }
 
     public function index(Request $request)
     {
@@ -86,7 +91,7 @@ class SelasananManageController extends Controller
         $validated = $request->validate([
             // Input cepat
             'title' => ['required', 'string', 'max:255'],
-            'cover_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:10240'],
+            'cover_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:10240'],
             'audio_file' => ['nullable', 'file', 'mimetypes:audio/mpeg,audio/mp4,audio/x-m4a,audio/wav,audio/ogg', 'max:204800'],
             'isi' => ['required', 'string'],
 
@@ -127,7 +132,14 @@ class SelasananManageController extends Controller
         ];
 
         if ($request->hasFile('cover_image')) {
-            $data['cover_image_path'] = $request->file('cover_image')->store('selasanan/cover', 'public');
+            $data['cover_image_path'] = $this->imageUpload->storeAsWebp(
+                $request->file('cover_image'),
+                'selasanan/cover',
+                disk: 'public',
+                quality: 80,
+                maxWidth: 2000,
+                maxHeight: 2000,
+            );
         }
 
         if ($request->hasFile('audio_file')) {
@@ -164,7 +176,7 @@ class SelasananManageController extends Controller
         $validated = $request->validate([
             // Input cepat
             'title' => ['required', 'string', 'max:255'],
-            'cover_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:10240'],
+            'cover_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:10240'],
             'audio_file' => ['nullable', 'file', 'mimetypes:audio/mpeg,audio/mp4,audio/x-m4a,audio/wav,audio/ogg', 'max:204800'],
             'isi' => ['required', 'string'],
 
@@ -232,7 +244,15 @@ class SelasananManageController extends Controller
             if ($entry->cover_image_path) {
                 Storage::disk('public')->delete($entry->cover_image_path);
             }
-            $data['cover_image_path'] = $request->file('cover_image')->store('selasanan/cover', 'public');
+
+            $data['cover_image_path'] = $this->imageUpload->storeAsWebp(
+                $request->file('cover_image'),
+                'selasanan/cover',
+                disk: 'public',
+                quality: 80,
+                maxWidth: 2000,
+                maxHeight: 2000,
+            );
         }
 
         // Replace audio

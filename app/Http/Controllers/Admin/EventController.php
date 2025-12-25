@@ -5,14 +5,19 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\EventPhoto;
+use App\Services\ImageUploadService;
+use App\Traits\LogsActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
-use App\Traits\LogsActivity;
 
 class EventController extends Controller
 {
     use LogsActivity;
+
+    public function __construct(private readonly ImageUploadService $imageUpload)
+    {
+    }
 
     public function index()
     {
@@ -32,14 +37,22 @@ class EventController extends Controller
             'tanggal' => 'nullable|date',
             'deskripsi' => 'nullable|string',
             'photos' => 'required|array',
-            'photos.*' => 'image|mimes:jpeg,png,jpg,gif|max:10240'
+            'photos.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:10240'
         ]);
 
         $event = Event::create($validated);
 
         if ($request->hasFile('photos')) {
             foreach ($request->file('photos') as $photo) {
-                $path = $photo->store('gallery', 'public');
+                $path = $this->imageUpload->storeAsWebp(
+                    $photo,
+                    'gallery',
+                    disk: 'public',
+                    quality: 80,
+                    maxWidth: 2000,
+                    maxHeight: 2000,
+                );
+
                 $event->photos()->create(['file_path' => $path]);
             }
         }
@@ -66,7 +79,7 @@ class EventController extends Controller
             'tanggal' => 'nullable|date',
             'deskripsi' => 'nullable|string',
             'photos' => 'nullable|array',
-            'photos.*' => 'image|mimes:jpeg,png,jpg,gif|max:10240',
+            'photos.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:10240',
             'delete_photos' => 'nullable|array',
             'delete_photos.*' => 'integer|exists:event_photos,id'
         ]);
@@ -85,7 +98,15 @@ class EventController extends Controller
 
         if ($request->hasFile('photos')) {
             foreach ($request->file('photos') as $photo) {
-                $path = $photo->store('gallery', 'public');
+                $path = $this->imageUpload->storeAsWebp(
+                    $photo,
+                    'gallery',
+                    disk: 'public',
+                    quality: 80,
+                    maxWidth: 2000,
+                    maxHeight: 2000,
+                );
+
                 $event->photos()->create(['file_path' => $path]);
             }
         }

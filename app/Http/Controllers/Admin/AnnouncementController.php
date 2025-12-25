@@ -4,14 +4,18 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Announcement;
+use App\Services\ImageUploadService;
+use App\Traits\LogsActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rule;
-use App\Traits\LogsActivity;
 
 class AnnouncementController extends Controller
 {
     use LogsActivity;
+
+    public function __construct(private readonly ImageUploadService $imageUpload)
+    {
+    }
 
     public function index()
     {
@@ -40,7 +44,22 @@ class AnnouncementController extends Controller
             'is_active'  => ['nullable', 'boolean'],
         ]);
 
-        $path = $request->file('image')->store('announcements', 'public');
+        $file = $request->file('image');
+        $ext = strtolower((string) $file->getClientOriginalExtension());
+
+        // SVG tidak dikonversi (tetap disimpan sebagai SVG). Selain itu, kita konversi ke webp.
+        if ($ext === 'svg' || $file->getMimeType() === 'image/svg+xml') {
+            $path = $file->store('announcements', 'public');
+        } else {
+            $path = $this->imageUpload->storeAsWebp(
+                $file,
+                'announcements',
+                disk: 'public',
+                quality: 80,
+                maxWidth: 2000,
+                maxHeight: 2000,
+            );
+        }
 
         $announcement = Announcement::create([
             'title'      => $validated['title'],
@@ -87,7 +106,21 @@ class AnnouncementController extends Controller
                 Storage::disk('public')->delete($announcement->image_path);
             }
 
-            $data['image_path'] = $request->file('image')->store('announcements', 'public');
+            $file = $request->file('image');
+            $ext = strtolower((string) $file->getClientOriginalExtension());
+
+            if ($ext === 'svg' || $file->getMimeType() === 'image/svg+xml') {
+                $data['image_path'] = $file->store('announcements', 'public');
+            } else {
+                $data['image_path'] = $this->imageUpload->storeAsWebp(
+                    $file,
+                    'announcements',
+                    disk: 'public',
+                    quality: 80,
+                    maxWidth: 2000,
+                    maxHeight: 2000,
+                );
+            }
         }
 
         $announcement->update($data);

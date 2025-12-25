@@ -49,7 +49,7 @@
         @include('layouts.navigation')
 
         {{-- Wrapper konten: geser karena sidebar --}}
-        <div class="{{ (Auth::check() && Auth::user()->isAdmin()) ? 'pt-14 lg:pt-0 lg:ml-64' : 'pt-20' }} transition-all duration-300">
+        <div class="{{ (Auth::check() && (Auth::user()->isAdmin() || Auth::user()->isSelasananManager())) ? 'pt-14 lg:pt-0 lg:ml-64' : 'pt-20' }} transition-all duration-300">
 
             {{-- HEADER GLOBAL: kartu hijau untuk semua halaman --}}
             @isset($header)
