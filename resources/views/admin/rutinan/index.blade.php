@@ -15,10 +15,9 @@
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 
-                {{-- Notifikasi Sukses atau Error --}}
-                @if (session('success'))
-                    <div class="p-4 mb-6 text-sm text-green-700 bg-green-100 rounded-lg shadow-sm" role="alert">
-                        {{ session('success') }}
+                @if ($errors->any())
+                    <div class="p-4 mb-6 text-sm text-red-700 bg-red-100 rounded-lg shadow-sm" role="alert">
+                        <ul class="list-disc list-inside">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
                     </div>
                 @endif
                 @if ($errors->any())
@@ -50,7 +49,7 @@
                                         <div class="flex items-center space-x-4 text-sm">
                                             <a href="{{ route('admin.rutinan.edit', $rutinan->id) }}" class="text-indigo-600 hover:text-indigo-900 font-semibold">Edit</a>
                                             <button @click="openModal({{ json_encode($rutinan) }})" type="button" class="text-green-600 hover:text-green-900 font-semibold">Libur</button>
-                                            <form action="{{ route('admin.rutinan.destroy', $rutinan->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus jadwal ini secara permanen?');">
+                                            <form action="{{ route('admin.rutinan.destroy', $rutinan->id) }}" method="POST" class="delete-form-rutinan" data-name="{{ $rutinan->nama_acara }}">
                                                 @csrf @method('DELETE')
                                                 <button type="submit" class="text-red-600 hover:text-red-900 font-semibold">Hapus</button>
                                             </form>
@@ -81,7 +80,7 @@
                                 <template x-for="exception in selectedEvent.exceptions" :key="exception.id">
                                     <div class="flex items-center justify-between p-2 bg-gray-50 rounded-md">
                                         <p x-text="new Date(exception.libur_date + 'T00:00:00').toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })"></p>
-                                        <form :action="`/admin/rutinan/exceptions/${exception.id}`" method="POST" onsubmit="return confirm('Yakin ingin membatalkan jadwal libur ini?');">@csrf @method('DELETE')<button type="submit" class="text-red-500 hover:text-red-700 text-sm font-semibold">Batalkan</button></form>
+                                        <form :action="`/admin/rutinan/exceptions/${exception.id}`" method="POST" class="delete-exception-form">@csrf @method('DELETE')<button type="submit" class="text-red-500 hover:text-red-700 text-sm font-semibold">Batalkan</button></form>
                                     </div>
                                 </template>
                             </template>
@@ -133,6 +132,49 @@
             }
         }
         document.addEventListener('alpine:init', () => { Alpine.data('rutinanPage', rutinanPage); });
+
+        // SweetAlert for delete jadwal
+        document.querySelectorAll('.delete-form-rutinan').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = this.dataset.name;
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    html: `Jadwal "<strong>${name}</strong>" akan dihapus secara permanen.`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.submit();
+                    }
+                });
+            });
+        });
+
+        // SweetAlert for delete exception
+        document.querySelectorAll('.delete-exception-form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Batalkan Jadwal Libur?',
+                    text: 'Yakin ingin membatalkan jadwal libur ini?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya, batalkan!',
+                    cancelButtonText: 'Tidak'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.submit();
+                    }
+                });
+            });
+        });
     </script>
     @endpush
 </x-app-layout>

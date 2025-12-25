@@ -1,6 +1,6 @@
-<section id="profil-pesantren" class="py-16 bg-gradient-to-br from-white via-emerald-50/60 to-white">
-  <div class="max-w-5xl mx-auto px-6">
-    <div class="grid gap-10 md:grid-cols-[1.5fr,1.2fr] items-center">
+<section id="profil-pesantren" class="py-10 sm:py-12 lg:py-16 bg-gradient-to-br from-white via-emerald-50/60 to-white">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6">
+    <div class="grid gap-6 sm:gap-8 lg:gap-10 md:grid-cols-[1.5fr,1.2fr] items-center">
       <!-- Teks utama -->
       <div>
 

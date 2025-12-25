@@ -116,7 +116,7 @@
                                             Edit
                                         </a>
                                         <form method="POST" action="{{ route('manage.selasanan.destroy', $e->id) }}"
-                                              onsubmit="return confirm('Hapus entry ini? File cover/audio juga akan dihapus.')">
+                                              class="delete-form" data-name="{{ $e->title }}">
                                             @csrf
                                             @method('DELETE')
                                             <button class="px-3 py-2 rounded-xl border border-red-200 bg-red-50 text-red-700 text-xs font-semibold hover:bg-red-100">
@@ -141,4 +141,29 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script>
+    document.querySelectorAll('.delete-form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = this.dataset.name;
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                html: `Hapus entry "<strong>${name}</strong>"?<br>File cover dan audio juga akan dihapus.`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submit();
+                }
+            });
+        });
+    });
+</script>
+@endpush
 @endsection

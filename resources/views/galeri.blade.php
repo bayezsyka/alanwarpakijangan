@@ -42,34 +42,34 @@
 @endsection --}}
 
 @section('content')
-<div class="py-24 bg-gray-50">
+<div class="pb-12 sm:pb-16 lg:pb-24 bg-gray-50">
     <div class="container mx-auto px-4">
 
         {{-- 🟢 Judul Halaman --}}
-        <div class="text-center mb-16">
-            <div class="inline-flex items-center rounded-lg border-2 border-[#008362] px-8 py-4 transition-all duration-300 hover:bg-[#008362] hover:shadow-md group cursor-pointer">
-                <span class="text-xl md:text-2xl font-bold tracking-wide text-[#008362] group-hover:text-white transition-colors duration-300">
+        <div class="text-center mb-8 sm:mb-12 lg:mb-16">
+            <div class="inline-flex items-center rounded-lg border-2 border-[#008362] px-5 sm:px-8 py-3 sm:py-4 transition-all duration-300 hover:bg-[#008362] hover:shadow-md group cursor-pointer">
+                <span class="text-lg sm:text-xl md:text-2xl font-bold tracking-wide text-[#008362] group-hover:text-white transition-colors duration-300">
                     Galeri Acara
                 </span>
             </div>
         </div>
 
         {{-- 🔙 Tombol Kembali --}}
-        <div class="mb-10">
+        <div class="mb-6 sm:mb-10">
             <a href="{{ url('/') }}"
-               class="inline-flex items-center text-sm font-medium text-gray-600 hover:text-[#008362] hover:bg-white border border-transparent transition px-3 py-2 rounded shadow-sm">
+               class="inline-flex items-center text-xs sm:text-sm font-medium text-gray-600 hover:text-[#008362] hover:bg-white border border-transparent transition px-2 sm:px-3 py-1.5 sm:py-2 rounded shadow-sm">
                 {{-- Icon Home --}}
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
                 </svg>
-                <span class="ml-2">Kembali ke Beranda</span>
+                <span class="ml-1.5 sm:ml-2">Kembali ke Beranda</span>
             </a>
         </div>
 
         {{-- 🔁 Looping Galeri Acara --}}
         @forelse($events as $event)
-            <section x-data="{ openModal: false }" class="bg-white p-10 rounded-lg shadow-md mb-10">
-                <div class="grid md:grid-cols-2 gap-6 items-start">
+            <section x-data="{ openModal: false }" class="bg-white p-4 sm:p-6 lg:p-10 rounded-lg shadow-md mb-6 sm:mb-10">
+                <div class="grid md:grid-cols-2 gap-4 sm:gap-6 items-start">
                     {{-- Swiper Foto --}}
                     <div class="swiper main-gallery-swiper">
                         <div class="swiper-wrapper">
@@ -77,16 +77,16 @@
                                 <div class="swiper-slide w-auto">
                                     <img src="{{ asset('storage/' . $photo->file_path) }}"
                                         alt="Foto Acara"
-                                        class="rounded-lg object-cover h-56 sm:h-64 md:h-72 shadow-md">
+                                        class="rounded-lg object-cover h-40 sm:h-48 md:h-56 lg:h-64 shadow-md">
                                 </div>
                             @endforeach
                         </div>
                     </div>
 
                     {{-- Informasi Acara --}}
-                    <div class="space-y-2 p-4">
-                        <h2 class="text-2xl font-bold text-gray-800">{{ $event->nama_acara }}</h2>
-                        <p class="text-sm text-gray-500">{{ \Carbon\Carbon::parse($event->tanggal)->translatedFormat('d F Y') }}</p>
+                    <div class="space-y-2 p-2 sm:p-4">
+                        <h2 class="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800">{{ $event->nama_acara }}</h2>
+                        <p class="text-xs sm:text-sm text-gray-500">{{ \Carbon\Carbon::parse($event->tanggal)->translatedFormat('d F Y') }}</p>
                         <div x-data="{ expanded: false }" class="space-y-2">
                             <p :class="expanded ? 'break-words' : 'break-words line-clamp-4'"
                                class="text-sm text-gray-700 transition-all duration-300 ease-in-out">
@@ -103,7 +103,7 @@
                         </div>
                         <button
                             @click="openModal = true"
-                            class="mt-4 inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold px-4 py-2 rounded shadow"
+                            class="mt-3 sm:mt-4 inline-flex items-center gap-1.5 sm:gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-semibold px-3 sm:px-4 py-2 rounded shadow"
                         >
                             {{-- Icon Foto (Heroicon: Photograph) --}}
                             <svg

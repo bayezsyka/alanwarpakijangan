@@ -12,11 +12,6 @@
 
     <div class="py-8">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
-            @if (session('success'))
-                <div class="mb-6 bg-emerald-50 border-l-4 border-[#008362] p-4 rounded-r-lg">
-                    <p class="text-emerald-800 font-medium">{{ session('success') }}</p>
-                </div>
-            @endif
 
             <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
                 {{-- <div class="bg-gray-50 px-8 py-6 border-b border-gray-200">

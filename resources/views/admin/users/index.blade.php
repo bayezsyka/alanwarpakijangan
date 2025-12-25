@@ -15,18 +15,7 @@
             <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
             {{-- <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg"> --}}
                 {{-- <div class="p-6 text-gray-900"> --}}
-                    
-                    @if (session('success'))
-                        <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-                            <span class="block sm:inline">{{ session('success') }}</span>
-                        </div>
-                    @endif
-                    
-                    @if (session('error'))
-                        <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                            <span class="block sm:inline">{{ session('error') }}</span>
-                        </div>
-                    @endif
+
 
                     {{-- <div class="flex justify-between items-center mb-6">
                         <h3 class="text-2xl font-semibold">Daftar Akun Admin</h3>
@@ -80,7 +69,7 @@
                                             
                                             @if(auth()->id() !== $user->id)
                                                 <span class="mx-2 text-gray-300">|</span>
-                                                <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Apakah Anda yakin ingin menghapus user ini?');">
+                                                <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" class="inline-block delete-form" data-name="{{ $user->name }}">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="text-red-600 hover:text-red-900 font-semibold">Hapus</button>
@@ -105,4 +94,29 @@
             </div>
         </div>
     </div>
+
+    @push('scripts')
+    <script>
+        document.querySelectorAll('.delete-form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = this.dataset.name;
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    html: `Anda akan menghapus user: <br><strong>${name}</strong>`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.submit();
+                    }
+                });
+            });
+        });
+    </script>
+    @endpush
 </x-app-layout>

@@ -15,6 +15,9 @@
     <!-- Quill (Editor artikel) -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -56,23 +59,36 @@
         @endif
 
         <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            {{-- Flash Messages --}}
-            @if(session('success'))
-                <div class="mb-4 rounded-xl bg-emerald-50 border border-emerald-200 p-4 text-emerald-800">
-                    {{ session('success') }}
-                </div>
-            @endif
-            @if(session('error'))
-                <div class="mb-4 rounded-xl bg-red-50 border border-red-200 p-4 text-red-800">
-                    {{ session('error') }}
-                </div>
-            @endif
-
             @yield('content')
         </main>
     </div>
 
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    
+    <!-- Flash Messages with SweetAlert -->
+    @if(session('success'))
+        <script>
+            Swal.fire({
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                icon: 'success',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#059669'
+            });
+        </script>
+    @endif
+    @if(session('error'))
+        <script>
+            Swal.fire({
+                title: 'Gagal!',
+                text: '{{ session('error') }}',
+                icon: 'error',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#dc2626'
+            });
+        </script>
+    @endif
+    
     @stack('scripts')
 </body>
 </html>

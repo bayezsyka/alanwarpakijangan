@@ -97,11 +97,25 @@
                         this.uploading = false;
                         if (xhr.status >= 200 && xhr.status < 300) { window.location.href = "{{ route('admin.events.index') }}"; } 
                         else {
-                            // Penanganan error bisa ditambahkan di sini jika perlu
-                            alert('Terjadi kesalahan saat memperbarui data.');
+                            Swal.fire({
+                                title: 'Gagal!',
+                                text: 'Terjadi kesalahan saat memperbarui data.',
+                                icon: 'error',
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#dc2626'
+                            });
                         }
                     };
-                    xhr.onerror = () => { this.uploading = false; alert('Upload gagal. Periksa koneksi Anda.'); };
+                    xhr.onerror = () => { 
+                        this.uploading = false; 
+                        Swal.fire({
+                            title: 'Upload Gagal!',
+                            text: 'Periksa koneksi Anda dan coba lagi.',
+                            icon: 'error',
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#dc2626'
+                        });
+                    };
                     xhr.open('POST', this.$refs.form.action); // Method tetap POST
                     xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
                     xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');

@@ -96,7 +96,7 @@
             left: 0;
             height: 4px;
             background: linear-gradient(to right, #008362, #059669);
-            z-index: 1000;
+            z-index: 40; /* Lower than navbar z-50 */
             transition: width 0.1s;
         }
         
@@ -141,56 +141,59 @@
     <!-- Reading progress bar -->
     <div class="reading-progress" id="readingProgress"></div>
     
-    @include('layouts.nav')
+    <!-- Navbar hidden on mobile for cleaner reading experience -->
+    <div class="hidden sm:block">
+        @include('layouts.nav')
+    </div>
     
-    <!-- Floating share buttons -->
-    <div class="floating-share">
+    <!-- Floating share buttons - hidden on mobile, shown on desktop -->
+    <div class="floating-share hidden sm:flex">
         <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}" target="_blank" class="w-10 h-10 flex items-center justify-center bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300 shadow-md" aria-label="Share ke Facebook"><i class="fab fa-facebook-f"></i></a>
         <a href="https://twitter.com/intent/tweet?url={{ urlencode(url()->current()) }}&text={{ urlencode($selasanan->title) }}" target="_blank" class="w-10 h-10 flex items-center justify-center bg-blue-400 text-white rounded-full hover:bg-blue-500 transition duration-300 shadow-md" aria-label="Share ke Twitter"><i class="fab fa-twitter"></i></a>
         <a href="https://wa.me/?text={{ urlencode($selasanan->title . ' ' . url()->current()) }}" target="_blank" class="w-10 h-10 flex items-center justify-center bg-green-500 text-white rounded-full hover:bg-green-600 transition duration-300 shadow-md" aria-label="Share ke WhatsApp"><i class="fab fa-whatsapp"></i></a>
         <button onclick="copyToClipboard('{{ url()->current() }}')" class="w-10 h-10 flex items-center justify-center bg-gray-600 text-white rounded-full hover:bg-gray-700 transition duration-300 shadow-md" aria-label="Copy link"><i class="fas fa-link"></i></button>
     </div>
     
-    <main class="flex-grow container mx-auto px-4 py-16 max-w-3xl">
-        <article class="bg-white rounded-xl shadow-sm overflow-hidden">
+    
+    <main class="flex-grow container mx-auto px-2 sm:px-4 pt-2 sm:pt-24 pb-4 sm:pb-8 max-w-3xl">
+        <article class="bg-white rounded-lg sm:rounded-xl shadow-sm overflow-hidden">
             <!-- Article header with improved spacing -->
-            <header class="px-6 pt-8 pb-6">
-                <div class="mb-6">
-                    <a href="{{ route('selasanan.index') }}" class="inline-flex items-center text-[#008362] hover:text-cyan-950 font-medium transition duration-300 mb-4">
-                        <i class="fas fa-arrow-left mr-2"></i> Kembali ke Selasanan
+            <header class="px-4 sm:px-6 pt-4 sm:pt-8 pb-4 sm:pb-6">
+                <div class="mb-4 sm:mb-6">
+                    <a href="{{ route('selasanan.index') }}" class="inline-flex items-center text-[#008362] hover:text-cyan-950 text-sm sm:text-base font-medium transition duration-300 mb-3 sm:mb-4">
+                        <i class="fas fa-arrow-left mr-1.5 sm:mr-2"></i> Kembali
                     </a>
                     
-                    {{-- Badge Kajian Selasanan --}}
-                    <div class="flex items-center gap-2 mb-4">
-                        <span class="bg-emerald-600 text-white text-xs font-semibold px-3 py-1.5 rounded-full flex items-center gap-1.5">
-                            <i class="fas fa-book-open text-[11px]"></i>
-                            Kajian Rutinan "Selasanan"
+                    {{-- Badge Kajian Selasanan - compact on mobile --}}
+                    <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-3 sm:mb-4">
+                        <span class="bg-emerald-600 text-white text-[10px] sm:text-xs font-semibold px-2 sm:px-3 py-1 sm:py-1.5 rounded-full flex items-center gap-1">
+                            <i class="fas fa-book-open text-[9px] sm:text-[11px]"></i>
+                            Selasanan
                         </span>
-                        <span class="bg-emerald-100 text-emerald-700 text-xs font-semibold px-3 py-1.5 rounded-full">
-                            {{ \Carbon\Carbon::create($selasanan->year, $selasanan->month, 1)->locale('id')->translatedFormat('F Y') }}, Minggu ke-{{ $selasanan->week_of_month }}
+                        <span class="bg-emerald-100 text-emerald-700 text-[10px] sm:text-xs font-semibold px-2 sm:px-3 py-1 sm:py-1.5 rounded-full">
+                            {{ \Carbon\Carbon::create($selasanan->year, $selasanan->month, 1)->locale('id')->translatedFormat('M Y') }}, Minggu {{ $selasanan->week_of_month }}
                         </span>
                     </div>
                     
-                    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 leading-tight mb-4">{{ $selasanan->title }}</h1>
+                    <h1 class="text-xl sm:text-3xl md:text-4xl font-bold text-gray-900 leading-tight mb-3 sm:mb-4">{{ $selasanan->title }}</h1>
                     
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-sm text-gray-600 mb-6">
-                        <div class="flex items-center">
+                    <div class="flex flex-col gap-2 text-xs sm:text-sm text-gray-600 mb-3 sm:mb-6">
+                        <div class="flex items-center flex-wrap gap-1">
                             @php
                                 $speakerName = $selasanan->speaker ?? 'KH. Muhammad Miftah';
-                                $avatarUrl = "https://ui-avatars.com/api/?name=" . urlencode($speakerName) . "&background=059669&color=fff";
+                                $avatarUrl = "https://ui-avatars.com/api/?name=" . urlencode($speakerName) . "&background=059669&color=fff&size=32";
                             @endphp
-                            <img src="{{ $avatarUrl }}" class="w-6 h-6 rounded-full mr-2" alt="{{ $speakerName }}">
-                            <span class="font-medium mr-1">Pembicara:</span>
-                            <span>{{ $speakerName }}</span>
+                            <img src="{{ $avatarUrl }}" class="w-5 h-5 sm:w-6 sm:h-6 rounded-full" alt="{{ $speakerName }}">
+                            <span class="font-medium">{{ $speakerName }}</span>
                         </div>
-                        <div class="flex flex-col sm:items-end">
-                            <span>Senin, {{ $selasanan->monday_date->locale('id')->translatedFormat('d F Y') }} • {{ substr($selasanan->time_wib, 0, 5) }} WIB</span>
+                        <div class="text-gray-500">
+                            Senin, {{ $selasanan->monday_date->locale('id')->translatedFormat('d M Y') }} • {{ substr($selasanan->time_wib, 0, 5) }} WIB
                         </div>
                     </div>
                 </div>
                 
                 @if($selasanan->cover_image_path)
-                    <img src="{{ asset('storage/' . $selasanan->cover_image_path) }}" alt="{{ $selasanan->title }}" class="w-full h-auto max-h-96 object-cover rounded-lg mb-6 shadow-md">
+                    <img src="{{ asset('storage/' . $selasanan->cover_image_path) }}" alt="{{ $selasanan->title }}" class="w-full h-auto max-h-64 sm:max-h-96 object-cover rounded-lg mb-4 sm:mb-6 shadow-md">
                 @endif
             </header>
             
@@ -250,10 +253,13 @@
     <script>        
         // Reading progress indicator
         function updateReadingProgress() {
+            const progressBar = document.getElementById('readingProgress');
+            if (!progressBar) return;
+            
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            document.getElementById('readingProgress').style.width = scrolled + "%";
+            const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+            progressBar.style.width = scrolled + "%";
         }
         
         // Scroll to top
@@ -268,9 +274,34 @@
             updateReadingProgress();
         };
         
-        // Copy link function
+        // Copy link function with fallback
         function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(function() {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(function() {
+                    Swal.fire({
+                        title: 'Tersalin!',
+                        text: 'Link jurnal berhasil disalin.',
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                }, function(err) {
+                    fallbackCopy(text);
+                });
+            } else {
+                fallbackCopy(text);
+            }
+        }
+        
+        function fallbackCopy(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-999999px";
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
                 Swal.fire({
                     title: 'Tersalin!',
                     text: 'Link jurnal berhasil disalin.',
@@ -278,14 +309,15 @@
                     timer: 2000,
                     showConfirmButton: false
                 });
-            }, function(err) {
+            } catch (err) {
                 Swal.fire({
                     title: 'Gagal Menyalin',
-                    text: 'Maaf, terjadi kesalahan.',
-                    icon: 'error',
+                    text: 'Silakan salin secara manual: ' + text,
+                    icon: 'info',
                     confirmButtonText: 'OK'
                 });
-            });
+            }
+            document.body.removeChild(textArea);
         }
     </script>
 </body>

@@ -27,7 +27,7 @@ Route::get('/', [ArtikelController::class, 'welcome'])->name('welcome');
 Route::get('/artikel', [ArtikelController::class, 'index'])->name('artikel');
 Route::get('/artikel/{article:slug}', [ArtikelController::class, 'show'])->name('artikel.detail');
 Route::get('/galeri-acara', [GalleryController::class, 'index'])->name('galeri.index');
-Route::get('/profil', function () { return view('profil'); })->name('profil');
+// Route::get('/profil', function () { return view('profil'); })->name('profil');
 
 // == SELASANAN (PUBLIK) ==
 Route::get('/selasanan', [SelasananController::class, 'index'])->name('selasanan.index');

@@ -1,8 +1,8 @@
 <section>
     <div class="container mx-auto py-2 sm:py-4 max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="text-center pt-8">
-            <div class="inline-flex items-center rounded-lg border-2 border-[#008362] px-8 py-4 transition-all duration-300 hover:bg-[#008362] hover:shadow-md group cursor-pointer">
-                <span class="text-xl md:text-2xl font-bold tracking-wide text-[#008362] group-hover:text-white transition-colors duration-300">
+        <div class="text-center pt-6 sm:pt-8">
+            <div class="inline-flex items-center rounded-lg border-2 border-[#008362] px-5 sm:px-8 py-3 sm:py-4 transition-all duration-300 hover:bg-[#008362] hover:shadow-md group cursor-pointer">
+                <span class="text-lg sm:text-xl md:text-2xl font-bold tracking-wide text-[#008362] group-hover:text-white transition-colors duration-300">
                     Jadwal Rutinan
                 </span>
             </div>
@@ -126,7 +126,7 @@
     }
 </style>
 
-<div class="container mx-auto py-32 sm:py-42 max-w-7xl px-4 sm:px-6 lg:px-8">
+<div class="container mx-auto py-12 sm:py-20 md:py-32 max-w-7xl px-4 sm:px-6 lg:px-8">
     
     <div class="timeline-wrapper">
         <div class="timeline-line"></div>

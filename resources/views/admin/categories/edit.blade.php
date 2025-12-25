@@ -9,9 +9,34 @@
                 <input type="text" name="name" id="name" value="{{ old('name', $category->name) }}" required class="w-full mt-1 border-gray-300 rounded-md shadow-sm">
             </div>
             <div class="mt-6 flex justify-between items-center">
-                <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST" onsubmit="return confirm('Yakin?');">@csrf @method('DELETE')<button type="submit" class="text-red-600">Hapus</button></form>
+                <button type="button" onclick="confirmDelete()" class="text-red-600 hover:text-red-800">Hapus</button>
                 <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg">Perbarui</button>
             </div>
         </form>
+        <form id="delete-form" action="{{ route('admin.categories.destroy', $category->id) }}" method="POST" class="hidden">
+            @csrf
+            @method('DELETE')
+        </form>
     </div></div></div>
+
+    @push('scripts')
+    <script>
+        function confirmDelete() {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: 'Kategori ini akan dihapus secara permanen.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form').submit();
+                }
+            });
+        }
+    </script>
+    @endpush
 </x-app-layout>

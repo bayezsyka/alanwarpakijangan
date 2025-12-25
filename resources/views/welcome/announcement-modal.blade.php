@@ -163,6 +163,13 @@
                     modal.classList.remove('hidden');
                     // Disable scroll pada body
                     document.body.style.overflow = 'hidden';
+                    // Sembunyikan navbar
+                    const navbar = document.getElementById('navbar');
+                    if (navbar) {
+                        navbar.style.transform = 'translateY(-100%)';
+                        navbar.style.opacity = '0';
+                        navbar.style.pointerEvents = 'none';
+                    }
                     showCurrent();
                 }
 
@@ -171,6 +178,13 @@
                     modal.classList.add('hidden');
                     // Enable scroll kembali pada body
                     document.body.style.overflow = '';
+                    // Tampilkan kembali navbar
+                    const navbar = document.getElementById('navbar');
+                    if (navbar) {
+                        navbar.style.transform = '';
+                        navbar.style.opacity = '';
+                        navbar.style.pointerEvents = '';
+                    }
                 }
 
                 function showCurrent() {

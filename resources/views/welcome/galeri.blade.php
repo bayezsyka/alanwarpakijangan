@@ -1,12 +1,12 @@
 {{-- Salin semua kode dari <section> hingga </section> di bawah ini --}}
 
-<section class=" py-16 sm:py-24">
+<section class="py-10 sm:py-16 lg:py-24">
 
     <div class="container mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         {{-- Header Section --}}
-        <div class="text-center mb-16">
-            <div class="inline-flex items-center rounded-lg border-2 border-[#008362] px-8 py-4 transition-all duration-300 hover:bg-[#008362] hover:shadow-md group cursor-pointer">
-                <span class="text-xl md:text-2xl font-bold tracking-wide text-[#008362] group-hover:text-white transition-colors duration-300">
+        <div class="text-center mb-8 sm:mb-12 lg:mb-16">
+            <div class="inline-flex items-center rounded-lg border-2 border-[#008362] px-5 sm:px-8 py-3 sm:py-4 transition-all duration-300 hover:bg-[#008362] hover:shadow-md group cursor-pointer">
+                <span class="text-lg sm:text-xl md:text-2xl font-bold tracking-wide text-[#008362] group-hover:text-white transition-colors duration-300">
                     Galeri Acara
                 </span>
             </div>
@@ -15,9 +15,9 @@
         <div class="space-y-16">
             @forelse($latestEvents as $event)
                 <div>
-                    <h3 class="text-2xl font-semibold text-gray-800 mb-2">{{ $event->nama_acara }}</h3>
+                    <h3 class="text-lg sm:text-xl lg:text-2xl font-semibold text-gray-800 mb-2">{{ $event->nama_acara }}</h3>
                     @if($event->tanggal)
-                        <p class="text-sm text-gray-500 mb-6">{{ \Carbon\Carbon::parse($event->tanggal)->translatedFormat('d F Y') }}</p>
+                        <p class="text-xs sm:text-sm text-gray-500 mb-4 sm:mb-6">{{ \Carbon\Carbon::parse($event->tanggal)->translatedFormat('d F Y') }}</p>
                     @endif
 
                     <div class="swiper welcome-gallery-swiper">
@@ -25,7 +25,7 @@
                             @foreach($event->photos as $photo)
                                 <div class="swiper-slide !w-auto">
                                     <img src="{{ asset('storage/' . $photo->file_path) }}" alt="{{ $event->nama_acara }}" 
-                                         class="h-48 sm:h-56 md:h-64 rounded-lg shadow-md object-cover">
+                                         class="h-36 sm:h-48 md:h-56 lg:h-64 rounded-lg shadow-md object-cover">
                                 </div>
                             @endforeach
                         </div>
@@ -39,8 +39,8 @@
         </div>
 
         @if($latestEvents->isNotEmpty())
-            <div class="text-center mt-16">
-                <a href="{{ route('galeri.index') }}" class="px-8 py-3 bg-[#008362] text-white font-semibold rounded-lg shadow-md hover:bg-[hsl(186,100%,26%)]">
+            <div class="text-center mt-10 sm:mt-16">
+                <a href="{{ route('galeri.index') }}" class="px-6 sm:px-8 py-2.5 sm:py-3 bg-[#008362] text-white text-sm sm:text-base font-semibold rounded-lg shadow-md hover:bg-[hsl(186,100%,26%)]">
                     Lihat Semua Galeri
                 </a>
             </div>

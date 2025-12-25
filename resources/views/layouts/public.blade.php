@@ -31,7 +31,13 @@
     
     @include('layouts.nav')
 
-    <main class="flex-grow">
+    {{-- Main content with padding for fixed navbar --}}
+    {{-- Landing page (/) has fullscreen hero, so no padding needed --}}
+    {{-- Other pages need padding to not overlap with navbar --}}
+    @php
+        $isLanding = request()->is('/');
+    @endphp
+    <main class="flex-grow {{ $isLanding ? '' : 'pt-16 sm:pt-20' }}">
         @yield('content')
     </main>
 

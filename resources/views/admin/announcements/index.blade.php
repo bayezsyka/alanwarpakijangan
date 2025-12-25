@@ -14,11 +14,7 @@
 
     <div class="py-8">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
-            @if (session('success'))
-                <div class="mb-6 bg-emerald-50 border-l-4 border-[#059568] p-4 rounded-r-lg">
-                    <p class="text-emerald-800 font-medium">{{ session('success') }}</p>
-                </div>
-            @endif
+
 
             <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
                 <div class="bg-gray-50 px-8 py-6 border-b border-gray-200 flex items-center justify-between">
@@ -90,7 +86,7 @@
                                             </a>
                                             <form action="{{ route('admin.announcements.destroy', $announcement) }}"
                                                   method="POST"
-                                                  onsubmit="return confirm('Yakin ingin menghapus pengumuman ini?')">
+                                                  class="delete-form" data-name="{{ $announcement->title }}">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit"
@@ -118,4 +114,29 @@
             </div>
         </div>
     </div>
+
+    @push('scripts')
+    <script>
+        document.querySelectorAll('.delete-form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = this.dataset.name;
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    html: `Anda akan menghapus pengumuman: <br><strong>${name}</strong>`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.submit();
+                    }
+                });
+            });
+        });
+    </script>
+    @endpush
 </x-app-layout>

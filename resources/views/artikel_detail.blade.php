@@ -95,7 +95,7 @@
             left: 0;
             height: 4px;
             background: #008362;
-            z-index: 1000;
+            z-index: 40; /* Lower than navbar z-50 */
             transition: width 0.1s;
         }
         
@@ -184,43 +184,45 @@
     <!-- Reading progress bar -->
     <div class="reading-progress" id="readingProgress"></div>
     
-    @include('layouts.nav')
+    <!-- Navbar hidden on mobile for cleaner reading experience -->
+    <div class="hidden sm:block">
+        @include('layouts.nav')
+    </div>
     
-    <!-- Floating share buttons -->
-    <div class="floating-share">
+    <!-- Floating share buttons - hidden on mobile, shown on desktop -->
+    <div class="floating-share hidden sm:flex">
         <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}" target="_blank" class="w-10 h-10 flex items-center justify-center bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300 shadow-md" aria-label="Share ke Facebook"><i class="fab fa-facebook-f"></i></a>
         <a href="https://twitter.com/intent/tweet?url={{ urlencode(url()->current()) }}&text={{ urlencode($article->judul) }}" target="_blank" class="w-10 h-10 flex items-center justify-center bg-blue-400 text-white rounded-full hover:bg-blue-500 transition duration-300 shadow-md" aria-label="Share ke Twitter"><i class="fab fa-twitter"></i></a>
         <a href="https://wa.me/?text={{ urlencode($article->judul . ' ' . url()->current()) }}" target="_blank" class="w-10 h-10 flex items-center justify-center bg-green-500 text-white rounded-full hover:bg-green-600 transition duration-300 shadow-md" aria-label="Share ke WhatsApp"><i class="fab fa-whatsapp"></i></a>
         <button onclick="copyToClipboard('{{ url()->current() }}')" class="w-10 h-10 flex items-center justify-center bg-gray-600 text-white rounded-full hover:bg-gray-700 transition duration-300 shadow-md" aria-label="Copy link"><i class="fas fa-link"></i></button>
     </div>
     
-    <main class="flex-grow container mx-auto px-4 py-16 max-w-3xl">
-        <article class="bg-white rounded-xl shadow-sm overflow-hidden">
+    <main class="flex-grow container mx-auto px-2 sm:px-4 pt-2 sm:pt-24 pb-4 sm:pb-8 max-w-3xl">
+        <article class="bg-white rounded-lg sm:rounded-xl shadow-sm overflow-hidden">
             <!-- Article header with improved spacing -->
-            <header class="px-6 pt-8 pb-6">
-                <div class="mb-6">
-                    <a href="{{ route('artikel') }}" class="inline-flex items-center text-[#008362] hover:text-cyan-950 font-medium transition duration-300 mb-4">
-                        <i class="fas fa-arrow-left mr-2"></i> Kembali ke Artikel
+            <header class="px-4 sm:px-6 pt-4 sm:pt-8 pb-4 sm:pb-6">
+                <div class="mb-4 sm:mb-6">
+                    <a href="{{ route('artikel') }}" class="inline-flex items-center text-[#008362] hover:text-cyan-950 text-sm sm:text-base font-medium transition duration-300 mb-3 sm:mb-4">
+                        <i class="fas fa-arrow-left mr-1.5 sm:mr-2"></i> Kembali
                     </a>
-                    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 leading-tight mb-4">{{ $article->judul }}</h1>
+                    <h1 class="text-xl sm:text-3xl md:text-4xl font-bold text-gray-900 leading-tight mb-3 sm:mb-4">{{ $article->judul }}</h1>
                     
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-sm text-gray-600 mb-6">
-                        <div class="flex items-center">
+                    <div class="flex flex-col gap-2 text-xs sm:text-sm text-gray-600 mb-3 sm:mb-6">
+                        <div class="flex items-center flex-wrap gap-1">
                             @php
                                 $authorName = $article->penulis ?? $article->user->name ?? 'Admin';
-                                $avatarUrl = "https://ui-avatars.com/api/?name=" . urlencode($authorName) . "&background=0D9488&color=fff";
+                                $avatarUrl = "https://ui-avatars.com/api/?name=" . urlencode($authorName) . "&background=0D9488&color=fff&size=32";
                             @endphp
-                            <img src="{{ $avatarUrl }}" class="w-6 h-6 rounded-full mr-2" alt="{{ $authorName }}">
-                            <span class="font-medium mr-1">Oleh:</span>
-                            <span>{{ $authorName }}</span>
-                            <span class="mx-2 text-gray-400">•</span>
+                            <img src="{{ $avatarUrl }}" class="w-5 h-5 sm:w-6 sm:h-6 rounded-full" alt="{{ $authorName }}">
+                            <span class="font-medium">{{ $authorName }}</span>
+                            <span class="text-gray-400">•</span>
                             <span class="flex items-center">
-                                <i class="far fa-eye mr-1.5"></i>
-                                {{ $article->views }}x dilihat
+                                <i class="far fa-eye mr-1"></i>
+                                {{ $article->views }}x
                             </span>
                         </div>
-                        <div class="flex flex-col sm:items-end">
-                            <span>Diterbitkan: {{ $article->created_at->translatedFormat('d F Y, H:i') }} WIB</span>
+                        <div class="text-gray-500">
+                            {{ $article->created_at->translatedFormat('d M Y, H:i') }} WIB
                         </div>
                     </div>
                 </div>
@@ -231,7 +233,7 @@
                             ? $article->gambar
                             : asset('storage/' . $article->gambar);
                     @endphp
-                    <img src="{{ $imageUrl }}" alt="{{ $article->judul }}" class="w-full h-auto max-h-96 object-cover rounded-lg mb-6 shadow-md">
+                    <img src="{{ $imageUrl }}" alt="{{ $article->judul }}" class="w-full h-auto max-h-64 sm:max-h-96 object-cover rounded-lg mb-4 sm:mb-6 shadow-md">
                 @endif
             </header>
             
@@ -260,54 +262,13 @@
     <script>        
         // Reading progress indicator
         function updateReadingProgress() {
+            const progressBar = document.getElementById('readingProgress');
+            if (!progressBar) return;
+            
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            document.getElementById('readingProgress').style.width = scrolled + "%";
-            document.getElementById('readingProgressText').textContent = Math.round(scrolled) + "% selesai";
-        }
-        
-        // Generate table of contents
-        function generateTOC() {
-            const headings = document.querySelectorAll('.article-content h1, .article-content h2, .article-content h3');
-            const tocList = document.getElementById('tocList');
-            
-            if (headings.length > 3) {
-                headings.forEach((heading, index) => {
-                    // Add ID if not exists
-                    if (!heading.id) {
-                        heading.id = 'heading-' + index;
-                    }
-                    
-                    // Create TOC item
-                    const li = document.createElement('li');
-                    const a = document.createElement('a');
-                    a.href = '#' + heading.id;
-                    a.textContent = heading.textContent;
-                    a.className = 'text-sm';
-                    
-                    // Indent based on heading level
-                    if (heading.tagName === 'H2') {
-                        a.className += ' ml-2';
-                    } else if (heading.tagName === 'H3') {
-                        a.className += ' ml-4';
-                    }
-                    
-                    li.appendChild(a);
-                    tocList.appendChild(li);
-                });
-                
-                // Show TOC button
-                document.querySelector('footer button').classList.remove('hidden');
-            } else {
-                document.querySelector('footer button').classList.add('hidden');
-            }
-        }
-        
-        // Toggle table of contents
-        function toggleToc() {
-            const toc = document.getElementById('tableOfContents');
-            toc.style.display = toc.style.display === 'block' ? 'none' : 'block';
+            const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+            progressBar.style.width = scrolled + "%";
         }
         
         // Scroll to top
@@ -318,29 +279,38 @@
             });
         }
         
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-        
-        // Initialize on load
-        window.onload = function() {
-            calculateReadingTime();
-            generateTOC();
-        };
-        
         window.onscroll = function() {
             updateReadingProgress();
         };
         
-        // Copy link function
+        // Copy link function with fallback
         function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(function() {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(function() {
+                    Swal.fire({
+                        title: 'Tersalin!',
+                        text: 'Link artikel berhasil disalin.',
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                }, function(err) {
+                    fallbackCopy(text);
+                });
+            } else {
+                fallbackCopy(text);
+            }
+        }
+        
+        function fallbackCopy(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-999999px";
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
                 Swal.fire({
                     title: 'Tersalin!',
                     text: 'Link artikel berhasil disalin.',
@@ -348,14 +318,15 @@
                     timer: 2000,
                     showConfirmButton: false
                 });
-            }, function(err) {
+            } catch (err) {
                 Swal.fire({
                     title: 'Gagal Menyalin',
-                    text: 'Maaf, terjadi kesalahan.',
+                    text: 'Silakan salin secara manual.',
                     icon: 'error',
                     confirmButtonText: 'OK'
                 });
-            });
+            }
+            document.body.removeChild(textArea);
         }
     </script>
 </body>
