@@ -37,7 +37,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>Login | Admin Al-Anwar</title>
-        <link rel="icon" href="{{ asset('images/logo.png') }}" type="image/png">
+        <link rel="icon" href="{{ asset('images/logo.webp') }}" type="image/webp">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -55,7 +55,7 @@
                 <!-- Logo & Text -->
                 <div class="text-white md:w-1/2 w-full flex flex-col items-center justify-center text-center px-6 mb-10 md:mb-0">
                     <a href="/">
-                        <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-32 mb-4">
+                        <img src="{{ asset('images/logo.webp') }}" alt="Logo" class="h-32 mb-4">
                     </a>
                     <h1 class="text-2xl md:text-3xl font-bold leading-tight">
                         Pondok Pesantren <br> Al-Anwar Pakijangan

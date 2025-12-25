@@ -4,7 +4,7 @@
         <!-- Kiri -->
         <div>
             <div class="mb-4 flex items-center pb-3 border-b border-gray-300 w-fit">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo Al-Anwar" class="h-14 mr-3 shrink-0">
+                <img src="{{ asset('images/logo.webp') }}" alt="Logo Al-Anwar" class="h-14 mr-3 shrink-0">
                 <h3 class="text-lg font-bold break-words">
                     Pondok Pesantren <br> Al-Anwar Pakijangan
                 </h3>

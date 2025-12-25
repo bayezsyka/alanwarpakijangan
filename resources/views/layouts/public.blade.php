@@ -6,25 +6,25 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Pondok Pesantren Al-Anwar Pakijangan</title>
     <meta name="description" content="Selamat datang di website resmi Pondok Pesantren Al-Anwar Pakijangan. Kami menyatukan pendidikan berkualitas dengan nilai-nilai Islam untuk membentuk generasi berkarakter.">
-    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.webp') }}">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    
+    <!-- FORCE LIGHT MODE (jalankan sebelum CSS/Tailwind untuk cegah FOUC) -->
+    <script>
+      (function () {
+        // Buang jejak dark mode sebelumnya & paksa terang
+        document.documentElement.classList.remove('dark');
+        try { localStorage.setItem('theme', 'light'); } catch (e) {}
+      })();
+    </script>
+    
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
     @stack('styles')
-    <!-- FORCE LIGHT MODE (jalankan sebelum CSS/Tailwind untuk cegah FOUC) -->
-<script>
-  (function () {
-    // Buang jejak dark mode sebelumnya & paksa terang
-    document.documentElement.classList.remove('dark');
-    try { localStorage.setItem('theme', 'light'); } catch (e) {}
-  })();
-</script>
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.0/dist/tailwind.min.css" rel="stylesheet">
 </head>
 
 <body class="bg-[#FDFDFC] text-[#1b1b18] min-h-screen flex flex-col">

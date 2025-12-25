@@ -9,7 +9,7 @@
         {{-- Logo + brand --}}
         <div class="flex items-center justify-between h-16 px-4 border-b border-emerald-500/30">
             <a href="{{ route('dashboard') }}" class="flex items-center gap-3">
-                <img src="{{ asset('images/logo.png') }}"
+                <img src="{{ asset('images/logo.webp') }}"
                      alt="Logo"
                      class="h-10 w-10 rounded-2xl bg-white/10 p-1.5">
                 <div>
@@ -137,7 +137,7 @@
                     </svg>
                 </button>
                 <div class="flex items-center gap-2">
-                    <img src="{{ asset('images/logo.png') }}"
+                    <img src="{{ asset('images/logo.webp') }}"
                          alt="Logo"
                          class="h-8 w-8 rounded-2xl bg-emerald-50 p-1">
                     <div>
@@ -164,7 +164,7 @@
 
                 <div class="flex items-center justify-between h-14 px-4 border-b border-emerald-500/30">
                     <div class="flex items-center gap-2 text-emerald-50">
-                        <img src="{{ asset('images/logo.png') }}"
+                        <img src="{{ asset('images/logo.webp') }}"
                              alt="Logo"
                              class="h-8 w-8 rounded-2xl bg-white/10 p-1">
                         <div>
@@ -294,7 +294,7 @@
                 {{-- Logo & Brand --}}
                 <div class="flex items-center">
                     <a href="{{ route('welcome') }}" class="flex-shrink-0 flex items-center gap-2">
-                        <img class="block h-9 w-auto" src="{{ asset('images/logo.png') }}" alt="Logo">
+                        <img class="block h-9 w-auto" src="{{ asset('images/logo.webp') }}" alt="Logo">
                         <span class="font-bold text-lg text-emerald-700">Panel Penulis</span>
                     </a>
                     
