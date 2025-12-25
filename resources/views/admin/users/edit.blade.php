@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 max-w-xl mx-auto">
-                    
+
                     @if ($errors->any())
                         <div class="mb-4">
                             <div class="font-medium text-red-600">{{ __('Whoops! Something went wrong.') }}</div>
@@ -34,46 +34,36 @@
                             <x-input-label for="email" :value="__('Email')" />
                             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $user->email)" required autocomplete="username" />
                         </div>
-                        
-                        <div class="mb-4">
+
+                        <div class="mt-4">
                             <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
-                            <select name="role" id="role"
-                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm text-sm" required>
-                                <option value="admin" {{ old('role', $user->role ?? 'admin') === 'admin' ? 'selected' : '' }}>
-                                    Admin
-                                </option>
-                                <option value="penulis" {{ old('role', $user->role ?? '') === 'penulis' ? 'selected' : '' }}>
-                                    Penulis
-                                </option>
+                            <select name="role" id="role" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm text-sm" required>
+                                <option value="admin" {{ old('role', $user->role) === 'admin' ? 'selected' : '' }}>Admin</option>
+                                <option value="penulis" {{ old('role', $user->role) === 'penulis' ? 'selected' : '' }}>Penulis</option>
+                                <option value="selasanan_manager" {{ old('role', $user->role) === 'selasanan_manager' ? 'selected' : '' }}>Pengurus Selasanan</option>
                             </select>
                         </div>
-                        
+
                         <div class="mt-4">
                             <x-input-label for="password" :value="__('Password (Opsional)')" />
-                            <x-text-input id="password" class="block mt-1 w-full"
-                                            type="password"
-                                            name="password"
-                                            autocomplete="new-password" />
+                            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" autocomplete="new-password" />
                             <p class="text-sm text-gray-500 mt-1">Kosongkan jika tidak ingin mengubah password.</p>
                         </div>
 
                         <div class="mt-4">
                             <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-                            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                                            type="password"
-                                            name="password_confirmation" autocomplete="new-password" />
+                            <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" autocomplete="new-password" />
                         </div>
 
                         <div class="flex items-center justify-end mt-4">
-                            <a href="{{ route('admin.users.index') }}" class="underline text-sm text-gray-600 hover:text-gray-900">
-                                Batal
-                            </a>
+                            <a href="{{ route('admin.users.index') }}" class="underline text-sm text-gray-600 hover:text-gray-900">Batal</a>
 
                             <x-primary-button class="ms-4">
                                 {{ __('Perbarui User') }}
                             </x-primary-button>
                         </div>
                     </form>
+
                 </div>
             </div>
         </div>

@@ -1,12 +1,11 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 py-12 lg:py-16">
     {{-- Header Section --}}
     <div class="text-center mb-16">
-        <h1 class="text-4xl md:text-5xl font-bold mb-6 tracking-tighter">
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-400">
+        <div class="inline-flex items-center rounded-lg border-2 border-[#008362] px-8 py-4 transition-all duration-300 hover:bg-[#008362] hover:shadow-md group cursor-pointer mb-8">
+            <span class="text-xl md:text-2xl font-bold tracking-wide text-[#008362] group-hover:text-white transition-colors duration-300">
                 Artikel & Opini
             </span>
-        </h1>
-        
+        </div>
         {{-- Search Bar --}}
         <div class="relative w-full max-w-2xl mx-auto mb-12">
             <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-gray-400">

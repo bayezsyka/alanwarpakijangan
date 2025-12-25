@@ -16,7 +16,14 @@ class ArtikelController extends Controller
      */
     public function welcome()
     {
-        $latestArticles = Article::latest()->take(3)->get();
+        // Ambil 2 artikel terbaru (bukan 3)
+        $latestArticles = Article::latest()->take(2)->get();
+        
+        // Ambil 1 jurnal Selasanan terbaru yang sudah dipublish
+        $latestSelasanan = \App\Models\SelasananEntry::where('is_published', true)
+            ->orderByDesc('monday_date')
+            ->first();
+        
         $latestEvents = Event::with('photos')->latest()->take(3)->get();
         
         // --- LOGIKA BARU YANG MEMAKSA TANGGAL BARU ---
@@ -60,11 +67,12 @@ class ArtikelController extends Controller
         // Kirim semua data ke view
         return view('welcome', compact(
             'latestArticles',
+            'latestSelasanan',
             'latestEvents',
             'groupedRutinans',
             'rollingDays',
-            'announcements', // <-- TAMBAHAN (untuk kondisi blade)
-            'announcementsData' // <-- Data yang sudah di-transform untuk JavaScript
+            'announcements',
+            'announcementsData'
         ));
     }
 

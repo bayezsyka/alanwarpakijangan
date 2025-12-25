@@ -20,14 +20,8 @@ class Rutinan extends Model
         'day_of_week',
     ];
 
-    /**
-     * Selalu muat relasi 'exceptions' setiap kali memanggil data Rutinan.
-     */
     protected $with = ['exceptions'];
 
-    /**
-     * Mendefinisikan relasi ke jadwal libur (exceptions).
-     */
     public function exceptions(): HasMany
     {
         return $this->hasMany(RutinanException::class);

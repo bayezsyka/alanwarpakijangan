@@ -13,6 +13,8 @@ use App\Http\Controllers\Admin\RutinanExceptionController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Penulis\PenulisArticleController;
 use App\Http\Controllers\Admin\AnnouncementController as AdminAnnouncementController;
+use App\Http\Controllers\SelasananController;
+use App\Http\Controllers\Selasanan\SelasananManageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,17 +29,21 @@ Route::get('/artikel/{article:slug}', [ArtikelController::class, 'show'])->name(
 Route::get('/galeri-acara', [GalleryController::class, 'index'])->name('galeri.index');
 Route::get('/profil', function () { return view('profil'); })->name('profil');
 
+// == SELASANAN (PUBLIK) ==
+Route::get('/selasanan', [SelasananController::class, 'index'])->name('selasanan.index');
+Route::get('/selasanan/{selasanan:slug}', [SelasananController::class, 'show'])->name('selasanan.show');
+Route::get('/selasanan/{selasanan:slug}/download-audio', [SelasananController::class, 'downloadAudio'])->name('selasanan.download');
+
 // == RUTE BACKEND (MEMERLUKAN LOGIN) ==
 Route::middleware(['auth', 'verified'])->group(function () {
-    
-    // UBAH BARIS INI: Arahkan ke DashboardController
+
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
-    // --- Grup untuk semua rute Admin ---
+
+    // --- Admin ---
     Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::resource('artikel', AdminArticleController::class);
         Route::resource('users', AdminUserController::class);
@@ -50,17 +56,28 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('/rutinan/exceptions/{exception}', [RutinanExceptionController::class, 'destroy'])->name('rutinan.exceptions.destroy');
     });
 
-    // === BACKEND PENULIS ===
-Route::middleware(['auth', 'verified', 'penulis'])
-    ->prefix('penulis')
-    ->name('penulis.')
-    ->group(function () {
-        Route::get('/artikel', [PenulisArticleController::class, 'index'])->name('articles.index');
-        Route::get('/artikel/create', [PenulisArticleController::class, 'create'])->name('articles.create');
-        Route::post('/artikel', [PenulisArticleController::class, 'store'])->name('articles.store');
-        Route::get('/artikel/{article}/edit', [PenulisArticleController::class, 'edit'])->name('articles.edit');
-        Route::put('/artikel/{article}', [PenulisArticleController::class, 'update'])->name('articles.update');
-        Route::delete('/artikel/{article}', [PenulisArticleController::class, 'destroy'])->name('articles.destroy');
+    // --- Panel Pengurus Selasanan (admin bisa akses juga) ---
+    Route::middleware(['role:selasanan_manager,admin'])->prefix('manage')->name('manage.')->group(function () {
+        Route::get('/selasanan', [SelasananManageController::class, 'index'])->name('selasanan.index');
+        Route::get('/selasanan/create', [SelasananManageController::class, 'create'])->name('selasanan.create');
+        Route::post('/selasanan', [SelasananManageController::class, 'store'])->name('selasanan.store');
+        Route::get('/selasanan/{entry}/edit', [SelasananManageController::class, 'edit'])->name('selasanan.edit');
+        Route::put('/selasanan/{entry}', [SelasananManageController::class, 'update'])->name('selasanan.update');
+        Route::delete('/selasanan/{entry}', [SelasananManageController::class, 'destroy'])->name('selasanan.destroy');
     });
+
+    // --- Backend Penulis ---
+    Route::middleware(['auth', 'verified', 'penulis'])
+        ->prefix('penulis')
+        ->name('penulis.')
+        ->group(function () {
+            Route::get('/artikel', [PenulisArticleController::class, 'index'])->name('articles.index');
+            Route::get('/artikel/create', [PenulisArticleController::class, 'create'])->name('articles.create');
+            Route::post('/artikel', [PenulisArticleController::class, 'store'])->name('articles.store');
+            Route::get('/artikel/{article}/edit', [PenulisArticleController::class, 'edit'])->name('articles.edit');
+            Route::put('/artikel/{article}', [PenulisArticleController::class, 'update'])->name('articles.update');
+            Route::delete('/artikel/{article}', [PenulisArticleController::class, 'destroy'])->name('articles.destroy');
+        });
 });
+
 require __DIR__.'/auth.php';

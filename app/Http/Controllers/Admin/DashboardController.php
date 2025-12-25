@@ -20,6 +20,10 @@ class DashboardController extends Controller
             return redirect()->route('penulis.articles.index');
         }
 
+        if (auth()->user()->isSelasananManager()) {
+            return redirect()->route('manage.selasanan.index');
+        }
+
         // Track visitor
         $ip = request()->ip();
         $alreadyVisited = Visitor::where('ip_address', $ip)
@@ -40,13 +44,13 @@ class DashboardController extends Controller
         $totalUsers = User::count();
         $totalCategories = Category::count();
         $activeAnnouncements = Announcement::active()->count();
-        
+
         // Kunjungan hari ini
         $visitorToday = Visitor::whereDate('visited_at', today())->count();
-        
+
         // Kunjungan 7 hari terakhir
         $visitors7Days = Visitor::where('visited_at', '>=', now()->subDays(7))->count();
-        
+
         // Kunjungan bulan ini
         $visitorsThisMonth = Visitor::whereMonth('visited_at', now()->month)
             ->whereYear('visited_at', now()->year)
@@ -57,7 +61,7 @@ class DashboardController extends Controller
             ->orderBy('views', 'desc')
             ->take(5)
             ->get();
-        
+
         $topArticleLabels = $topArticles->pluck('judul');
         $topArticleViews = $topArticles->pluck('views');
 
@@ -79,7 +83,7 @@ class DashboardController extends Controller
         // === TREN KUNJUNGAN 30 HARI ===
         $last30Days = [];
         $last30DaysData = [];
-        
+
         for ($i = 29; $i >= 0; $i--) {
             $date = now()->subDays($i);
             $last30Days[] = $date->format('d M');
@@ -92,30 +96,30 @@ class DashboardController extends Controller
             DB::raw('HOUR(visited_at) as hour'),
             DB::raw('COUNT(*) as total')
         )
-        ->where('visited_at', '>=', now()->subDays(7))
-        ->groupBy('day', 'hour')
-        ->get();
+            ->where('visited_at', '>=', now()->subDays(7))
+            ->groupBy('day', 'hour')
+            ->get();
 
         // === KUNJUNGAN PER HARI (7 hari terakhir) ===
         $visitsPerDay = Visitor::select(
             DB::raw('DATE(visited_at) as date'),
             DB::raw('COUNT(*) as total')
         )
-        ->where('visited_at', '>=', now()->subDays(6))
-        ->groupBy('date')
-        ->orderBy('date', 'asc')
-        ->get();
+            ->where('visited_at', '>=', now()->subDays(6))
+            ->groupBy('date')
+            ->orderBy('date', 'asc')
+            ->get();
 
         $dayLabels = [];
         $dayData = [];
         $dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-        
+
         for ($i = 6; $i >= 0; $i--) {
             $date = now()->subDays($i);
             $dayLabels[] = $dayNames[$date->dayOfWeek] . ' (' . $date->format('d/m') . ')';
-            
+
             $found = $visitsPerDay->firstWhere('date', $date->toDateString());
-            $dayData[] = $found ? (int)$found->total : 0;
+            $dayData[] = $found ? (int) $found->total : 0;
         }
 
         // === ARTIKEL PER KATEGORI ===
@@ -123,7 +127,7 @@ class DashboardController extends Controller
             ->having('articles_count', '>', 0)
             ->orderBy('articles_count', 'desc')
             ->get();
-        
+
         $categoryLabels = $articlesByCategory->pluck('name');
         $categoryData = $articlesByCategory->pluck('articles_count');
 
@@ -133,7 +137,6 @@ class DashboardController extends Controller
             ->get();
 
         return view('dashboard', compact(
-            // Statistik umum
             'totalArticles',
             'totalEvents',
             'totalUsers',
@@ -143,24 +146,16 @@ class DashboardController extends Controller
             'visitors7Days',
             'visitorsThisMonth',
             'totalArticleViews',
-            
-            // Artikel
             'topArticles',
             'topArticleLabels',
             'topArticleViews',
             'recentArticles',
-            
-            // Event
             'upcomingEvents',
-            
-            // Kunjungan
             'last30Days',
             'last30DaysData',
             'dayLabels',
             'dayData',
             'heatmapData',
-            
-            // Kategori & User
             'categoryLabels',
             'categoryData',
             'usersByRole',

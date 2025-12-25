@@ -47,10 +47,11 @@
 
         {{-- 🟢 Judul Halaman --}}
         <div class="text-center mb-16">
-            <h1 class="text-6xl font-extrabold mb-2">
-                <span class="text-[#008362]">Galeri</span>
-                <span class="text-gray-800">Acara</span>
-            </h1>
+            <div class="inline-flex items-center rounded-lg border-2 border-[#008362] px-8 py-4 transition-all duration-300 hover:bg-[#008362] hover:shadow-md group cursor-pointer">
+                <span class="text-xl md:text-2xl font-bold tracking-wide text-[#008362] group-hover:text-white transition-colors duration-300">
+                    Galeri Acara
+                </span>
+            </div>
         </div>
 
         {{-- 🔙 Tombol Kembali --}}

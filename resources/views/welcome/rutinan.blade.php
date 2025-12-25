@@ -1,13 +1,11 @@
 <section>
     <div class="container mx-auto py-2 sm:py-4 max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="text-center pt-8">
-            <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3">Jadwal Rutinan</h2>
-            <div class="w-16 sm:w-20 h-1 bg-emerald-500 mx-auto rounded-full"></div>
-        </div>
-        <div class="flex justify-center mt-1 sm:mt-2">
-         <div class="flex items-center text-xs sm:text-sm text-gray-600"><span class="w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-emerald-500 border-2 border-white shadow mr-1 sm:mr-2"></span>
-            Hari Ini
-        </div>
+            <div class="inline-flex items-center rounded-lg border-2 border-[#008362] px-8 py-4 transition-all duration-300 hover:bg-[#008362] hover:shadow-md group cursor-pointer">
+                <span class="text-xl md:text-2xl font-bold tracking-wide text-[#008362] group-hover:text-white transition-colors duration-300">
+                    Jadwal Rutinan
+                </span>
+            </div>
         </div>
     </div>
 <style>

@@ -80,6 +80,12 @@
                         <span>Rutinan</span>
                     </a>
 
+                    <a href="{{ route('manage.selasanan.index') }}"
+                       class="{{ request()->routeIs('manage.selasanan.*') ? $linkBase.' '.$linkActive : $linkBase.' '.$linkInactive }}">
+                        <i class="fas fa-book-reader mr-3 text-emerald-200 group-hover:text-emerald-100"></i>
+                        <span>Selasanan</span>
+                    </a>
+
                     <a href="{{ route('admin.users.index') }}"
                        class="{{ request()->routeIs('admin.users.*') ? $linkBase.' '.$linkActive : $linkBase.' '.$linkInactive }}">
                         <i class="fas fa-users mr-3 text-emerald-200 group-hover:text-emerald-100"></i>
@@ -237,6 +243,15 @@
                                         : 'text-emerald-100/90 border-transparent hover:bg-emerald-900/30 hover:border-emerald-300/30' }}">
                             <i class="fas fa-mosque mr-3 text-emerald-200 group-hover:text-emerald-100"></i>
                             <span>Rutinan</span>
+                        </a>
+
+                        <a href="{{ route('manage.selasanan.index') }}"
+                           class="group flex items-center px-3 py-2.5 rounded-xl text-sm font-medium border
+                                  {{ request()->routeIs('manage.selasanan.*')
+                                        ? 'bg-emerald-900/40 text-white border-emerald-300/60'
+                                        : 'text-emerald-100/90 border-transparent hover:bg-emerald-900/30 hover:border-emerald-300/30' }}">
+                            <i class="fas fa-book-reader mr-3 text-emerald-200 group-hover:text-emerald-100"></i>
+                            <span>Selasanan</span>
                         </a>
 
                         <a href="{{ route('admin.users.index') }}"
