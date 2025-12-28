@@ -18,9 +18,7 @@ class SelasananManageController extends Controller
     private const DEFAULT_SPEAKER = 'KH. Muhammad Miftah';
     private const DEFAULT_TIME_WIB = '20:00';
 
-    public function __construct(private readonly ImageUploadService $imageUpload)
-    {
-    }
+    public function __construct(private readonly ImageUploadService $imageUpload) {}
 
     public function index(Request $request)
     {
@@ -41,9 +39,9 @@ class SelasananManageController extends Controller
         $month = $request->query('month');
 
         $entries = SelasananEntry::query()
-            ->when($q !== '', fn ($qq) => $qq->where('title', 'like', '%' . $q . '%'))
-            ->when($year, fn ($qq) => $qq->where('year', (int) $year))
-            ->when($month, fn ($qq) => $qq->where('month', (int) $month))
+            ->when($q !== '', fn($qq) => $qq->where('title', 'like', '%' . $q . '%'))
+            ->when($year, fn($qq) => $qq->where('year', (int) $year))
+            ->when($month, fn($qq) => $qq->where('month', (int) $month))
             ->orderByDesc('monday_date')
             ->paginate(10)
             ->withQueryString();
@@ -92,7 +90,13 @@ class SelasananManageController extends Controller
             // Input cepat
             'title' => ['required', 'string', 'max:255'],
             'cover_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:10240'],
-            'audio_file' => ['nullable', 'file', 'mimetypes:audio/mpeg,audio/mp4,audio/x-m4a,audio/wav,audio/ogg', 'max:204800'],
+            'audio_file' => ['nullable', 'file', 'max:204800', function ($attribute, $value, $fail) {
+                $allowedExtensions = ['mp3', 'm4a', 'wav', 'ogg'];
+                $extension = strtolower($value->getClientOriginalExtension());
+                if (!in_array($extension, $allowedExtensions)) {
+                    $fail('File audio harus berekstensi: ' . implode(', ', $allowedExtensions) . '.');
+                }
+            }],
             'isi' => ['required', 'string'],
 
             // Lebih lanjut (opsional)
@@ -128,7 +132,7 @@ class SelasananManageController extends Controller
             'week_of_month' => $week,
             'isi' => $validated['isi'],
             'is_published' => (bool) ($validated['is_published'] ?? true),
-            'created_by' => auth()->id(),
+            'created_by' => \Illuminate\Support\Facades\Auth::id(),
         ];
 
         if ($request->hasFile('cover_image')) {
@@ -177,7 +181,13 @@ class SelasananManageController extends Controller
             // Input cepat
             'title' => ['required', 'string', 'max:255'],
             'cover_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:10240'],
-            'audio_file' => ['nullable', 'file', 'mimetypes:audio/mpeg,audio/mp4,audio/x-m4a,audio/wav,audio/ogg', 'max:204800'],
+            'audio_file' => ['nullable', 'file', 'max:204800', function ($attribute, $value, $fail) {
+                $allowedExtensions = ['mp3', 'm4a', 'wav', 'ogg'];
+                $extension = strtolower($value->getClientOriginalExtension());
+                if (!in_array($extension, $allowedExtensions)) {
+                    $fail('File audio harus berekstensi: ' . implode(', ', $allowedExtensions) . '.');
+                }
+            }],
             'isi' => ['required', 'string'],
 
             // Lebih lanjut

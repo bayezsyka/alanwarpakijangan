@@ -9,11 +9,8 @@ export default defineConfig({
         }),
     ],
     server: {
-        host: "192.168.0.23",
+        host: "localhost",
         port: 5173,
         cors: true,
-        hmr: {
-            host: "192.168.0.23",
-        },
     },
 });
