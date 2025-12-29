@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,20 +15,24 @@
 
     <!-- FORCE LIGHT MODE (jalankan sebelum CSS/Tailwind untuk cegah FOUC) -->
     <script>
-      (function () {
-        document.documentElement.classList.remove('dark');
-        try { localStorage.setItem('theme', 'light'); } catch (e) {}
-      })();
+        (function() {
+            document.documentElement.classList.remove('dark');
+            try {
+                localStorage.setItem('theme', 'light');
+            } catch (e) {}
+        })();
     </script>
 
     <!-- Konfigurasi Tailwind CDN: dark mode berbasis class -->
     <script>
-      window.tailwind = {
-        config: {
-          darkMode: 'class',
-          theme: { extend: {} }
-        }
-      };
+        window.tailwind = {
+            config: {
+                darkMode: 'class',
+                theme: {
+                    extend: {}
+                }
+            }
+        };
     </script>
 
     <!-- Tailwind CDN (kalau tidak pakai PostCSS full) -->
@@ -43,19 +48,22 @@
 
     @livewireScripts
 </head>
+
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-gray-100">
         {{-- Sidebar / topbar --}}
         @include('layouts.navigation')
 
         {{-- Wrapper konten: geser karena sidebar --}}
-        <div class="{{ (Auth::check() && (Auth::user()->isAdmin() || Auth::user()->isSelasananManager())) ? 'pt-14 lg:pt-0 lg:ml-64' : 'pt-20' }} transition-all duration-300">
+        <div
+            class="{{ Auth::check() && (Auth::user()->isAdmin() || Auth::user()->isSelasananManager() || Auth::user()->isPenulis()) ? 'pt-14 lg:pt-0 lg:ml-64' : 'pt-20' }} transition-all duration-300">
 
             {{-- HEADER GLOBAL: kartu hijau untuk semua halaman --}}
             @isset($header)
                 <header class="bg-transparent">
                     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-                        <div class="
+                        <div
+                            class="
                             rounded-[24px] md:rounded-[32px]
                             bg-gradient-to-r from-emerald-600 to-emerald-500
                             text-white shadow-lg shadow-emerald-900/30
@@ -70,7 +78,7 @@
 
             <!-- Page Content -->
             <main class="py-4">
-                @if(isset($slot) && $slot->isNotEmpty())
+                @if (isset($slot) && $slot->isNotEmpty())
                     {{ $slot }}
                 @else
                     @yield('content')
@@ -108,4 +116,5 @@
     {{-- Jangan pakai CDN Chart.js di sini, sudah lewat Vite --}}
     {{-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> --}}
 </body>
+
 </html>

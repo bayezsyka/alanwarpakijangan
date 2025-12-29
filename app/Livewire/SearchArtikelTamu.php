@@ -17,7 +17,7 @@ class SearchArtikelTamu extends Component
     public $viewMode = 'grid'; // <-- TAMBAHKAN BARIS INI
 
     #[Url(as: 'kategori')]
-    public $kategori = ''; 
+    public $kategori = '';
 
     public function filterKategori($kategori)
     {
@@ -34,14 +34,14 @@ class SearchArtikelTamu extends Component
 
     public function render()
     {
-        $query = Article::query();
+        $query = Article::with(['user', 'category']);
 
         if ($this->kategori) {
-            $query->whereHas('category', function($q) {
+            $query->whereHas('category', function ($q) {
                 $q->where('slug', $this->kategori);
             });
         }
-        
+
         if ($this->search) {
             $query->where('judul', 'like', '%' . $this->search . '%');
         }

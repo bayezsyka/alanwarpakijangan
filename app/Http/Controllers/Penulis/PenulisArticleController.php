@@ -11,9 +11,7 @@ use Illuminate\Support\Str;
 
 class PenulisArticleController extends Controller
 {
-    public function __construct(private readonly ImageUploadService $imageUpload)
-    {
-    }
+    public function __construct(private readonly ImageUploadService $imageUpload) {}
 
     /**
      * Tampilkan semua artikel milik penulis yang sedang login.
@@ -64,6 +62,7 @@ class PenulisArticleController extends Controller
         $article->isi         = $validated['isi'];
         $article->category_id = $validated['category_id'] ?? null;
         $article->user_id     = $user->id; // penting: milik penulis yang login
+        $article->penulis     = $user->name; // simpan nama penulis
 
         // Handle Image Upload
         if ($request->hasFile('gambar_upload')) {
