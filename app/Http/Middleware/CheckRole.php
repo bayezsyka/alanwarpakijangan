@@ -18,8 +18,10 @@ class CheckRole
      */
     public function handle(Request $request, Closure $next, string ...$roles): Response
     {
-        // Cek apakah role user ada di daftar role yang diizinkan
-        if (!in_array($request->user()->role, $roles)) {
+        $userRoles = $request->user()->roles ?? [];
+
+        // Cek apakah ada intersection antara roles user dan roles yang diizinkan
+        if (count(array_intersect($userRoles, $roles)) === 0) {
             abort(403, 'AKSES DITOLAK. ANDA TIDAK MEMILIKI HAK AKSES.');
         }
 

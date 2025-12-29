@@ -29,35 +29,60 @@
 
                         <div>
                             <x-input-label for="name" :value="__('Name')" />
-                            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
+                            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name"
+                                :value="old('name')" required autofocus autocomplete="name" />
                         </div>
 
                         <div class="mt-4">
                             <x-input-label for="email" :value="__('Email')" />
-                            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
+                            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email"
+                                :value="old('email')" required autocomplete="username" />
                         </div>
 
                         <div class="mt-4">
-                            <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
-                            <select name="role" id="role" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm text-sm" required>
-                                <option value="admin" {{ old('role') === 'admin' ? 'selected' : '' }}>Admin</option>
-                                <option value="penulis" {{ old('role') === 'penulis' ? 'selected' : '' }}>Penulis</option>
-                                <option value="selasanan_manager" {{ old('role') === 'selasanan_manager' ? 'selected' : '' }}>Pengurus Selasanan</option>
-                            </select>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Role (pilih minimal 1)</label>
+                            <div class="space-y-2">
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox" name="roles[]" value="admin"
+                                        class="rounded border-gray-300 text-cyan-600 shadow-sm focus:ring-cyan-500"
+                                        {{ in_array('admin', old('roles', [])) ? 'checked' : '' }}>
+                                    <span class="ml-2 text-sm text-gray-700">Admin</span>
+                                </label>
+                                <br>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox" name="roles[]" value="penulis"
+                                        class="rounded border-gray-300 text-cyan-600 shadow-sm focus:ring-cyan-500"
+                                        {{ in_array('penulis', old('roles', [])) ? 'checked' : '' }}>
+                                    <span class="ml-2 text-sm text-gray-700">Penulis</span>
+                                </label>
+                                <br>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox" name="roles[]" value="selasanan_manager"
+                                        class="rounded border-gray-300 text-cyan-600 shadow-sm focus:ring-cyan-500"
+                                        {{ in_array('selasanan_manager', old('roles', [])) ? 'checked' : '' }}>
+                                    <span class="ml-2 text-sm text-gray-700">Pengurus Selasanan</span>
+                                </label>
+                            </div>
+                            @error('roles')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <div class="mt-4">
                             <x-input-label for="password" :value="__('Password')" />
-                            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
+                            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password"
+                                required autocomplete="new-password" />
                         </div>
 
                         <div class="mt-4">
                             <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-                            <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
+                            <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password"
+                                name="password_confirmation" required autocomplete="new-password" />
                         </div>
 
                         <div class="flex items-center justify-end mt-4">
-                            <a href="{{ route('admin.users.index') }}" class="underline text-sm text-gray-600 hover:text-gray-900">Batal</a>
+                            <a href="{{ route('admin.users.index') }}"
+                                class="underline text-sm text-gray-600 hover:text-gray-900">Batal</a>
 
                             <x-primary-button class="ms-4">
                                 {{ __('Simpan User') }}

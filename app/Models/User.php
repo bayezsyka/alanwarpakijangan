@@ -16,7 +16,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
+        'roles',
     ];
 
     protected $hidden = [
@@ -29,22 +29,39 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'roles' => 'array',
         ];
+    }
+
+    /**
+     * Check if user has a specific role
+     */
+    public function hasRole(string $role): bool
+    {
+        return in_array($role, $this->roles ?? []);
+    }
+
+    /**
+     * Check if user has any of the given roles
+     */
+    public function hasAnyRole(array $roles): bool
+    {
+        return count(array_intersect($this->roles ?? [], $roles)) > 0;
     }
 
     public function isAdmin(): bool
     {
-        return $this->role === 'admin';
+        return $this->hasRole('admin');
     }
 
     public function isPenulis(): bool
     {
-        return $this->role === 'penulis';
+        return $this->hasRole('penulis');
     }
 
     public function isSelasananManager(): bool
     {
-        return $this->role === 'selasanan_manager';
+        return $this->hasRole('selasanan_manager');
     }
 
     public function articles()

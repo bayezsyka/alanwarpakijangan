@@ -46,7 +46,7 @@ class AuthController extends Controller
                 'id'    => $user->id,
                 'name'  => $user->name,
                 'email' => $user->email,
-                'role'  => $user->role ?? null, // kalau ada kolom role
+                'roles' => $user->roles ?? [], // array of roles
             ],
         ]);
     }
@@ -85,7 +85,7 @@ class AuthController extends Controller
             'id'    => $user->id,
             'name'  => $user->name,
             'email' => $user->email,
-            'role'  => $user->role ?? null,
+            'roles' => $user->roles ?? [],
         ]);
     }
 }

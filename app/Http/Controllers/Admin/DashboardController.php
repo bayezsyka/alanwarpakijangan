@@ -132,9 +132,25 @@ class DashboardController extends Controller
         $categoryData = $articlesByCategory->pluck('articles_count');
 
         // === USER PER ROLE ===
-        $usersByRole = User::select('role', DB::raw('COUNT(*) as total'))
-            ->groupBy('role')
-            ->get();
+        $allUsers = User::all();
+        $roleCounts = [
+            'admin' => 0,
+            'penulis' => 0,
+            'selasanan_manager' => 0,
+        ];
+
+        foreach ($allUsers as $user) {
+            $userRoles = $user->roles ?? [];
+            foreach ($userRoles as $role) {
+                if (isset($roleCounts[$role])) {
+                    $roleCounts[$role]++;
+                }
+            }
+        }
+
+        $usersByRole = collect($roleCounts)->map(function ($total, $role) {
+            return (object) ['role' => $role, 'total' => $total];
+        })->values();
 
         return view('dashboard', compact(
             'totalArticles',

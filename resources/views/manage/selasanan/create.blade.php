@@ -49,12 +49,31 @@
                 {{-- Foto Kegiatan --}}
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Foto Kegiatan</label>
-                    <div class="relative">
-                        <input type="file" name="cover_image" id="cover_image_input" accept="image/*"
-                            class="w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100" />
-                        {{-- Loading Spinner --}}
-                        <div id="cover_image_loading" class="hidden absolute right-3 top-1/2 -translate-y-1/2">
-                            <svg class="animate-spin h-5 w-5 text-emerald-600" xmlns="http://www.w3.org/2000/svg"
+
+                    {{-- Upload Area (shown when no file selected) --}}
+                    <div id="cover_upload_area">
+                        <label for="cover_image_input"
+                            class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer bg-gray-50 hover:bg-emerald-50 hover:border-emerald-300 transition-all duration-200">
+                            <div class="flex flex-col items-center justify-center py-4">
+                                <svg class="w-8 h-8 mb-2 text-gray-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                    </path>
+                                </svg>
+                                <p class="text-sm text-gray-500"><span class="font-semibold text-emerald-600">Klik untuk
+                                        upload</span></p>
+                                <p class="text-xs text-gray-400 mt-1">JPG, PNG, GIF, WebP (Max 10MB)</p>
+                            </div>
+                        </label>
+                        <input type="file" name="cover_image" id="cover_image_input" accept="image/*" class="hidden" />
+                    </div>
+
+                    {{-- Loading State --}}
+                    <div id="cover_loading_area" class="hidden">
+                        <div
+                            class="flex flex-col items-center justify-center w-full h-32 border-2 border-emerald-200 rounded-xl bg-emerald-50">
+                            <svg class="animate-spin h-8 w-8 text-emerald-600 mb-2" xmlns="http://www.w3.org/2000/svg"
                                 fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
                                     stroke-width="4"></circle>
@@ -62,25 +81,76 @@
                                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                                 </path>
                             </svg>
+                            <p class="text-sm text-emerald-600 font-medium">Memuat preview...</p>
                         </div>
                     </div>
-                    <p class="text-xs text-gray-500 mt-1">Opsional. Max 10MB.</p>
-                    {{-- Status Message --}}
-                    <div id="cover_image_status" class="mt-2 hidden">
-                        <div class="flex items-center gap-2 text-sm rounded-lg p-2"></div>
+
+                    {{-- Preview Area (shown when file selected) --}}
+                    <div id="cover_preview_area" class="hidden">
+                        <div class="relative border-2 border-emerald-200 rounded-xl overflow-hidden bg-gray-100">
+                            <img id="cover_preview_img" class="w-full h-40 object-cover" src="" alt="Preview" />
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                            <div class="absolute bottom-0 left-0 right-0 p-3 flex items-center justify-between">
+                                <div class="text-white">
+                                    <p id="cover_file_name" class="text-sm font-medium truncate max-w-[180px]"></p>
+                                    <p id="cover_file_size" class="text-xs opacity-80"></p>
+                                </div>
+                                <button type="button" id="cover_remove_btn"
+                                    class="p-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors shadow-lg">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Error Message --}}
+                    <div id="cover_error_area" class="hidden mt-2">
+                        <div
+                            class="flex items-center gap-2 text-sm rounded-lg p-3 bg-red-50 border border-red-200 text-red-700">
+                            <svg class="w-5 h-5 text-red-500 flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            <p id="cover_error_text" class="flex-1 text-sm"></p>
+                        </div>
                     </div>
                 </div>
 
                 {{-- Rekaman Audio --}}
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Rekaman Audio</label>
-                    <div class="relative">
+
+                    {{-- Upload Area (shown when no file selected) --}}
+                    <div id="audio_upload_area">
+                        <label for="audio_file_input"
+                            class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer bg-gray-50 hover:bg-emerald-50 hover:border-emerald-300 transition-all duration-200">
+                            <div class="flex flex-col items-center justify-center py-4">
+                                <svg class="w-8 h-8 mb-2 text-gray-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3">
+                                    </path>
+                                </svg>
+                                <p class="text-sm text-gray-500"><span class="font-semibold text-emerald-600">Klik untuk
+                                        upload</span></p>
+                                <p class="text-xs text-gray-400 mt-1">MP3, M4A, WAV, OGG (Max 200MB)</p>
+                            </div>
+                        </label>
                         <input type="file" name="audio_file" id="audio_file_input"
                             accept="audio/mpeg,audio/mp4,audio/x-m4a,audio/wav,audio/ogg,.mp3,.m4a,.wav,.ogg"
-                            class="w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100" />
-                        {{-- Loading Spinner --}}
-                        <div id="audio_file_loading" class="hidden absolute right-3 top-1/2 -translate-y-1/2">
-                            <svg class="animate-spin h-5 w-5 text-emerald-600" xmlns="http://www.w3.org/2000/svg"
+                            class="hidden" />
+                    </div>
+
+                    {{-- Loading State --}}
+                    <div id="audio_loading_area" class="hidden">
+                        <div
+                            class="flex flex-col items-center justify-center w-full h-32 border-2 border-emerald-200 rounded-xl bg-emerald-50">
+                            <svg class="animate-spin h-8 w-8 text-emerald-600 mb-2" xmlns="http://www.w3.org/2000/svg"
                                 fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
                                     stroke-width="4"></circle>
@@ -88,12 +158,54 @@
                                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                                 </path>
                             </svg>
+                            <p class="text-sm text-emerald-600 font-medium">Memuat audio...</p>
                         </div>
                     </div>
-                    <p class="text-xs text-gray-500 mt-1">Opsional. mp3/m4a/wav/ogg. Max 200MB.</p>
-                    {{-- Status Message --}}
-                    <div id="audio_file_status" class="mt-2 hidden">
-                        <div class="flex items-center gap-2 text-sm rounded-lg p-2"></div>
+
+                    {{-- Preview Area (shown when file selected) --}}
+                    <div id="audio_preview_area" class="hidden">
+                        <div
+                            class="border-2 border-emerald-200 rounded-xl overflow-hidden bg-gradient-to-br from-emerald-50 to-teal-50 p-4">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div
+                                    class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg">
+                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p id="audio_file_name" class="text-sm font-semibold text-gray-800 truncate"></p>
+                                    <p id="audio_file_size" class="text-xs text-gray-500"></p>
+                                </div>
+                                <button type="button" id="audio_remove_btn"
+                                    class="p-2 bg-red-100 hover:bg-red-200 text-red-600 rounded-lg transition-colors">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <audio id="audio_preview_player" controls class="w-full h-10 rounded-lg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                    </div>
+
+                    {{-- Error Message --}}
+                    <div id="audio_error_area" class="hidden mt-2">
+                        <div
+                            class="flex items-center gap-2 text-sm rounded-lg p-3 bg-red-50 border border-red-200 text-red-700">
+                            <svg class="w-5 h-5 text-red-500 flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            <p id="audio_error_text" class="flex-1 text-sm"></p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -105,7 +217,8 @@
             </div>
 
             <div class="border-t pt-4">
-                <button type="button" id="toggle-advanced" class="text-sm font-semibold text-emerald-700 hover:underline">
+                <button type="button" id="toggle-advanced"
+                    class="text-sm font-semibold text-emerald-700 hover:underline">
                     Lebih Lanjut (opsional) ▾
                 </button>
 
@@ -130,7 +243,8 @@
 
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Tanggal (Senin)</label>
-                        <input type="date" name="monday_date" value="{{ old('monday_date', $defaults['monday_date']) }}"
+                        <input type="date" name="monday_date"
+                            value="{{ old('monday_date', $defaults['monday_date']) }}"
                             class="w-full px-4 py-3 rounded-xl border border-gray-200" />
                         <p class="text-xs text-gray-500 mt-1">Kalau diisi bukan Senin, sistem akan set ke Senin minggu
                             tersebut.</p>
@@ -149,9 +263,13 @@
                     class="px-5 py-3 rounded-xl border border-gray-200 text-gray-700 font-semibold">
                     Batal
                 </a>
-                <button type="submit"
-                    class="px-5 py-3 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-700">
-                    Simpan
+                <button type="submit" id="submit_btn"
+                    class="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-semibold hover:from-emerald-700 hover:to-teal-700 shadow-lg shadow-emerald-500/30 flex items-center gap-2 transition-all duration-200">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                    </svg>
+                    <span>Posting</span>
                 </button>
             </div>
         </form>
@@ -193,7 +311,7 @@
                 'Lebih Lanjut (opsional) ▴';
         });
 
-        // File Upload Validation & Loading Animation
+        // File Upload with Preview System
         function formatFileSize(bytes) {
             if (bytes === 0) return '0 Bytes';
             const k = 1024;
@@ -202,107 +320,141 @@
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
 
-        function showStatus(statusEl, isSuccess, message, fileName = '', fileSize = '') {
-            statusEl.classList.remove('hidden');
-            const inner = statusEl.querySelector('div');
-
-            if (isSuccess) {
-                inner.className =
-                    'flex items-center gap-2 text-sm rounded-lg p-3 bg-emerald-50 border border-emerald-200 text-emerald-700';
-                inner.innerHTML = `
-                <svg class="w-5 h-5 text-emerald-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-                <div class="flex-1">
-                    <p class="font-medium">${message}</p>
-                    <p class="text-xs text-emerald-600 mt-0.5">${fileName} (${fileSize})</p>
-                </div>
-            `;
-            } else {
-                inner.className =
-                    'flex items-center gap-2 text-sm rounded-lg p-3 bg-red-50 border border-red-200 text-red-700';
-                inner.innerHTML = `
-                <svg class="w-5 h-5 text-red-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-                <div class="flex-1">
-                    <p class="font-medium">Gagal!</p>
-                    <p class="text-xs text-red-600 mt-0.5">${message}</p>
-                </div>
-            `;
-            }
-        }
-
-        function hideStatus(statusEl) {
-            statusEl.classList.add('hidden');
-        }
-
-        // Cover Image Validation - Real file reading
+        // =====================
+        // COVER IMAGE HANDLING
+        // =====================
         const coverInput = document.getElementById('cover_image_input');
-        const coverLoading = document.getElementById('cover_image_loading');
-        const coverStatus = document.getElementById('cover_image_status');
+        const coverUploadArea = document.getElementById('cover_upload_area');
+        const coverLoadingArea = document.getElementById('cover_loading_area');
+        const coverPreviewArea = document.getElementById('cover_preview_area');
+        const coverPreviewImg = document.getElementById('cover_preview_img');
+        const coverFileName = document.getElementById('cover_file_name');
+        const coverFileSize = document.getElementById('cover_file_size');
+        const coverRemoveBtn = document.getElementById('cover_remove_btn');
+        const coverErrorArea = document.getElementById('cover_error_area');
+        const coverErrorText = document.getElementById('cover_error_text');
+
         const maxImageSize = 10 * 1024 * 1024; // 10MB
         const allowedImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
 
+        function showCoverError(message) {
+            coverErrorArea.classList.remove('hidden');
+            coverErrorText.textContent = message;
+        }
+
+        function hideCoverError() {
+            coverErrorArea.classList.add('hidden');
+        }
+
+        function resetCoverUpload() {
+            coverInput.value = '';
+            coverPreviewImg.src = '';
+            coverUploadArea.classList.remove('hidden');
+            coverLoadingArea.classList.add('hidden');
+            coverPreviewArea.classList.add('hidden');
+            hideCoverError();
+        }
+
         coverInput.addEventListener('change', function(e) {
             const file = e.target.files[0];
-            hideStatus(coverStatus);
+            hideCoverError();
 
-            if (!file) return;
+            if (!file) {
+                resetCoverUpload();
+                return;
+            }
 
-            // Quick validation first
             // Validate file type
             if (!allowedImageTypes.includes(file.type)) {
-                showStatus(coverStatus, false,
-                    `Tipe file tidak didukung: ${file.type || 'unknown'}. Gunakan JPG, PNG, GIF, atau WebP.`
-                );
-                e.target.value = '';
+                showCoverError(
+                    `Tipe file tidak didukung: ${file.type || 'unknown'}. Gunakan JPG, PNG, GIF, atau WebP.`);
+                resetCoverUpload();
                 return;
             }
 
             // Validate file size
             if (file.size > maxImageSize) {
-                showStatus(coverStatus, false,
-                    `Ukuran file terlalu besar: ${formatFileSize(file.size)}. Maksimal 10MB.`);
-                e.target.value = '';
+                showCoverError(`Ukuran file terlalu besar: ${formatFileSize(file.size)}. Maksimal 10MB.`);
+                resetCoverUpload();
                 return;
             }
 
-            // Show loading - real file reading
-            coverLoading.classList.remove('hidden');
+            // Show loading state
+            coverUploadArea.classList.add('hidden');
+            coverLoadingArea.classList.remove('hidden');
+            coverPreviewArea.classList.add('hidden');
 
-            // Use FileReader to actually read the file (real loading animation)
+            // Read file for preview
             const reader = new FileReader();
-            reader.onloadstart = function() {
-                coverLoading.classList.remove('hidden');
+
+            reader.onload = function(event) {
+                // Set preview image
+                coverPreviewImg.src = event.target.result;
+                coverFileName.textContent = file.name;
+                coverFileSize.textContent = formatFileSize(file.size);
+
+                // Show preview area
+                coverLoadingArea.classList.add('hidden');
+                coverPreviewArea.classList.remove('hidden');
             };
-            reader.onprogress = function(e) {
-                // File is being read - loading spinner is visible
-            };
-            reader.onload = function() {
-                coverLoading.classList.add('hidden');
-                showStatus(coverStatus, true, 'File siap diupload!', file.name, formatFileSize(file.size));
-            };
+
             reader.onerror = function() {
-                coverLoading.classList.add('hidden');
-                showStatus(coverStatus, false, 'Gagal membaca file. Coba lagi.');
-                e.target.value = '';
+                showCoverError('Gagal membaca file. Coba lagi.');
+                resetCoverUpload();
             };
+
             reader.readAsDataURL(file);
         });
 
-        // Audio File Validation - Real file reading
+        // Remove button for cover image
+        coverRemoveBtn.addEventListener('click', function() {
+            resetCoverUpload();
+        });
+
+        // =====================
+        // AUDIO FILE HANDLING
+        // =====================
         const audioInput = document.getElementById('audio_file_input');
-        const audioLoading = document.getElementById('audio_file_loading');
-        const audioStatus = document.getElementById('audio_file_status');
+        const audioUploadArea = document.getElementById('audio_upload_area');
+        const audioLoadingArea = document.getElementById('audio_loading_area');
+        const audioPreviewArea = document.getElementById('audio_preview_area');
+        const audioPlayer = document.getElementById('audio_preview_player');
+        const audioFileName = document.getElementById('audio_file_name');
+        const audioFileSize = document.getElementById('audio_file_size');
+        const audioRemoveBtn = document.getElementById('audio_remove_btn');
+        const audioErrorArea = document.getElementById('audio_error_area');
+        const audioErrorText = document.getElementById('audio_error_text');
+
         const maxAudioSize = 200 * 1024 * 1024; // 200MB
-        const allowedAudioExtensions = ['.mp3', '.m4a', '.wav', '.ogg', '.mpeg'];
+        const allowedAudioExtensions = ['.mp3', '.m4a', '.wav', '.ogg'];
+
+        function showAudioError(message) {
+            audioErrorArea.classList.remove('hidden');
+            audioErrorText.textContent = message;
+        }
+
+        function hideAudioError() {
+            audioErrorArea.classList.add('hidden');
+        }
+
+        function resetAudioUpload() {
+            audioInput.value = '';
+            audioPlayer.src = '';
+            audioPlayer.pause();
+            audioUploadArea.classList.remove('hidden');
+            audioLoadingArea.classList.add('hidden');
+            audioPreviewArea.classList.add('hidden');
+            hideAudioError();
+        }
 
         audioInput.addEventListener('change', function(e) {
             const file = e.target.files[0];
-            hideStatus(audioStatus);
+            hideAudioError();
 
-            if (!file) return;
+            if (!file) {
+                resetAudioUpload();
+                return;
+            }
 
             // Check by extension (more reliable for audio)
             const fileName = file.name.toLowerCase();
@@ -310,42 +462,58 @@
 
             // Validate file type
             if (!hasValidExtension) {
-                showStatus(audioStatus, false,
-                    `Tipe file tidak didukung. Gunakan MP3, M4A, WAV, atau OGG.`
-                );
-                e.target.value = '';
+                showAudioError(`Tipe file tidak didukung. Gunakan MP3, M4A, WAV, atau OGG.`);
+                resetAudioUpload();
                 return;
             }
 
             // Validate file size
             if (file.size > maxAudioSize) {
-                showStatus(audioStatus, false,
-                    `Ukuran file terlalu besar: ${formatFileSize(file.size)}. Maksimal 200MB.`);
-                e.target.value = '';
+                showAudioError(`Ukuran file terlalu besar: ${formatFileSize(file.size)}. Maksimal 200MB.`);
+                resetAudioUpload();
                 return;
             }
 
-            // Show loading - real file reading
-            audioLoading.classList.remove('hidden');
+            // Show loading state
+            audioUploadArea.classList.add('hidden');
+            audioLoadingArea.classList.remove('hidden');
+            audioPreviewArea.classList.add('hidden');
 
-            // Use FileReader to actually read the file (real loading animation)
-            const reader = new FileReader();
-            reader.onloadstart = function() {
-                audioLoading.classList.remove('hidden');
+            // Create object URL for audio preview (faster than FileReader for audio)
+            const audioURL = URL.createObjectURL(file);
+
+            // Set up audio player
+            audioPlayer.src = audioURL;
+            audioFileName.textContent = file.name;
+            audioFileSize.textContent = formatFileSize(file.size);
+
+            // Wait for audio to be loadable
+            audioPlayer.oncanplaythrough = function() {
+                audioLoadingArea.classList.add('hidden');
+                audioPreviewArea.classList.remove('hidden');
             };
-            reader.onprogress = function(e) {
-                // File is being read - loading spinner is visible
+
+            audioPlayer.onerror = function() {
+                showAudioError('Gagal memuat audio. Pastikan file tidak rusak.');
+                resetAudioUpload();
+                URL.revokeObjectURL(audioURL);
             };
-            reader.onload = function() {
-                audioLoading.classList.add('hidden');
-                showStatus(audioStatus, true, 'File siap diupload!', file.name, formatFileSize(file.size));
-            };
-            reader.onerror = function() {
-                audioLoading.classList.add('hidden');
-                showStatus(audioStatus, false, 'Gagal membaca file. Coba lagi.');
-                e.target.value = '';
-            };
-            reader.readAsArrayBuffer(file); // Use ArrayBuffer for large audio files
+
+            // Fallback - show preview after short delay if canplaythrough doesn't fire
+            setTimeout(function() {
+                if (!audioPreviewArea.classList.contains('hidden')) return;
+                audioLoadingArea.classList.add('hidden');
+                audioPreviewArea.classList.remove('hidden');
+            }, 1500);
+        });
+
+        // Remove button for audio
+        audioRemoveBtn.addEventListener('click', function() {
+            // Revoke object URL to free memory
+            if (audioPlayer.src && audioPlayer.src.startsWith('blob:')) {
+                URL.revokeObjectURL(audioPlayer.src);
+            }
+            resetAudioUpload();
         });
     </script>
 @endpush

@@ -30,18 +30,20 @@ class UserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
-            'role' => ['required', Rule::in(['admin', 'penulis', 'selasanan_manager'])],
+            'roles' => ['required', 'array', 'min:1'],
+            'roles.*' => [Rule::in(['admin', 'penulis', 'selasanan_manager'])],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'role' => $request->role,
+            'roles' => $request->roles,
             'password' => Hash::make($request->password),
         ]);
 
-        $this->logActivity('buat user', 'Nama: ' . $user->name . ' | Role: ' . $user->role);
+        $rolesText = implode(', ', $request->roles);
+        $this->logActivity('buat user', 'Nama: ' . $user->name . ' | Roles: ' . $rolesText);
 
         return redirect()->route('admin.users.index')->with('success', 'User baru berhasil ditambahkan.');
     }
@@ -56,13 +58,14 @@ class UserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'role' => ['required', Rule::in(['admin', 'penulis', 'selasanan_manager'])],
+            'roles' => ['required', 'array', 'min:1'],
+            'roles.*' => [Rule::in(['admin', 'penulis', 'selasanan_manager'])],
             'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->role = $request->role;
+        $user->roles = $request->roles;
 
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
@@ -70,7 +73,8 @@ class UserController extends Controller
 
         $user->save();
 
-        $this->logActivity('edit user', 'Nama: ' . $user->name . ' | Role: ' . $user->role);
+        $rolesText = implode(', ', $request->roles);
+        $this->logActivity('edit user', 'Nama: ' . $user->name . ' | Roles: ' . $rolesText);
 
         return redirect()->route('admin.users.index')->with('success', 'Data user berhasil diperbarui.');
     }
@@ -81,7 +85,8 @@ class UserController extends Controller
             return redirect()->route('admin.users.index')->with('error', 'Anda tidak bisa menghapus akun Anda sendiri.');
         }
 
-        $this->logActivity('hapus user', 'Nama: ' . $user->name . ' | Role: ' . $user->role);
+        $rolesText = implode(', ', $user->roles ?? []);
+        $this->logActivity('hapus user', 'Nama: ' . $user->name . ' | Roles: ' . $rolesText);
 
         $user->delete();
 
