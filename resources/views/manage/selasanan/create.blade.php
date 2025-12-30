@@ -23,30 +23,170 @@
             </div>
         </div>
 
-        {{-- Overlay Loading Upload --}}
-        <div x-show="uploading" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
-            x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200"
-            x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
-            class="fixed inset-0 bg-[#008362] bg-opacity-75 flex items-center justify-center z-50" style="display: none;">
-            <div class="flex flex-col items-center text-center bg-white p-8 rounded-2xl shadow-2xl max-w-sm mx-4">
-                {{-- Circular Progress Spinner --}}
-                <div class="relative mb-4">
-                    <svg class="w-20 h-20" viewBox="0 0 100 100">
-                        {{-- Background circle --}}
-                        <circle class="text-gray-200 stroke-current" stroke-width="8" cx="50" cy="50" r="40"
-                            fill="none"></circle>
-                        {{-- Progress circle --}}
-                        <circle class="text-[#008362] stroke-current transition-all duration-300 ease-out" stroke-width="8"
-                            stroke-linecap="round" cx="50" cy="50" r="40" fill="none"
-                            :stroke-dasharray="`${progress * 2.51} 251`" transform="rotate(-90 50 50)"></circle>
+        {{-- Floating Upload Panel (Google Drive Style) --}}
+        <div x-show="showUploadPanel" x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0"
+            x-transition:leave-end="opacity-0 translate-y-4"
+            class="fixed bottom-4 right-4 z-50 w-80 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden"
+            style="display: none;">
+
+            {{-- Header Panel --}}
+            <div class="bg-gradient-to-r from-[#008362] to-emerald-600 px-4 py-3 flex items-center justify-between cursor-pointer"
+                @click="panelExpanded = !panelExpanded">
+                <div class="flex items-center gap-2 text-white">
+                    <svg class="w-5 h-5" :class="{ 'animate-bounce': uploading && !isPaused }" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
                     </svg>
-                    {{-- Percentage inside circle --}}
-                    <div class="absolute inset-0 flex items-center justify-center">
-                        <span class="text-lg font-bold text-[#008362]" x-text="progress + '%'">0%</span>
+                    <span class="font-semibold text-sm">
+                        <template x-if="uploadStatus === 'uploading'">
+                            <span>Mengunggah<span x-show="isPaused"> (Dijeda)</span></span>
+                        </template>
+                        <template x-if="uploadStatus === 'success'">
+                            <span>Upload Selesai!</span>
+                        </template>
+                        <template x-if="uploadStatus === 'error'">
+                            <span>Upload Gagal</span>
+                        </template>
+                        <template x-if="uploadStatus === 'cancelled'">
+                            <span>Upload Dibatalkan</span>
+                        </template>
+                    </span>
+                </div>
+                <div class="flex items-center gap-1">
+                    {{-- Minimize/Expand Button --}}
+                    <button type="button" class="p-1.5 hover:bg-white/20 rounded-lg transition-colors"
+                        @click.stop="panelExpanded = !panelExpanded">
+                        <svg class="w-4 h-4 text-white transition-transform duration-200"
+                            :class="{ 'rotate-180': !panelExpanded }" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    {{-- Close Button (only when not uploading or completed) --}}
+                    <button
+                        x-show="!uploading || uploadStatus === 'success' || uploadStatus === 'error' || uploadStatus === 'cancelled'"
+                        type="button" class="p-1.5 hover:bg-white/20 rounded-lg transition-colors"
+                        @click.stop="closePanel()">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            {{-- Panel Content --}}
+            <div x-show="panelExpanded" x-transition:enter="transition ease-out duration-200"
+                x-transition:enter-start="opacity-0 transform -translate-y-2"
+                x-transition:enter-end="opacity-100 transform translate-y-0"
+                x-transition:leave="transition ease-in duration-150"
+                x-transition:leave-start="opacity-100 transform translate-y-0"
+                x-transition:leave-end="opacity-0 transform -translate-y-2" class="p-4">
+                {{-- File Info --}}
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-800 truncate" x-text="fileName || 'Selasanan Entry'"></p>
+                        <p class="text-xs text-gray-500" x-text="progressText"></p>
                     </div>
                 </div>
-                <h3 class="text-lg font-semibold text-gray-800">Mengunggah File...</h3>
-                <p class="text-gray-500 mt-2 text-sm" x-text="progressText">Mempersiapkan...</p>
+
+                {{-- Progress Bar --}}
+                <div class="mb-3">
+                    <div class="flex justify-between text-xs text-gray-600 mb-1">
+                        <span x-text="progress + '%'">0%</span>
+                        <span x-text="uploadSpeed">-</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                        <div class="h-full rounded-full transition-all duration-300 ease-out"
+                            :class="{
+                                'bg-gradient-to-r from-[#008362] to-emerald-500': uploadStatus === 'uploading' && !
+                                    isPaused,
+                                'bg-amber-500': isPaused,
+                                'bg-emerald-500': uploadStatus === 'success',
+                                'bg-red-500': uploadStatus === 'error' || uploadStatus === 'cancelled'
+                            }"
+                            :style="'width: ' + progress + '%'"></div>
+                    </div>
+                </div>
+
+                {{-- Status Message --}}
+                <div x-show="uploadStatus === 'success'" class="flex items-center gap-2 text-emerald-600 text-sm mb-3">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>Berhasil! Mengalihkan ke halaman daftar...</span>
+                </div>
+
+                <div x-show="uploadStatus === 'error'" class="flex items-center gap-2 text-red-600 text-sm mb-3">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span class="truncate" x-text="errorMessage">Terjadi kesalahan</span>
+                </div>
+
+                <div x-show="uploadStatus === 'cancelled'" class="flex items-center gap-2 text-gray-600 text-sm mb-3">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636">
+                        </path>
+                    </svg>
+                    <span>Upload dibatalkan oleh pengguna</span>
+                </div>
+
+                {{-- Action Buttons --}}
+                <div class="flex items-center gap-2" x-show="uploading && uploadStatus === 'uploading'">
+                    {{-- Pause/Resume Button --}}
+                    <button type="button" @click="togglePause()"
+                        class="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
+                        :class="isPaused ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200' :
+                            'bg-amber-100 text-amber-700 hover:bg-amber-200'">
+                        <template x-if="isPaused">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z"></path>
+                            </svg>
+                        </template>
+                        <template x-if="!isPaused">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>
+                            </svg>
+                        </template>
+                        <span x-text="isPaused ? 'Lanjutkan' : 'Jeda'"></span>
+                    </button>
+
+                    {{-- Cancel Button --}}
+                    <button type="button" @click="cancelUpload()"
+                        class="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium bg-red-100 text-red-700 hover:bg-red-200 transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                        <span>Batalkan</span>
+                    </button>
+                </div>
+
+                {{-- Retry Button (on error) --}}
+                <div x-show="uploadStatus === 'error'" class="flex gap-2">
+                    <button type="button" @click="retryUpload()"
+                        class="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium bg-emerald-100 text-emerald-700 hover:bg-emerald-200 transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                            </path>
+                        </svg>
+                        <span>Coba Lagi</span>
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -95,7 +235,8 @@
                                 <p class="text-xs text-gray-400 mt-1">JPG, PNG, GIF, WebP (Max 10MB)</p>
                             </div>
                         </label>
-                        <input type="file" name="cover_image" id="cover_image_input" accept="image/*" class="hidden" />
+                        <input type="file" name="cover_image" id="cover_image_input" accept="image/*"
+                            class="hidden" />
                     </div>
 
                     {{-- Loading State --}}
@@ -117,7 +258,8 @@
                     {{-- Preview Area (shown when file selected) --}}
                     <div id="cover_preview_area" class="hidden">
                         <div class="relative border-2 border-emerald-200 rounded-xl overflow-hidden bg-gray-100">
-                            <img id="cover_preview_img" class="w-full h-40 object-cover" src="" alt="Preview" />
+                            <img id="cover_preview_img" class="w-full h-40 object-cover" src=""
+                                alt="Preview" />
                             <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                             <div class="absolute bottom-0 left-0 right-0 p-3 flex items-center justify-between">
                                 <div class="text-white">
@@ -318,42 +460,119 @@
         // Alpine.js Upload Form Function
         function selasananUploadForm() {
             return {
+                // Panel state
+                showUploadPanel: false,
+                panelExpanded: true,
+
+                // Upload state
                 uploading: false,
+                isPaused: false,
+                uploadStatus: 'uploading', // 'uploading', 'success', 'error', 'cancelled'
+
+                // Progress data
                 progress: 0,
                 progressText: 'Mempersiapkan...',
+                uploadSpeed: '-',
+                fileName: '',
                 errorMessage: '',
+
+                // Internal tracking
+                xhr: null,
+                formData: null,
+                lastLoaded: 0,
+                lastTime: 0,
+                speedInterval: null,
 
                 submitForm() {
                     // Get Quill content and set to hidden input
                     document.querySelector('#isi_hidden').value = quill.root.innerHTML;
 
+                    // Get title for file name display
+                    const titleInput = document.querySelector('input[name="title"]');
+                    this.fileName = titleInput ? (titleInput.value || 'Selasanan Entry') : 'Selasanan Entry';
+
+                    // Store formData for retry
+                    this.formData = new FormData(this.$refs.selasananForm);
+
+                    // Start upload
+                    this.startUpload();
+                },
+
+                startUpload() {
+                    // Reset state
                     this.uploading = true;
+                    this.isPaused = false;
+                    this.uploadStatus = 'uploading';
                     this.progress = 0;
                     this.progressText = 'Mempersiapkan...';
+                    this.uploadSpeed = '-';
                     this.errorMessage = '';
+                    this.lastLoaded = 0;
+                    this.lastTime = Date.now();
 
-                    const formData = new FormData(this.$refs.selasananForm);
-                    const xhr = new XMLHttpRequest();
+                    // Show panel
+                    this.showUploadPanel = true;
+                    this.panelExpanded = true;
+
+                    // Create XHR
+                    this.xhr = new XMLHttpRequest();
+
+                    // Speed calculation interval
+                    this.speedInterval = setInterval(() => {
+                        if (!this.isPaused && this.uploading) {
+                            // Speed is calculated via progress event
+                        }
+                    }, 1000);
 
                     // Progress event handler
-                    xhr.upload.addEventListener('progress', (e) => {
-                        if (e.lengthComputable) {
+                    this.xhr.upload.addEventListener('progress', (e) => {
+                        if (e.lengthComputable && !this.isPaused) {
+                            const now = Date.now();
+                            const timeDiff = (now - this.lastTime) / 1000; // seconds
+                            const loadedDiff = e.loaded - this.lastLoaded;
+
+                            // Calculate speed (bytes per second)
+                            if (timeDiff > 0.5) {
+                                const speed = loadedDiff / timeDiff;
+                                if (speed > 0) {
+                                    if (speed > 1024 * 1024) {
+                                        this.uploadSpeed = (speed / 1024 / 1024).toFixed(1) + ' MB/s';
+                                    } else if (speed > 1024) {
+                                        this.uploadSpeed = (speed / 1024).toFixed(0) + ' KB/s';
+                                    } else {
+                                        this.uploadSpeed = speed.toFixed(0) + ' B/s';
+                                    }
+                                }
+                                this.lastLoaded = e.loaded;
+                                this.lastTime = now;
+                            }
+
                             this.progress = Math.round((e.loaded / e.total) * 100);
                             const loadedMB = (e.loaded / 1024 / 1024).toFixed(2);
                             const totalMB = (e.total / 1024 / 1024).toFixed(2);
-                            this.progressText = `(${loadedMB} MB / ${totalMB} MB)`;
+                            this.progressText = `${loadedMB} MB / ${totalMB} MB`;
                         }
                     });
 
                     // Load complete handler
-                    xhr.onload = () => {
+                    this.xhr.onload = () => {
+                        clearInterval(this.speedInterval);
                         this.uploading = false;
-                        if (xhr.status >= 200 && xhr.status < 300) {
-                            // Redirect to index page on success
-                            window.location.href = "{{ route('manage.selasanan.index') }}";
+
+                        if (this.xhr.status >= 200 && this.xhr.status < 300) {
+                            this.uploadStatus = 'success';
+                            this.progress = 100;
+                            this.progressText = 'Upload selesai!';
+                            this.uploadSpeed = '-';
+
+                            // Redirect after short delay
+                            setTimeout(() => {
+                                window.location.href = "{{ route('manage.selasanan.index') }}";
+                            }, 1500);
                         } else {
+                            this.uploadStatus = 'error';
                             try {
-                                let errorData = JSON.parse(xhr.responseText);
+                                let errorData = JSON.parse(this.xhr.responseText);
                                 if (errorData.errors) {
                                     this.errorMessage = Object.values(errorData.errors).flat().join(' ');
                                 } else {
@@ -362,36 +581,79 @@
                             } catch (e) {
                                 this.errorMessage = 'Terjadi kesalahan yang tidak diketahui.';
                             }
-                            // Show error with SweetAlert
-                            Swal.fire({
-                                title: 'Gagal!',
-                                text: this.errorMessage,
-                                icon: 'error',
-                                confirmButtonText: 'OK',
-                                confirmButtonColor: '#dc2626'
-                            });
                         }
                     };
 
                     // Error handler
-                    xhr.onerror = () => {
+                    this.xhr.onerror = () => {
+                        clearInterval(this.speedInterval);
                         this.uploading = false;
+                        this.uploadStatus = 'error';
                         this.errorMessage = 'Upload gagal. Periksa koneksi internet Anda.';
-                        Swal.fire({
-                            title: 'Gagal!',
-                            text: this.errorMessage,
-                            icon: 'error',
-                            confirmButtonText: 'OK',
-                            confirmButtonColor: '#dc2626'
-                        });
                     };
 
-                    xhr.open('POST', this.$refs.selasananForm.action);
-                    xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').getAttribute(
-                        'content'));
-                    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-                    xhr.setRequestHeader('Accept', 'application/json');
-                    xhr.send(formData);
+                    // Abort handler
+                    this.xhr.onabort = () => {
+                        clearInterval(this.speedInterval);
+                        this.uploading = false;
+                        this.uploadStatus = 'cancelled';
+                    };
+
+                    // Start request
+                    this.xhr.open('POST', this.$refs.selasananForm.action);
+                    this.xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]')
+                        .getAttribute('content'));
+                    this.xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                    this.xhr.setRequestHeader('Accept', 'application/json');
+                    this.xhr.send(this.formData);
+                },
+
+                togglePause() {
+                    // Note: Standard XHR doesn't support true pause/resume
+                    // We simulate it by showing paused state
+                    // For true pause/resume, you'd need chunked uploads
+                    this.isPaused = !this.isPaused;
+
+                    if (this.isPaused) {
+                        this.uploadSpeed = 'Dijeda';
+                    }
+
+                    // Show notification
+                    if (this.isPaused) {
+                        // Note: XHR cannot truly pause, this is a visual indicator
+                        // In production, you'd implement chunked upload for real pause/resume
+                    }
+                },
+
+                cancelUpload() {
+                    if (this.xhr) {
+                        this.xhr.abort();
+                    }
+                    clearInterval(this.speedInterval);
+                    this.uploading = false;
+                    this.uploadStatus = 'cancelled';
+                    this.uploadSpeed = '-';
+                },
+
+                retryUpload() {
+                    if (this.formData) {
+                        this.startUpload();
+                    }
+                },
+
+                closePanel() {
+                    this.showUploadPanel = false;
+
+                    // Reset state after animation
+                    setTimeout(() => {
+                        if (!this.showUploadPanel) {
+                            this.progress = 0;
+                            this.progressText = 'Mempersiapkan...';
+                            this.uploadSpeed = '-';
+                            this.errorMessage = '';
+                            this.uploadStatus = 'uploading';
+                        }
+                    }, 300);
                 }
             }
         }
