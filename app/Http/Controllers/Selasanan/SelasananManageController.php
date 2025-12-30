@@ -160,12 +160,24 @@ class SelasananManageController extends Controller
             ->exists();
 
         if ($exists) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => 'Entry untuk minggu tersebut sudah ada. Silakan edit yang sudah ada.'
+                ], 422);
+            }
             return back()->withInput()->with('error', 'Entry untuk minggu tersebut sudah ada. Silakan edit yang sudah ada.');
         }
 
         $entry = SelasananEntry::create($data);
 
         $this->logActivity('buat selasanan', 'Judul: ' . $entry->title . ' | ' . $entry->monday_date);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => 'Selasanan berhasil dibuat.',
+                'redirect' => route('manage.selasanan.index')
+            ], 200);
+        }
 
         return redirect()->route('manage.selasanan.index')->with('success', 'Selasanan berhasil dibuat.');
     }

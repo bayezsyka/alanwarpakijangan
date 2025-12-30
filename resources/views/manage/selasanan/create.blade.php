@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" x-data="selasananUploadForm()" x-cloak>
         {{-- Header dengan tombol kembali --}}
         <div
             class="rounded-[24px] bg-gradient-to-r from-emerald-600 to-emerald-500 text-white shadow-lg shadow-emerald-900/30 px-6 py-5 mb-6">
@@ -23,6 +23,34 @@
             </div>
         </div>
 
+        {{-- Overlay Loading Upload --}}
+        <div x-show="uploading" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+            class="fixed inset-0 bg-[#008362] bg-opacity-75 flex items-center justify-center z-50" style="display: none;">
+            <div class="flex flex-col items-center text-center bg-white p-8 rounded-2xl shadow-2xl max-w-sm mx-4">
+                {{-- Circular Progress Spinner --}}
+                <div class="relative mb-4">
+                    <svg class="w-20 h-20" viewBox="0 0 100 100">
+                        {{-- Background circle --}}
+                        <circle class="text-gray-200 stroke-current" stroke-width="8" cx="50" cy="50" r="40"
+                            fill="none"></circle>
+                        {{-- Progress circle --}}
+                        <circle class="text-[#008362] stroke-current transition-all duration-300 ease-out" stroke-width="8"
+                            stroke-linecap="round" cx="50" cy="50" r="40" fill="none"
+                            :stroke-dasharray="`${progress * 2.51} 251`" transform="rotate(-90 50 50)"></circle>
+                    </svg>
+                    {{-- Percentage inside circle --}}
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <span class="text-lg font-bold text-[#008362]" x-text="progress + '%'">0%</span>
+                    </div>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800">Mengunggah File...</h3>
+                <p class="text-gray-500 mt-2 text-sm" x-text="progressText">Mempersiapkan...</p>
+            </div>
+        </div>
+
+
         @if ($errors->any())
             <div class="bg-red-50 border border-red-200 rounded-2xl p-4 mb-4">
                 <p class="font-semibold text-red-700">Terjadi kesalahan:</p>
@@ -34,8 +62,9 @@
             </div>
         @endif
 
-        <form id="selasanan-form" action="{{ route('manage.selasanan.store') }}" method="POST"
-            enctype="multipart/form-data" class="bg-white rounded-2xl shadow border border-gray-100 p-5 space-y-5">
+        <form x-ref="selasananForm" @submit.prevent="submitForm" id="selasanan-form"
+            action="{{ route('manage.selasanan.store') }}" method="POST" enctype="multipart/form-data"
+            class="bg-white rounded-2xl shadow border border-gray-100 p-5 space-y-5">
             @csrf
 
             <div>
@@ -263,13 +292,21 @@
                     class="px-5 py-3 rounded-xl border border-gray-200 text-gray-700 font-semibold">
                     Batal
                 </a>
-                <button type="submit" id="submit_btn"
-                    class="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-semibold hover:from-emerald-700 hover:to-teal-700 shadow-lg shadow-emerald-500/30 flex items-center gap-2 transition-all duration-200">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button type="submit" id="submit_btn" :disabled="uploading"
+                    class="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-semibold hover:from-emerald-700 hover:to-teal-700 shadow-lg shadow-emerald-500/30 flex items-center gap-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <svg x-show="!uploading" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
                     </svg>
-                    <span>Posting</span>
+                    <svg x-show="uploading" class="animate-spin w-5 h-5" xmlns="http://www.w3.org/2000/svg"
+                        fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                            stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                        </path>
+                    </svg>
+                    <span x-text="uploading ? 'Mengunggah...' : 'Posting'">Posting</span>
                 </button>
             </div>
         </form>
@@ -278,6 +315,87 @@
 
 @push('scripts')
     <script>
+        // Alpine.js Upload Form Function
+        function selasananUploadForm() {
+            return {
+                uploading: false,
+                progress: 0,
+                progressText: 'Mempersiapkan...',
+                errorMessage: '',
+
+                submitForm() {
+                    // Get Quill content and set to hidden input
+                    document.querySelector('#isi_hidden').value = quill.root.innerHTML;
+
+                    this.uploading = true;
+                    this.progress = 0;
+                    this.progressText = 'Mempersiapkan...';
+                    this.errorMessage = '';
+
+                    const formData = new FormData(this.$refs.selasananForm);
+                    const xhr = new XMLHttpRequest();
+
+                    // Progress event handler
+                    xhr.upload.addEventListener('progress', (e) => {
+                        if (e.lengthComputable) {
+                            this.progress = Math.round((e.loaded / e.total) * 100);
+                            const loadedMB = (e.loaded / 1024 / 1024).toFixed(2);
+                            const totalMB = (e.total / 1024 / 1024).toFixed(2);
+                            this.progressText = `(${loadedMB} MB / ${totalMB} MB)`;
+                        }
+                    });
+
+                    // Load complete handler
+                    xhr.onload = () => {
+                        this.uploading = false;
+                        if (xhr.status >= 200 && xhr.status < 300) {
+                            // Redirect to index page on success
+                            window.location.href = "{{ route('manage.selasanan.index') }}";
+                        } else {
+                            try {
+                                let errorData = JSON.parse(xhr.responseText);
+                                if (errorData.errors) {
+                                    this.errorMessage = Object.values(errorData.errors).flat().join(' ');
+                                } else {
+                                    this.errorMessage = errorData.message || 'Terjadi kesalahan server.';
+                                }
+                            } catch (e) {
+                                this.errorMessage = 'Terjadi kesalahan yang tidak diketahui.';
+                            }
+                            // Show error with SweetAlert
+                            Swal.fire({
+                                title: 'Gagal!',
+                                text: this.errorMessage,
+                                icon: 'error',
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#dc2626'
+                            });
+                        }
+                    };
+
+                    // Error handler
+                    xhr.onerror = () => {
+                        this.uploading = false;
+                        this.errorMessage = 'Upload gagal. Periksa koneksi internet Anda.';
+                        Swal.fire({
+                            title: 'Gagal!',
+                            text: this.errorMessage,
+                            icon: 'error',
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#dc2626'
+                        });
+                    };
+
+                    xhr.open('POST', this.$refs.selasananForm.action);
+                    xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').getAttribute(
+                        'content'));
+                    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                    xhr.setRequestHeader('Accept', 'application/json');
+                    xhr.send(formData);
+                }
+            }
+        }
+
         // Quill (same pattern as artikel)
         var quill = new Quill('#editor', {
             theme: 'snow',
@@ -296,10 +414,6 @@
                     ['clean']
                 ]
             }
-        });
-
-        document.querySelector('#selasanan-form').addEventListener('submit', function() {
-            document.querySelector('#isi_hidden').value = quill.root.innerHTML;
         });
 
         // Toggle advanced

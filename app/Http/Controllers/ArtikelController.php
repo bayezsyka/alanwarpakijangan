@@ -18,14 +18,21 @@ class ArtikelController extends Controller
     {
         // Ambil 2 artikel terbaru (bukan 3)
         $latestArticles = Article::latest()->take(2)->get();
-        
+
         // Ambil 1 jurnal Selasanan terbaru yang sudah dipublish
         $latestSelasanan = \App\Models\SelasananEntry::where('is_published', true)
             ->orderByDesc('monday_date')
             ->first();
-        
+
+        // Ambil beberapa entry Selasanan dengan foto untuk galeri
+        $selasananGallery = \App\Models\SelasananEntry::where('is_published', true)
+            ->whereNotNull('cover_image_path')
+            ->orderByDesc('monday_date')
+            ->take(6)
+            ->get();
+
         $latestEvents = Event::with('photos')->latest()->take(3)->get();
-        
+
         // --- LOGIKA BARU YANG MEMAKSA TANGGAL BARU ---
         $dayNames = [0 => 'Ahad', 1 => 'Senin', 2 => 'Selasa', 3 => 'Rabu', 4 => 'Kamis', 5 => 'Jumat', 6 => 'Sabtu'];
         $rollingDays = [];
@@ -34,7 +41,7 @@ class ArtikelController extends Controller
             // Kita buat objek tanggal baru secara manual, tidak mengandalkan Carbon::now()
             $dateObject = new \DateTime();
             $dateObject->modify("$i days");
-            
+
             $day = Carbon::instance($dateObject); // Ubah kembali ke objek Carbon untuk kemudahan format
 
             $rollingDays[] = [
@@ -46,7 +53,7 @@ class ArtikelController extends Controller
                 'is_today'    => $day->isToday(),
             ];
         }
-        
+
         $groupedRutinans = Rutinan::with('exceptions')->get()->sortBy('waktu')->groupBy('day_of_week');
 
         // >>> PENGUMUMAN POPUP: ambil pengumuman aktif (dalam rentang tanggal & is_active = true)
@@ -68,6 +75,7 @@ class ArtikelController extends Controller
         return view('welcome', compact(
             'latestArticles',
             'latestSelasanan',
+            'selasananGallery',
             'latestEvents',
             'groupedRutinans',
             'rollingDays',
