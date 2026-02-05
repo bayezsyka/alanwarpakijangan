@@ -8,6 +8,7 @@ use App\Models\Rutinan;
 use App\Models\RutinanException;
 use App\Http\Resources\ArticleResource;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\ShortLinkController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,6 +65,14 @@ Route::get('/articles/{slug}', function ($slug) {
 
     return new ArticleResource($article);
 });
+
+/*
+ * =============== SHORT URL (PUBLIK) ===============
+ *
+ * Dipakai oleh fitur “Share Snippet” (quote-to-image) agar kartu kutipan menampilkan URL pendek.
+ */
+
+Route::post('/shorten', [ShortLinkController::class, 'store']);
 
 
 /*

@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $article->judul }} - Pesantren Al-Anwar</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600|plus-jakarta-sans:400,500,600,700" rel="stylesheet" />
@@ -194,6 +195,8 @@
         <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}" target="_blank" class="w-10 h-10 flex items-center justify-center bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300 shadow-md" aria-label="Share ke Facebook"><i class="fab fa-facebook-f"></i></a>
         <a href="https://twitter.com/intent/tweet?url={{ urlencode(url()->current()) }}&text={{ urlencode($article->judul) }}" target="_blank" class="w-10 h-10 flex items-center justify-center bg-blue-400 text-white rounded-full hover:bg-blue-500 transition duration-300 shadow-md" aria-label="Share ke Twitter"><i class="fab fa-twitter"></i></a>
         <a href="https://wa.me/?text={{ urlencode($article->judul . ' ' . url()->current()) }}" target="_blank" class="w-10 h-10 flex items-center justify-center bg-green-500 text-white rounded-full hover:bg-green-600 transition duration-300 shadow-md" aria-label="Share ke WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        <!-- Share Snippet (quote-to-image) -->
+        <button id="ssOpenBtn" data-ss-open class="w-10 h-10 flex items-center justify-center bg-emerald-600 text-white rounded-full hover:bg-emerald-700 transition duration-300 shadow-md" aria-label="Bagikan kutipan"><i class="fas fa-quote-right"></i></button>
         <button onclick="copyToClipboard('{{ url()->current() }}')" class="w-10 h-10 flex items-center justify-center bg-gray-600 text-white rounded-full hover:bg-gray-700 transition duration-300 shadow-md" aria-label="Copy link"><i class="fas fa-link"></i></button>
     </div>
     
@@ -225,6 +228,18 @@
                             {{ $article->created_at->translatedFormat('d M Y, H:i') }} WIB
                         </div>
                     </div>
+
+                    <!-- Mobile quick actions (Share Snippet + Copy link) -->
+                    <div class="sm:hidden mt-4 flex gap-2">
+                        <button type="button" data-ss-open
+                                class="flex-1 inline-flex items-center justify-center px-4 py-2 rounded-xl bg-emerald-600 text-white font-semibold text-sm shadow hover:bg-emerald-700">
+                            <i class="fas fa-quote-right mr-2"></i> Bagikan Kutipan
+                        </button>
+                        <button type="button" onclick="copyToClipboard('{{ url()->current() }}')"
+                                class="px-4 py-2 rounded-xl bg-gray-800 text-white font-semibold text-sm shadow hover:bg-gray-900" aria-label="Copy link">
+                            <i class="fas fa-link"></i>
+                        </button>
+                    </div>
                 </div>
                 
                 @if($article->gambar)
@@ -238,7 +253,12 @@
             </header>
             
             <!-- Article content with improved typography -->
-            <div class="article-content px-6 pb-8">
+            <div id="articleContent"
+                 class="article-content px-6 pb-8"
+                 data-ss-title="{{ $article->judul }}"
+                 data-ss-url="{{ url()->current() }}"
+                 data-ss-brand="Pesantren Al-Anwar"
+                 data-ss-logo="{{ asset('images/logo.webp') }}">
                 {!! $article->isi !!}
             </div>
             
@@ -256,6 +276,89 @@
             </footer>
         </article>
     </main>
+
+    <!-- Share Snippet: floating action shown near highlighted text -->
+    <button id="ssSelectionBtn"
+            class="hidden fixed z-[150] px-3 py-2 text-xs sm:text-sm font-semibold rounded-full bg-emerald-600 text-white shadow-lg hover:bg-emerald-700 transition"
+            type="button">
+        <i class="fas fa-quote-right mr-1"></i> Bagikan Kutipan
+    </button>
+
+    <!-- Share Snippet: modal (quote-to-image canvas renderer) -->
+    <div id="shareSnippetModal" class="hidden fixed inset-0 z-[200]">
+        <div class="absolute inset-0 bg-black/60" data-ss-close></div>
+
+        <div class="relative mx-auto my-6 sm:my-10 w-[calc(100%-2rem)] max-w-2xl">
+            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+                <div class="px-4 sm:px-6 py-4 border-b flex items-center justify-between">
+                    <div>
+                        <h3 class="text-base sm:text-lg font-bold text-gray-900">Bagikan Kutipan</h3>
+                        <p class="text-xs sm:text-sm text-gray-500">Highlight teks di artikel untuk membuat quote card.</p>
+                    </div>
+                    <button class="p-2 rounded-lg hover:bg-gray-100" data-ss-close aria-label="Tutup" type="button">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <div class="p-4 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Left: controls -->
+                    <div class="space-y-3">
+                        <label class="block">
+                            <span class="text-sm font-semibold text-gray-800">Kutipan</span>
+                            <textarea id="ssQuoteInput" rows="6"
+                                      class="mt-1 w-full rounded-xl border border-gray-200 p-3 text-sm leading-relaxed focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                                      placeholder="Tempel atau highlight teks dari artikel…"></textarea>
+                            <div class="mt-1 flex items-center justify-between text-xs text-gray-500">
+                                <span id="ssCounter">0/320</span>
+                                <span class="hidden sm:inline">Tips: kutipan ideal 1–3 kalimat</span>
+                            </div>
+                        </label>
+
+                        <div class="flex items-center gap-2">
+                            <label class="flex-1">
+                                <span class="text-sm font-semibold text-gray-800">Format</span>
+                                <select id="ssFormat"
+                                        class="mt-1 w-full rounded-xl border border-gray-200 p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></select>
+                            </label>
+                            <button id="ssRenderBtn" type="button"
+                                    class="mt-6 px-4 py-2 rounded-xl bg-emerald-600 text-white text-sm font-semibold shadow hover:bg-emerald-700">
+                                Render
+                            </button>
+                        </div>
+
+                        <div class="rounded-xl bg-gray-50 border border-gray-200 p-3">
+                            <div class="text-xs text-gray-500 mb-2">URL pendek</div>
+                            <div id="ssUrlText" class="text-sm font-semibold text-gray-800 break-all"></div>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row gap-2">
+                            <button id="ssDownloadBtn" type="button"
+                                    class="w-full px-4 py-2 rounded-xl bg-gray-900 text-white text-sm font-semibold shadow hover:bg-gray-800">
+                                <i class="fas fa-download mr-1"></i> Download PNG
+                            </button>
+                            <button id="ssShareBtn" type="button"
+                                    class="w-full px-4 py-2 rounded-xl bg-emerald-600 text-white text-sm font-semibold shadow hover:bg-emerald-700">
+                                <i class="fas fa-share-alt mr-1"></i> Share
+                            </button>
+                        </div>
+
+                        <button id="ssCopyLinkBtn" type="button"
+                                class="w-full px-4 py-2 rounded-xl border border-gray-200 text-sm font-semibold text-gray-800 hover:bg-gray-50">
+                            <i class="fas fa-link mr-1"></i> Copy Link
+                        </button>
+                    </div>
+
+                    <!-- Right: preview -->
+                    <div class="flex flex-col">
+                        <div class="rounded-2xl bg-gray-50 border border-gray-200 p-3 flex-1 flex items-center justify-center">
+                            <canvas id="ssCanvas" class="w-full h-auto rounded-xl shadow-sm"></canvas>
+                        </div>
+                        <p class="mt-2 text-xs text-gray-500">Jika tombol Share tidak muncul, gunakan Download lalu unggah manual (tergantung dukungan browser).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     
     @include('layouts.footer')
 

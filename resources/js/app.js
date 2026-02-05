@@ -2,6 +2,9 @@
 
 import "./bootstrap";
 
+// Share Snippet (quote-to-image) feature
+import "./shareSnippet";
+
 // Chart.js dan plugin matrix
 import Chart from "chart.js/auto";
 import { MatrixController, MatrixElement } from "chartjs-chart-matrix";

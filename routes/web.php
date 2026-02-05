@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArtikelController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\ShortLinkController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
@@ -24,9 +25,15 @@ use App\Http\Controllers\Selasanan\SelasananManageController;
 
 // == RUTE FRONTEND (PUBLIK) ==
 Route::get('/', [ArtikelController::class, 'welcome'])->name('welcome');
+// Short URL redirect (dipakai oleh fitur Share Snippet)
+Route::get('/s/{code}', [ShortLinkController::class, 'redirect'])
+    ->where('code', '[A-Za-z0-9]{6,16}');
 Route::get('/artikel', [ArtikelController::class, 'index'])->name('artikel');
 Route::get('/artikel/{article:slug}', [ArtikelController::class, 'show'])->name('artikel.detail');
 Route::get('/galeri-acara', [GalleryController::class, 'index'])->name('galeri.index');
+Route::get('/pendaftaran', function () {
+    return view('pendaftaran');
+})->name('pendaftaran');
 // Route::get('/profil', function () { return view('profil'); })->name('profil');
 
 // == SELASANAN (PUBLIK) ==
@@ -80,4 +87,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
         });
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
