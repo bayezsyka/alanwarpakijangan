@@ -41,6 +41,7 @@ class ArticleController extends Controller
             'category_id' => 'required|exists:categories,id',
             'gambar_upload' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
             'gambar_url' => 'nullable|url',
+            'status' => 'required|in:draft,published,archived',
         ]);
 
         if ($request->hasFile('gambar_upload')) {
@@ -85,9 +86,14 @@ class ArticleController extends Controller
             'gambar_upload' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:10240'],
             'gambar_url' => ['nullable', 'url'],
             'hapus_gambar' => ['boolean'],
+            'status' => ['required', 'in:draft,published,archived'],
         ]);
 
         $dataToUpdate = $validated;
+
+        if ($artikel->user_id !== auth()->id() && $artikel->user_id !== null) {
+            $dataToUpdate['penulis'] = $artikel->penulis;
+        }
 
         if ($request->hasFile('gambar_upload')) {
             if ($artikel->gambar && !Str::startsWith($artikel->gambar, 'http')) {

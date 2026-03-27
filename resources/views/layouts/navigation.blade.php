@@ -1,388 +1,48 @@
-<nav x-data="{ open: false }" class="relative z-40">
+@php
+    $isAdmin = Auth::user() && Auth::user()->isAdmin();
+    $isSelasananManager = Auth::user() && Auth::user()->isSelasananManager();
+    $isPenulis = Auth::user() && Auth::user()->isPenulis();
 
-    @php
-        $isAdmin = Auth::check() && Auth::user()->isAdmin();
-        $isSelasananManager = Auth::check() && Auth::user()->isSelasananManager() && !Auth::user()->isAdmin();
-        $isPenulis =
-            Auth::check() &&
-            Auth::user()->isPenulis() &&
-            !Auth::user()->isAdmin() &&
-            !Auth::user()->isSelasananManager();
+    $mainRole = 'User Guest';
+    if($isAdmin) $mainRole = 'Administrator';
+    elseif($isSelasananManager) $mainRole = 'Manajer Selasanan';
+    elseif($isPenulis) $mainRole = 'Penulis Konten';
+@endphp
 
-        $linkBase = 'group flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-200';
-        $linkActive = 'bg-[#008362] text-white shadow-sm';
-        $linkInactive = 'text-gray-700 hover:bg-gray-50 hover:text-[#008362]';
-    @endphp
-
-    {{-- ========== SIDEBAR DESKTOP (Semua Role) ========== --}}
-    @if (Auth::check())
-        <div
-            class="hidden lg:flex lg:flex-col lg:fixed lg:inset-y-0 lg:left-0 lg:w-64 bg-white border-r border-gray-200 shadow-sm">
-
-            {{-- Logo + Brand --}}
-            <div class="flex items-center gap-3 h-16 px-4 border-b border-gray-200">
-                <img src="{{ asset('images/logo.webp') }}" alt="Logo" class="h-10 w-10 rounded-lg">
-                <div>
-                    <p class="text-sm font-bold text-gray-900">
-                        @if ($isAdmin)
-                            Admin Al-Anwar
-                        @elseif($isSelasananManager)
-                            Pengurus Selasanan
-                        @elseif($isPenulis)
-                            Panel Penulis
-                        @endif
-                    </p>
-                    <p class="text-xs text-gray-500">
-                        @if ($isAdmin)
-                            Panel Pengelolaan
-                        @elseif($isSelasananManager)
-                            Panel Pengelolaan
-                        @elseif($isPenulis)
-                            Kelola Artikel
-                        @endif
-                    </p>
-                </div>
-            </div>
-
-            {{-- Menu Scrollable --}}
-            <div class="flex-1 overflow-y-auto py-4 px-3">
-
-                @if ($isAdmin)
-                    {{-- Menu Admin --}}
-                    <div class="mb-6">
-                        <p class="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-gray-500">
-                            Menu Utama
-                        </p>
-                        <nav class="space-y-1">
-                            <a href="{{ route('dashboard') }}"
-                                class="{{ request()->routeIs('dashboard') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
-                                <i class="fas fa-tachometer-alt w-5 text-center"></i>
-                                <span class="ml-3">Dashboard</span>
-                            </a>
-                            <a href="{{ route('admin.artikel.index') }}"
-                                class="{{ request()->routeIs('admin.artikel.*') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
-                                <i class="fas fa-newspaper w-5 text-center"></i>
-                                <span class="ml-3">Artikel</span>
-                            </a>
-                            <a href="{{ route('admin.events.index') }}"
-                                class="{{ request()->routeIs('admin.events.*') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
-                                <i class="fas fa-calendar-alt w-5 text-center"></i>
-                                <span class="ml-3">Agenda / Kegiatan</span>
-                            </a>
-                            <a href="{{ route('admin.announcements.index') }}"
-                                class="{{ request()->routeIs('admin.announcements.*') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
-                                <i class="fas fa-bullhorn w-5 text-center"></i>
-                                <span class="ml-3">Pengumuman</span>
-                            </a>
-                        </nav>
-                    </div>
-
-                    <div>
-                        <p class="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-gray-500">
-                            Manajemen
-                        </p>
-                        <nav class="space-y-1">
-                            <a href="{{ route('admin.categories.index') }}"
-                                class="{{ request()->routeIs('admin.categories.*') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
-                                <i class="fas fa-tags w-5 text-center"></i>
-                                <span class="ml-3">Kategori</span>
-                            </a>
-                            <a href="{{ route('admin.rutinan.index') }}"
-                                class="{{ request()->routeIs('admin.rutinan.*') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
-                                <i class="fas fa-mosque w-5 text-center"></i>
-                                <span class="ml-3">Rutinan</span>
-                            </a>
-                            <a href="{{ route('manage.selasanan.index') }}"
-                                class="{{ request()->routeIs('manage.selasanan.*') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
-                                <i class="fas fa-book-reader w-5 text-center"></i>
-                                <span class="ml-3">Selasanan</span>
-                            </a>
-                            <a href="{{ route('admin.users.index') }}"
-                                class="{{ request()->routeIs('admin.users.*') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
-                                <i class="fas fa-users w-5 text-center"></i>
-                                <span class="ml-3">Users</span>
-                            </a>
-                            <a href="{{ route('admin.logs.index') }}"
-                                class="{{ request()->routeIs('admin.logs.*') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
-                                <i class="fas fa-clipboard-list w-5 text-center"></i>
-                                <span class="ml-3">Log Aktivitas</span>
-                            </a>
-                            @if (Auth::user()->isPenulis())
-                                <a href="{{ route('penulis.articles.index') }}"
-                                    class="{{ request()->routeIs('penulis.articles.*') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
-                                    <i class="fas fa-edit w-5 text-center"></i>
-                                    <span class="ml-3">Artikel Saya</span>
-                                </a>
-                            @endif
-                        </nav>
-                    </div>
-                @elseif($isSelasananManager)
-                    {{-- Menu Selasanan Manager --}}
-                    <nav class="space-y-1">
-                        <a href="{{ route('manage.selasanan.index') }}"
-                            class="{{ request()->routeIs('manage.selasanan.*') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
-                            <i class="fas fa-book-reader w-5 text-center"></i>
-                            <span class="ml-3">Manajemen Selasanan</span>
-                        </a>
-                        <a href="{{ route('selasanan.index') }}" target="_blank"
-                            class="{{ $linkBase . ' ' . $linkInactive }}">
-                            <i class="fas fa-external-link-alt w-5 text-center"></i>
-                            <span class="ml-3">Lihat Halaman Publik</span>
-                        </a>
-                        @if (Auth::user()->isPenulis())
-                            <a href="{{ route('penulis.articles.index') }}"
-                                class="{{ request()->routeIs('penulis.articles.*') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
-                                <i class="fas fa-edit w-5 text-center"></i>
-                                <span class="ml-3">Artikel Saya</span>
-                            </a>
-                        @endif
-                    </nav>
-                @elseif($isPenulis)
-                    {{-- Menu Penulis --}}
-                    <nav class="space-y-1">
-                        <a href="{{ route('penulis.articles.index') }}"
-                            class="{{ request()->routeIs('penulis.articles.*') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
-                            <i class="fas fa-edit w-5 text-center"></i>
-                            <span class="ml-3">Artikel Saya</span>
-                        </a>
-                        <a href="{{ route('welcome') }}" target="_blank"
-                            class="{{ $linkBase . ' ' . $linkInactive }}">
-                            <i class="fas fa-external-link-alt w-5 text-center"></i>
-                            <span class="ml-3">Lihat Website</span>
-                        </a>
-                    </nav>
+<div class="h-full flex flex-col w-full">
+    {{-- Logo & Brand --}}
+    <div class="flex items-center h-20 border-b border-gray-50 px-4 bg-white shrink-0">
+        <div class="w-12 h-12 shrink-0 flex items-center justify-center bg-emerald-600 rounded-xl shadow-lg shadow-emerald-200">
+            <img src="{{ asset('images/logo.webp') }}" alt="Logo" class="h-6 w-6 object-contain brightness-0 invert">
+        </div>
+        <div :class="sidebarOpen ? 'opacity-100 max-w-xs ml-3' : 'opacity-0 max-w-0 ml-0'" class="whitespace-nowrap overflow-hidden transition-all duration-500">
+            <h1 class="text-sm font-black text-gray-800 tracking-tight uppercase">Al-Anwar</h1>
+            <p class="text-[10px] font-bold text-emerald-600 tracking-widest uppercase opacity-80">
+                @if($isAdmin) Admin Panel
+                @elseif($isSelasananManager) Selasanan
+                @elseif($isPenulis) Penulis
+                @else Dashboard
                 @endif
-
-            </div>
-
-            {{-- Footer User + Logout --}}
-            <div class="border-t border-gray-200 p-4">
-                <div class="flex items-center justify-between gap-2">
-                    <div class="min-w-0 flex-1">
-                        <p class="text-sm font-semibold text-gray-900 truncate">
-                            {{ Auth::user()->name }}
-                        </p>
-                        <p class="text-xs text-gray-500 truncate">
-                            {{ Auth::user()->email }}
-                        </p>
-                    </div>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit"
-                            class="inline-flex items-center px-3 py-2 text-xs font-medium rounded-lg
-                                   border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 
-                                   focus:outline-none focus:ring-2 focus:ring-[#008362] focus:ring-offset-2">
-                            <i class="fas fa-sign-out-alt"></i>
-                        </button>
-                    </form>
-                </div>
-            </div>
+            </p>
         </div>
-    @endif
+    </div>
 
-    {{-- ========== MOBILE VIEW (Semua Role) ========== --}}
-    @if (Auth::check())
-        <div class="lg:hidden">
-            {{-- Top Bar Mobile --}}
-            <div class="flex items-center justify-between h-14 px-4 bg-white border-b border-gray-200">
-                <div class="flex items-center gap-3">
-                    <button @click="open = true"
-                        class="inline-flex items-center justify-center w-9 h-9 rounded-lg
-                               border border-gray-300 bg-white text-gray-700
-                               hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#008362]">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                    </button>
-                    <div class="flex items-center gap-2">
-                        <img src="{{ asset('images/logo.webp') }}" alt="Logo" class="h-8 w-8 rounded-lg">
-                        <div>
-                            <p class="text-sm font-bold text-gray-900">
-                                @if ($isAdmin)
-                                    Admin
-                                @elseif($isSelasananManager)
-                                    Selasanan
-                                @elseif($isPenulis)
-                                    Penulis
-                                @endif
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <span class="text-xs text-gray-600 truncate max-w-[120px]">
-                    {{ Auth::user()->name }}
-                </span>
-            </div>
+    {{-- Navigation Links --}}
+    <div class="flex-1 overflow-y-auto py-6 space-y-1 scrollbar-hide px-4 bg-white">
+        @include('layouts.navigation-links')
+    </div>
 
-            {{-- Mobile Drawer --}}
-            <div x-show="open" x-cloak class="fixed inset-0 z-50">
-                <div class="absolute inset-0 bg-gray-900/50" @click="open = false"></div>
-
-                <div class="absolute inset-y-0 left-0 w-64 bg-white shadow-xl flex flex-col">
-
-                    {{-- Drawer Header --}}
-                    <div class="flex items-center justify-between h-14 px-4 border-b border-gray-200">
-                        <div class="flex items-center gap-2">
-                            <img src="{{ asset('images/logo.webp') }}" alt="Logo" class="h-8 w-8 rounded-lg">
-                            <div>
-                                <p class="text-sm font-bold text-gray-900">
-                                    @if ($isAdmin)
-                                        Admin Al-Anwar
-                                    @elseif($isSelasananManager)
-                                        Pengurus Selasanan
-                                    @elseif($isPenulis)
-                                        Panel Penulis
-                                    @endif
-                                </p>
-                            </div>
-                        </div>
-                        <button @click="open = false"
-                            class="inline-flex items-center justify-center w-8 h-8 rounded-lg
-                                   text-gray-500 hover:bg-gray-100 focus:outline-none">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-                    </div>
-
-                    {{-- Drawer Menu --}}
-                    <div class="flex-1 overflow-y-auto py-4 px-3">
-
-                        @if ($isAdmin)
-                            {{-- Admin Menu Mobile --}}
-                            <div class="mb-6">
-                                <p class="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-gray-500">
-                                    Menu Utama
-                                </p>
-                                <nav class="space-y-1">
-                                    <a href="{{ route('dashboard') }}"
-                                        class="{{ request()->routeIs('dashboard') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
-                                        <i class="fas fa-tachometer-alt w-5 text-center"></i>
-                                        <span class="ml-3">Dashboard</span>
-                                    </a>
-                                    <a href="{{ route('admin.artikel.index') }}"
-                                        class="{{ request()->routeIs('admin.artikel.*') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
-                                        <i class="fas fa-newspaper w-5 text-center"></i>
-                                        <span class="ml-3">Artikel</span>
-                                    </a>
-                                    <a href="{{ route('admin.events.index') }}"
-                                        class="{{ request()->routeIs('admin.events.*') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
-                                        <i class="fas fa-calendar-alt w-5 text-center"></i>
-                                        <span class="ml-3">Agenda / Kegiatan</span>
-                                    </a>
-                                    <a href="{{ route('admin.announcements.index') }}"
-                                        class="{{ request()->routeIs('admin.announcements.*') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
-                                        <i class="fas fa-bullhorn w-5 text-center"></i>
-                                        <span class="ml-3">Pengumuman</span>
-                                    </a>
-                                </nav>
-                            </div>
-
-                            <div>
-                                <p class="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-gray-500">
-                                    Manajemen
-                                </p>
-                                <nav class="space-y-1">
-                                    <a href="{{ route('admin.categories.index') }}"
-                                        class="{{ request()->routeIs('admin.categories.*') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
-                                        <i class="fas fa-tags w-5 text-center"></i>
-                                        <span class="ml-3">Kategori</span>
-                                    </a>
-                                    <a href="{{ route('admin.rutinan.index') }}"
-                                        class="{{ request()->routeIs('admin.rutinan.*') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
-                                        <i class="fas fa-mosque w-5 text-center"></i>
-                                        <span class="ml-3">Rutinan</span>
-                                    </a>
-                                    <a href="{{ route('manage.selasanan.index') }}"
-                                        class="{{ request()->routeIs('manage.selasanan.*') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
-                                        <i class="fas fa-book-reader w-5 text-center"></i>
-                                        <span class="ml-3">Selasanan</span>
-                                    </a>
-                                    <a href="{{ route('admin.users.index') }}"
-                                        class="{{ request()->routeIs('admin.users.*') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
-                                        <i class="fas fa-users w-5 text-center"></i>
-                                        <span class="ml-3">Users</span>
-                                    </a>
-                                    <a href="{{ route('admin.logs.index') }}"
-                                        class="{{ request()->routeIs('admin.logs.*') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
-                                        <i class="fas fa-clipboard-list w-5 text-center"></i>
-                                        <span class="ml-3">Log Aktivitas</span>
-                                    </a>
-                                    @if (Auth::user()->isPenulis())
-                                        <a href="{{ route('penulis.articles.index') }}"
-                                            class="{{ request()->routeIs('penulis.articles.*') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
-                                            <i class="fas fa-edit w-5 text-center"></i>
-                                            <span class="ml-3">Artikel Saya</span>
-                                        </a>
-                                    @endif
-                                </nav>
-                            </div>
-                        @elseif($isSelasananManager)
-                            {{-- Selasanan Manager Menu Mobile --}}
-                            <nav class="space-y-1">
-                                <a href="{{ route('manage.selasanan.index') }}"
-                                    class="{{ request()->routeIs('manage.selasanan.*') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
-                                    <i class="fas fa-book-reader w-5 text-center"></i>
-                                    <span class="ml-3">Manajemen Selasanan</span>
-                                </a>
-                                <a href="{{ route('selasanan.index') }}" target="_blank"
-                                    class="{{ $linkBase . ' ' . $linkInactive }}">
-                                    <i class="fas fa-external-link-alt w-5 text-center"></i>
-                                    <span class="ml-3">Lihat Halaman Publik</span>
-                                </a>
-                                @if (Auth::user()->isPenulis())
-                                    <a href="{{ route('penulis.articles.index') }}"
-                                        class="{{ request()->routeIs('penulis.articles.*') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
-                                        <i class="fas fa-edit w-5 text-center"></i>
-                                        <span class="ml-3">Artikel Saya</span>
-                                    </a>
-                                @endif
-                            </nav>
-                        @elseif($isPenulis)
-                            {{-- Penulis Menu Mobile --}}
-                            <nav class="space-y-1">
-                                <a href="{{ route('penulis.articles.index') }}"
-                                    class="{{ request()->routeIs('penulis.articles.*') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
-                                    <i class="fas fa-edit w-5 text-center"></i>
-                                    <span class="ml-3">Artikel Saya</span>
-                                </a>
-                                <a href="{{ route('welcome') }}" target="_blank"
-                                    class="{{ $linkBase . ' ' . $linkInactive }}">
-                                    <i class="fas fa-external-link-alt w-5 text-center"></i>
-                                    <span class="ml-3">Lihat Website</span>
-                                </a>
-                            </nav>
-                        @endif
-
-                    </div>
-
-                    {{-- Drawer Footer --}}
-                    <div class="border-t border-gray-200 p-4">
-                        <div class="flex items-center justify-between gap-2">
-                            <div class="min-w-0 flex-1">
-                                <p class="text-sm font-semibold text-gray-900 truncate">
-                                    {{ Auth::user()->name }}
-                                </p>
-                                <p class="text-xs text-gray-500 truncate">
-                                    {{ Auth::user()->email }}
-                                </p>
-                            </div>
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <button type="submit"
-                                    class="inline-flex items-center px-3 py-2 text-xs font-medium rounded-lg
-                                           border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">
-                                    <i class="fas fa-sign-out-alt mr-1"></i>
-                                    <span>Keluar</span>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
+    {{-- Footer/User --}}
+    <div class="py-4 border-t border-gray-50 bg-gray-50/50 px-4 flex items-center shrink-0 h-20 transition-all duration-500" :class="sidebarOpen ? 'justify-start' : 'justify-center'">
+        <div :class="sidebarOpen ? 'opacity-100 max-w-xs' : 'opacity-0 max-w-0'" class="flex-1 min-w-0 pointer-events-none transition-all duration-500 overflow-hidden">
+            <p class="text-xs font-black text-gray-400 uppercase tracking-widest leading-none mb-1 whitespace-nowrap">Sesi Akun</p>
+            <p class="text-sm font-bold text-gray-800 truncate">{{ Auth::user()->name }}</p>
+            <p class="text-[10px] font-bold text-emerald-600 uppercase tracking-tighter truncate">{{ $mainRole }}</p>
         </div>
-    @endif
-</nav>
+        <div x-show="!sidebarOpen" class="text-emerald-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+        </div>
+    </div>
+</div>

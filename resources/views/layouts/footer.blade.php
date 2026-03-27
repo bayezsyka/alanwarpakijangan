@@ -14,7 +14,9 @@
                     </h3>
                 </div>
                 <p class="text-sm text-justify break-words">
-                    Menjadi lembaga yang menumbuhkan potensi setiap santri secara personal dan reflektif, membentuk karakter yang kokoh dan bijaksana, serta menguatkan ilmu sebagai cahaya hidup yang menuntun santri menapaki jalan dunia dan akhirat secara seimbang dan bermakna.
+                    Menjadi lembaga yang menumbuhkan potensi setiap santri secara personal dan reflektif, membentuk
+                    karakter yang kokoh dan bijaksana, serta menguatkan ilmu sebagai cahaya hidup yang menuntun santri
+                    menapaki jalan dunia dan akhirat secara seimbang dan bermakna.
                 </p>
 
                 {{-- ADMIN (tetap) --}}
@@ -32,19 +34,20 @@
 
                 <h4 class="text-lg font-bold mt-6 mb-3 border-b border-gray-300 pb-1 w-fit">Alamat Lengkap</h4>
                 <p class="text-sm text-justify break-words">
-                    Jl. Raya Pakijangan R. Bulakamba No.08, RT.04/RW.02, Pakijangan, Kec. Bulakamba, Kabupaten Brebes, Jawa Tengah 52253
+                    Jl. Raya Pakijangan R. Bulakamba No.08, RT.04/RW.02, Pakijangan, Kec. Bulakamba, Kabupaten Brebes,
+                    Jawa Tengah 52253
                 </p>
 
                 <h4 class="text-lg font-bold mt-6 mb-3 border-b border-gray-300 pb-1 w-fit">Ikuti Kami</h4>
                 <div class="flex space-x-4 mt-4 text-xl text-gray-700">
                     <a href="https://www.youtube.com/@alanwarpakijangan5759"
-                       class="transition-all duration-200 hover:text-red-600 hover:scale-110 break-all"
-                       target="_blank" rel="noopener">
+                        class="transition-all duration-200 hover:text-red-600 hover:scale-110 break-all" target="_blank"
+                        rel="noopener">
                         <i class="fab fa-youtube"></i>
                     </a>
                     <a href="https://instagram.com/pesantrenalanwar"
-                       class="transition-all duration-200 hover:text-pink-600 hover:scale-110 break-all"
-                       target="_blank" rel="noopener">
+                        class="transition-all duration-200 hover:text-pink-600 hover:scale-110 break-all"
+                        target="_blank" rel="noopener">
                         <i class="fab fa-instagram"></i>
                     </a>
                 </div>
@@ -56,8 +59,8 @@
                 <div class="overflow-x-auto rounded-lg">
                     <iframe
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3961.156106881118!2d108.959621074996!3d-6.8718910931268296!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6faf88434cb6dd%3A0x6162e8b5c0c73026!2sPondok%20Pesantren%20Al%20Anwar%20Pakijangan!5e0!3m2!1sid!2sid!4v1754168591726!5m2!1sid!2sid"
-                        width="100%" height="250" style="border:0; min-width:250px;" allowfullscreen="" loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        width="100%" height="250" style="border:0; min-width:250px;" allowfullscreen=""
+                        loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
             </div>
         </div>
@@ -85,21 +88,19 @@
             <!-- Quick actions -->
             <div class="grid grid-cols-3 gap-2 mt-4 text-sm">
                 <a href="tel:0283870290"
-                   class="flex items-center justify-center gap-2 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 transition">
+                    class="flex items-center justify-center gap-2 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 transition">
                     <i class="fas fa-phone"></i>
                     <span>Telp</span>
                 </a>
 
-                <a href="https://instagram.com/pesantrenalanwar"
-                   target="_blank" rel="noopener"
-                   class="flex items-center justify-center gap-2 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 transition">
+                <a href="https://instagram.com/pesantrenalanwar" target="_blank" rel="noopener"
+                    class="flex items-center justify-center gap-2 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 transition">
                     <i class="fab fa-instagram"></i>
                     <span>IG</span>
                 </a>
 
-                <a href="https://www.youtube.com/@alanwarpakijangan5759"
-                   target="_blank" rel="noopener"
-                   class="flex items-center justify-center gap-2 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 transition">
+                <a href="https://www.youtube.com/@alanwarpakijangan5759" target="_blank" rel="noopener"
+                    class="flex items-center justify-center gap-2 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 transition">
                     <i class="fab fa-youtube"></i>
                     <span>YT</span>
                 </a>
@@ -114,18 +115,11 @@
             </div>
 
             <!-- Button maps -->
-            <a href="https://www.google.com/maps?q=Pondok+Pesantren+Al+Anwar+Pakijangan"
-               target="_blank" rel="noopener"
-               class="mt-4 inline-flex w-full items-center justify-center gap-2 py-2.5 rounded-xl bg-[#008362] text-white font-semibold hover:opacity-90 transition">
+            <a href="https://www.google.com/maps?q=Pondok+Pesantren+Al+Anwar+Pakijangan" target="_blank" rel="noopener"
+                class="mt-4 inline-flex w-full items-center justify-center gap-2 py-2.5 rounded-xl bg-[#008362] text-white font-semibold hover:opacity-90 transition">
                 <i class="fas fa-map-marker-alt"></i>
                 <span>Buka Lokasi di Google Maps</span>
             </a>
         </div>
-
-        <!-- Copyright mobile -->
-        <div class="text-center mt-4 text-xs text-gray-600">
-            © {{ date('Y') }} Al-Anwar Pakijangan
-        </div>
     </div>
-
 </footer>

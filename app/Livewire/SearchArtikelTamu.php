@@ -34,7 +34,7 @@ class SearchArtikelTamu extends Component
 
     public function render()
     {
-        $query = Article::with(['user', 'category']);
+        $query = Article::published()->with(['user', 'category']);
 
         if ($this->kategori) {
             $query->whereHas('category', function ($q) {

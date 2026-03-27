@@ -54,15 +54,16 @@ class PenulisArticleController extends Controller
             'category_id'   => ['nullable', 'integer'], // sesuaikan dengan tabel kamu
             'gambar_upload' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
             'gambar_url'    => ['nullable', 'string', 'url'],
+            'status'        => ['required', 'string', 'in:draft,published,archived'],
         ]);
 
         $article = new Article();
         $article->judul       = $validated['judul'];
-        $article->slug        = Str::slug($validated['judul']);
         $article->isi         = $validated['isi'];
         $article->category_id = $validated['category_id'] ?? null;
         $article->user_id     = $user->id; // penting: milik penulis yang login
-        $article->penulis     = $user->name; // simpan nama penulis
+        $article->penulis     = $user->name; // selalu gunakan nama akun
+        $article->status      = $validated['status'];
 
         // Handle Image Upload
         if ($request->hasFile('gambar_upload')) {
@@ -116,14 +117,15 @@ class PenulisArticleController extends Controller
             'category_id'   => ['nullable', 'integer'],
             'gambar_upload' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
             'gambar_url'    => ['nullable', 'string', 'url'],
+            'hapus_gambar'  => ['boolean'],
+            'status'        => ['required', 'string', 'in:draft,published,archived'],
         ]);
 
         $article->judul = $validated['judul'];
-        if ($article->isDirty('judul')) {
-            $article->slug = Str::slug($validated['judul']);
-        }
         $article->isi = $validated['isi'];
+        $article->penulis = $user->name; // selaraskan dengan nama akun
         $article->category_id = $validated['category_id'] ?? null;
+        $article->status = $validated['status'];
 
         // Handle Image Upload
         if ($request->hasFile('gambar_upload')) {

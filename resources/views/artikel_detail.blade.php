@@ -185,6 +185,40 @@
     <!-- Reading progress bar -->
     <div class="reading-progress" id="readingProgress"></div>
     
+    @if(isset($isPreview) && $isPreview)
+        <div class="fixed bottom-6 left-6 z-[100] max-w-[calc(100%-3rem)] sm:max-w-xs pointer-events-none fade-in">
+            <div class="bg-gray-900/95 backdrop-blur-xl text-white p-1 rounded-2xl shadow-2xl border border-white/10 flex items-center pointer-events-auto overflow-hidden group">
+                {{-- Preview Icon --}}
+                <div class="w-10 h-10 bg-emerald-500/20 rounded-xl flex items-center justify-center border border-emerald-500/30 flex-shrink-0">
+                    <svg class="w-5 h-5 text-emerald-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                </div>
+                
+                {{-- Text Content --}}
+                <div class="px-3 py-1 pr-1 flex flex-col justify-center min-w-0">
+                    <p class="text-[9px] font-black uppercase tracking-[0.2em] text-emerald-400 leading-none mb-1">Preview</p>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[11px] font-bold text-white/90 truncate">{{ strtoupper($article->status) }}</span>
+                        <div class="w-1 h-1 rounded-full bg-white/20"></div>
+                        <button onclick="window.close()" class="text-[10px] font-black text-white/40 hover:text-red-400 transition-colors uppercase tracking-widest flex items-center gap-1 group/close">
+                            <span>Tutup</span>
+                            <svg class="w-3 h-3 group-hover/close:rotate-90 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <style>
+            @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+            .fade-in { animation: fadeIn 0.5s ease-out forwards; }
+        </style>
+    @endif
+    
     <!-- Navbar hidden on mobile for cleaner reading experience -->
     <div class="hidden sm:block">
         @include('layouts.nav')
@@ -211,17 +245,17 @@
                     <h1 class="text-xl sm:text-3xl md:text-4xl font-bold text-gray-900 leading-tight mb-3 sm:mb-4">{{ $article->judul }}</h1>
                     
                     <div class="flex flex-col gap-2 text-xs sm:text-sm text-gray-600 mb-3 sm:mb-6">
-                        <div class="flex items-center flex-wrap gap-1">
+                        <div class="flex items-center flex-wrap gap-2">
                             @php
                                 $authorName = $article->penulis ?? $article->user->name ?? 'Admin';
-                                $avatarUrl = "https://ui-avatars.com/api/?name=" . urlencode($authorName) . "&background=0D9488&color=fff&size=32";
                             @endphp
-                            <img src="{{ $avatarUrl }}" class="w-5 h-5 sm:w-6 sm:h-6 rounded-full" alt="{{ $authorName }}">
-                            <span class="font-medium">{{ $authorName }}</span>
-                            <span class="text-gray-400">•</span>
-                            <span class="flex items-center">
-                                <i class="far fa-eye mr-1"></i>
-                                {{ $article->views }}x
+                            <div class="flex items-center bg-gray-50 px-3 py-1 rounded-full border border-gray-100">
+                                <span class="text-gray-400 font-medium mr-1.5 whitespace-nowrap">Ditulis oleh:</span>
+                                <span class="font-bold text-gray-800">{{ $authorName }}</span>
+                            </div>
+                            <span class="flex items-center text-gray-400 ml-1">
+                                <i class="far fa-eye mr-1.5"></i>
+                                <span class="font-medium">{{ $article->views }}x</span>
                             </span>
                         </div>
                         <div class="text-gray-500">

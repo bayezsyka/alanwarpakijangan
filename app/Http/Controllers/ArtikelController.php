@@ -16,8 +16,8 @@ class ArtikelController extends Controller
      */
     public function welcome()
     {
-        // Ambil 2 artikel terbaru (bukan 3)
-        $latestArticles = Article::latest()->take(2)->get();
+        // Ambil 2 artikel terbaru yang berstatus published
+        $latestArticles = Article::published()->latest()->take(2)->get();
 
         // Ambil 1 jurnal Selasanan terbaru yang sudah dipublish
         $latestSelasanan = \App\Models\SelasananEntry::where('is_published', true)
@@ -97,8 +97,28 @@ class ArtikelController extends Controller
      */
     public function show(Article $article)
     {
+        $isPreview = false;
+        
+        if ($article->status !== 'published') {
+            $canPreview = false;
+            if (auth()->check()) {
+                if (auth()->user()->isAdmin() || (auth()->user()->isPenulis() && $article->user_id === auth()->id())) {
+                    $canPreview = true;
+                }
+            }
+            if (!$canPreview) {
+                abort(404);
+            }
+            $isPreview = true;
+        }
+
+        // Jika dipanggil dari rute dengan query ?preview=true, paksa mode preview
+        if (request()->has('preview')) {
+            $isPreview = true;
+        }
+
         $viewedKey = 'viewed_article_' . $article->id;
-        if (!session()->has($viewedKey)) {
+        if (!$isPreview && !session()->has($viewedKey)) {
             Article::withoutTimestamps(function () use ($article) {
                 $article->increment('views');
             });
@@ -108,6 +128,6 @@ class ArtikelController extends Controller
             session()->put($viewedKey, true);
         }
 
-        return view('artikel_detail', compact('article'));
+        return view('artikel_detail', compact('article', 'isPreview'));
     }
 }

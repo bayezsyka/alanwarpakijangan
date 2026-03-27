@@ -2,7 +2,7 @@
     class="fixed top-0 right-0 w-full p-3 text-sm z-50 transition-all duration-300 ease-in-out bg-white shadow-md">
 
     <!-- ===== DESKTOP: PERSIS PUNYA KAMU (JANGAN DIUBAH) ===== -->
-    <nav class="hidden sm:grid grid-cols-3 items-center w-full">
+    <nav class="hidden lg:grid grid-cols-3 items-center w-full">
         <!-- Kolom Kiri -->
         <div>
             <a id="navbarSlogan" class="text-m font-bold leading-tight text-[#008362]">
@@ -15,7 +15,7 @@
         <div class="flex justify-center">
             <a href="{{ url('/') }}" class="flex items-center">
                 <img id="navbarLogo" src="{{ asset('images/logoarab.webp') }}" alt="Logo Al-Anwar"
-                    class="h-10 w-auto hidden sm:block transition-opacity duration-300 opacity-100" />
+                    class="h-10 w-auto hidden lg:block transition-opacity duration-300 opacity-100" />
             </a>
         </div>
 
@@ -65,7 +65,7 @@
     </nav>
 
     <!-- ===== MOBILE: BARU (logo kiri + hamburger kanan) ===== -->
-    <div class="sm:hidden flex items-center justify-between w-full">
+    <div class="lg:hidden flex items-center justify-between w-full">
         <a href="{{ url('/') }}" class="flex items-center">
             <img src="{{ asset('images/logoarab.webp') }}" alt="Logo Al-Anwar" class="h-9 w-auto" />
         </a>
@@ -79,7 +79,7 @@
     </div>
 
     <div id="mobileMenu"
-        class="sm:hidden hidden mt-2 bg-white rounded-lg shadow-lg divide-y divide-gray-100 overflow-hidden">
+        class="lg:hidden hidden mt-2 bg-white rounded-lg shadow-lg divide-y divide-gray-100 overflow-hidden">
         <div class="py-2 text-sm text-gray-700">
             <a href="{{ route('selasanan.index') }}" class="block px-4 py-3 hover:bg-gray-100">Selasanan</a>
             <a href="{{ url('artikel') }}" class="block px-4 py-3 hover:bg-gray-100">Artikel</a>
@@ -134,7 +134,7 @@
             const pendaftaran = document.getElementById('navPendaftaran');
 
             function isMobile() {
-                return window.innerWidth < 640; // tailwind sm
+                return window.innerWidth < 1024; // tailwind lg
             }
 
             function setTopMode() {

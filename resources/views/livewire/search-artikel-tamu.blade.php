@@ -145,11 +145,9 @@
                                         {{ Str::limit(strip_tags($article->isi), 100) }}
                                     </p>
                                     <div class="mt-auto pt-2 sm:pt-4 border-t border-gray-100">
-                                        <div class="flex items-center justify-between text-[10px] sm:text-sm">
-                                            <span
-                                                class="font-medium text-gray-700 truncate">{{ $article->penulis ?? ($article->user->name ?? 'Admin') }}</span>
-                                            <span
-                                                class="text-gray-500">{{ $article->created_at->format('d/m/y') }}</span>
+                                        <div class="flex items-center text-[10px] sm:text-xs">
+                                            <span class="text-gray-400 mr-1 shrink-0">Ditulis oleh:</span>
+                                            <span class="font-bold text-gray-700 truncate">{{ $article->penulis ?? ($article->user->name ?? 'Admin') }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -195,11 +193,9 @@
                                         {{ Str::limit(strip_tags($article->isi), 150) }}
                                     </p>
                                     <div class="mt-auto pt-2 sm:pt-4 border-t border-gray-100">
-                                        <div class="flex items-center justify-between text-[10px] sm:text-sm">
-                                            <span
-                                                class="font-medium text-gray-700">{{ $article->penulis ?? ($article->user->name ?? 'Admin') }}</span>
-                                            <span
-                                                class="text-gray-500">{{ $article->created_at->format('d/m/y') }}</span>
+                                        <div class="flex items-center text-[10px] sm:text-xs">
+                                            <span class="text-gray-400 mr-1 shrink-0">Ditulis oleh:</span>
+                                            <span class="font-bold text-gray-700 truncate">{{ $article->penulis ?? ($article->user->name ?? 'Admin') }}</span>
                                         </div>
                                     </div>
                                 </div>

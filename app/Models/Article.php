@@ -40,6 +40,7 @@ class Article extends Model
         'gambar',
         'tanggal',
         'views',
+        'status',
     ];
 
     /**
@@ -103,5 +104,21 @@ class Article extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    /**
+     * Gunakan slug sebagai pengidentifikasi rute.
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    /**
+     * Scope a query to only include published articles.
+     */
+    public function scopePublished($query)
+    {
+        return $query->where('status', 'published');
     }
 }
