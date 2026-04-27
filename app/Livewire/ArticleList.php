@@ -29,7 +29,7 @@ class ArticleList extends Component
 
     public function render()
     {
-        $query = Article::query();
+        $query = Article::published();
 
         // Filter berdasarkan kategori jika ada
         if ($this->kategori) {

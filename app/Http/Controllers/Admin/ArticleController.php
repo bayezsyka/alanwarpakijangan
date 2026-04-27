@@ -8,6 +8,8 @@ use App\Models\Category;
 use App\Services\ImageUploadService;
 use App\Traits\LogsActivity;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -60,6 +62,7 @@ class ArticleController extends Controller
         $artikel = Article::create($validated);
 
         $this->logActivity('buat artikel', 'Judul: ' . $artikel->judul);
+        $this->regenerateSitemapIfPublished($artikel);
 
         return redirect()->route('admin.artikel.index')->with('success', 'Artikel berhasil ditambahkan.');
     }
@@ -123,6 +126,7 @@ class ArticleController extends Controller
         $artikel->update($dataToUpdate);
 
         $this->logActivity('edit artikel', 'Judul: ' . $artikel->judul);
+        $this->regenerateSitemapIfPublished($artikel);
 
         return redirect()->route('admin.artikel.index')->with('success', 'Artikel berhasil diperbarui.');
     }
@@ -190,7 +194,7 @@ class ArticleController extends Controller
             // New article
             $data = $validated;
             if (empty($data['judul'])) {
-                $data['judul'] = 'Tanpa Judul - ' . now()->translatedFormat('d F Y H:i');
+                $data['judul'] = 'Tanpa Judul - ' . now()->translatedFormat('d F Y');
             }
             if (empty($data['penulis'])) {
                 $data['penulis'] = auth()->user()->name;
@@ -206,6 +210,8 @@ class ArticleController extends Controller
             $artikel = Article::create($data);
         }
 
+        $this->regenerateSitemapIfPublished($artikel);
+
         return response()->json([
             'success' => true,
             'id' => $artikel->id,
@@ -213,5 +219,21 @@ class ArticleController extends Controller
             'judul' => $artikel->judul,
             'message' => 'Tersimpan otomatis pada ' . now()->format('H:i:s')
         ]);
+    }
+
+    private function regenerateSitemapIfPublished(Article $article): void
+    {
+        if ($article->status !== 'published') {
+            return;
+        }
+
+        try {
+            Artisan::call('sitemap:generate');
+        } catch (\Throwable $exception) {
+            Log::error('Gagal regenerate sitemap setelah artikel dipublish.', [
+                'article_id' => $article->id,
+                'error' => $exception->getMessage(),
+            ]);
+        }
     }
 }

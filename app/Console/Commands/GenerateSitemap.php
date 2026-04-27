@@ -2,10 +2,11 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use Spatie\Sitemap\Sitemap;
-use Spatie\Sitemap\Tags\Url;
 use App\Models\Article;
+use App\Support\SeoUrl;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\URL;
+use XMLWriter;
 
 class GenerateSitemap extends Command
 {
@@ -15,21 +16,68 @@ class GenerateSitemap extends Command
     public function handle()
     {
         $this->info('Generating sitemap...');
-        $sitemap = Sitemap::create();
 
-        $sitemap->add(Url::create('/')->setPriority(1.0));
-        $sitemap->add(Url::create('/artikel')->setPriority(0.8));
-        // Tambahkan halaman lain jika ada
-        
-        Article::all()->each(function (Article $article) use ($sitemap) {
-            $sitemap->add(
-                Url::create(route('artikel.detail', $article->slug))
-                    ->setLastModificationDate($article->updated_at)
-            );
-        });
+        $baseUrl = SeoUrl::baseUrl();
+        URL::forceRootUrl($baseUrl);
+        URL::forceScheme('https');
 
-        $sitemap->writeToFile(public_path('sitemap.xml'));
+        $xml = new XMLWriter();
+        $xml->openMemory();
+        $xml->startDocument('1.0', 'UTF-8');
+        $xml->setIndent(true);
+        $xml->startElement('urlset');
+        $xml->writeAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
+
+        $this->writeUrl($xml, route('welcome'), null, 'weekly', '1.0');
+        $this->writeUrl($xml, route('artikel'), null, 'daily', '0.8');
+
+        Article::published()
+            ->whereNotNull('slug')
+            ->where('slug', '!=', '')
+            ->orderByDesc('updated_at')
+            ->get()
+            ->each(function (Article $article) use ($xml) {
+                $this->writeUrl(
+                    $xml,
+                    route('artikel.detail', ['article' => $article->slug]),
+                    $article->updated_at?->toAtomString(),
+                    'weekly',
+                    '0.7'
+                );
+            });
+
+        $xml->endElement();
+        $xml->endDocument();
+
+        file_put_contents(public_path('sitemap.xml'), $xml->outputMemory());
+
         $this->info('Sitemap generated successfully!');
-        return 0;
+
+        return self::SUCCESS;
+    }
+
+    private function writeUrl(
+        XMLWriter $xml,
+        string $loc,
+        ?string $lastmod = null,
+        ?string $changefreq = null,
+        ?string $priority = null
+    ): void {
+        $xml->startElement('url');
+        $xml->writeElement('loc', $loc);
+
+        if ($lastmod) {
+            $xml->writeElement('lastmod', $lastmod);
+        }
+
+        if ($changefreq) {
+            $xml->writeElement('changefreq', $changefreq);
+        }
+
+        if ($priority) {
+            $xml->writeElement('priority', $priority);
+        }
+
+        $xml->endElement();
     }
 }

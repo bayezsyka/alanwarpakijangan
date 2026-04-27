@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Services\ImageUploadService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -80,6 +82,7 @@ class PenulisArticleController extends Controller
         }
 
         $article->save();
+        $this->regenerateSitemapIfPublished($article);
 
         return redirect()
             ->route('penulis.articles.index')
@@ -150,6 +153,7 @@ class PenulisArticleController extends Controller
         }
 
         $article->save();
+        $this->regenerateSitemapIfPublished($article);
 
         return redirect()
             ->route('penulis.articles.index')
@@ -180,6 +184,22 @@ class PenulisArticleController extends Controller
     {
         if ($article->user_id !== $userId) {
             abort(403, 'Anda tidak boleh mengelola artikel ini.');
+        }
+    }
+
+    private function regenerateSitemapIfPublished(Article $article): void
+    {
+        if ($article->status !== 'published') {
+            return;
+        }
+
+        try {
+            Artisan::call('sitemap:generate');
+        } catch (\Throwable $exception) {
+            Log::error('Gagal regenerate sitemap setelah artikel penulis dipublish.', [
+                'article_id' => $article->id,
+                'error' => $exception->getMessage(),
+            ]);
         }
     }
 }

@@ -40,7 +40,7 @@ Route::get('/me', [AuthController::class, 'me'])->middleware('auth.api');
 
 // List artikel (dengan paginasi, search, filter kategori)
 Route::get('/articles', function (Request $request) {
-    $query = Article::with(['category', 'user'])->latest();
+    $query = Article::published()->with(['category', 'user'])->latest();
 
     // Search judul: /api/articles?q=teks
     if ($search = $request->query('q')) {
@@ -59,7 +59,8 @@ Route::get('/articles', function (Request $request) {
 
 // Detail artikel per slug
 Route::get('/articles/{slug}', function ($slug) {
-    $article = Article::with(['category', 'user'])
+    $article = Article::published()
+        ->with(['category', 'user'])
         ->where('slug', $slug)
         ->firstOrFail();
 

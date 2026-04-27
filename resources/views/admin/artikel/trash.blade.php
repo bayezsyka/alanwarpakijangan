@@ -55,7 +55,7 @@
                                     </td>
                                     <td class="px-6 py-4 text-center">
                                         <span class="text-[10px] font-black text-gray-500 uppercase tracking-widest bg-gray-100 px-3 py-1 rounded-lg">
-                                            {{ $article->deleted_at->translatedFormat('d M Y H:i') }}
+                                            {{ $article->deleted_at->translatedFormat('d M Y') }}
                                         </span>
                                     </td>
                                     <td class="px-6 py-4">

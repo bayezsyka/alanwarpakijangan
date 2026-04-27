@@ -64,7 +64,7 @@
                         <div class="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4 space-y-1">
                             <p class="flex items-center">
                                 <i class="far fa-calendar-alt mr-1.5 text-emerald-600"></i>
-                                {{ $latest->monday_date->locale('id')->translatedFormat('d M Y') }} • {{ substr($latest->time_wib, 0, 5) }} WIB
+                                {{ $latest->monday_date->locale('id')->translatedFormat('d M Y') }}
                             </p>
                             <p class="flex items-center">
                                 <i class="fas fa-user mr-1.5 text-emerald-600"></i>

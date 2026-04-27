@@ -187,7 +187,7 @@
                             <span class="font-medium">{{ $speakerName }}</span>
                         </div>
                         <div class="text-gray-500">
-                            Senin, {{ $selasanan->monday_date->locale('id')->translatedFormat('d M Y') }} • {{ substr($selasanan->time_wib, 0, 5) }} WIB
+                            Senin, {{ $selasanan->monday_date->locale('id')->translatedFormat('d M Y') }}
                         </div>
                     </div>
                 </div>

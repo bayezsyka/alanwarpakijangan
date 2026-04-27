@@ -4,7 +4,60 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ $article->judul }} - Pesantren Al-Anwar</title>
+    @php
+        $descriptionText = trim(preg_replace('/\s+/', ' ', strip_tags($article->isi ?? '')));
+        $seoDescription = \Illuminate\Support\Str::limit($descriptionText, 155, '');
+        $canonicalUrl = \App\Support\SeoUrl::articleUrl($article);
+        $seoImageUrl = \App\Support\SeoUrl::articleImageUrl($article->gambar);
+        $publisherName = 'Pondok Pesantren Al-Anwar Pakijangan';
+        $publisherLogoUrl = \App\Support\SeoUrl::assetUrl('images/logo.webp');
+        $authorName = $article->penulis ?? $article->user->name ?? 'Admin';
+        $publishedDate = $article->tanggal
+            ? \Illuminate\Support\Carbon::parse($article->tanggal)->toAtomString()
+            : optional($article->created_at)->toAtomString();
+        $modifiedDate = optional($article->updated_at)->toAtomString();
+        $articleSchema = [
+            '@context' => 'https://schema.org',
+            '@type' => 'Article',
+            'headline' => $article->judul,
+            'description' => $seoDescription,
+            'image' => [$seoImageUrl],
+            'url' => $canonicalUrl,
+            'mainEntityOfPage' => [
+                '@type' => 'WebPage',
+                '@id' => $canonicalUrl,
+            ],
+            'datePublished' => $publishedDate,
+            'dateModified' => $modifiedDate,
+            'author' => [
+                '@type' => 'Person',
+                'name' => $authorName,
+            ],
+            'publisher' => [
+                '@type' => 'Organization',
+                'name' => $publisherName,
+                'logo' => [
+                    '@type' => 'ImageObject',
+                    'url' => $publisherLogoUrl,
+                ],
+            ],
+        ];
+    @endphp
+    <title>{{ $article->judul }}</title>
+    <meta name="description" content="{{ $seoDescription }}">
+    <link rel="canonical" href="{{ $canonicalUrl }}">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="{{ $article->judul }}">
+    <meta property="og:description" content="{{ $seoDescription }}">
+    <meta property="og:url" content="{{ $canonicalUrl }}">
+    <meta property="og:image" content="{{ $seoImageUrl }}">
+    <meta property="article:published_time" content="{{ $publishedDate }}">
+    <meta property="article:modified_time" content="{{ $modifiedDate }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $article->judul }}">
+    <meta name="twitter:description" content="{{ $seoDescription }}">
+    <meta name="twitter:image" content="{{ $seoImageUrl }}">
+    <script type="application/ld+json">{!! json_encode($articleSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600|plus-jakarta-sans:400,500,600,700" rel="stylesheet" />
     <link rel="icon" type="image/png" href="{{ asset('images/logo.webp') }}">
@@ -226,12 +279,12 @@
     
     <!-- Floating share buttons - hidden on mobile, shown on desktop -->
     <div class="floating-share hidden sm:flex">
-        <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}" target="_blank" class="w-10 h-10 flex items-center justify-center bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300 shadow-md" aria-label="Share ke Facebook"><i class="fab fa-facebook-f"></i></a>
-        <a href="https://twitter.com/intent/tweet?url={{ urlencode(url()->current()) }}&text={{ urlencode($article->judul) }}" target="_blank" class="w-10 h-10 flex items-center justify-center bg-blue-400 text-white rounded-full hover:bg-blue-500 transition duration-300 shadow-md" aria-label="Share ke Twitter"><i class="fab fa-twitter"></i></a>
-        <a href="https://wa.me/?text={{ urlencode($article->judul . ' ' . url()->current()) }}" target="_blank" class="w-10 h-10 flex items-center justify-center bg-green-500 text-white rounded-full hover:bg-green-600 transition duration-300 shadow-md" aria-label="Share ke WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode($canonicalUrl) }}" target="_blank" class="w-10 h-10 flex items-center justify-center bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300 shadow-md" aria-label="Share ke Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://twitter.com/intent/tweet?url={{ urlencode($canonicalUrl) }}&text={{ urlencode($article->judul) }}" target="_blank" class="w-10 h-10 flex items-center justify-center bg-blue-400 text-white rounded-full hover:bg-blue-500 transition duration-300 shadow-md" aria-label="Share ke Twitter"><i class="fab fa-twitter"></i></a>
+        <a href="https://wa.me/?text={{ urlencode($article->judul . ' ' . $canonicalUrl) }}" target="_blank" class="w-10 h-10 flex items-center justify-center bg-green-500 text-white rounded-full hover:bg-green-600 transition duration-300 shadow-md" aria-label="Share ke WhatsApp"><i class="fab fa-whatsapp"></i></a>
         <!-- Share Snippet (quote-to-image) -->
         <button id="ssOpenBtn" data-ss-open class="w-10 h-10 flex items-center justify-center bg-emerald-600 text-white rounded-full hover:bg-emerald-700 transition duration-300 shadow-md" aria-label="Bagikan kutipan"><i class="fas fa-quote-right"></i></button>
-        <button onclick="copyToClipboard('{{ url()->current() }}')" class="w-10 h-10 flex items-center justify-center bg-gray-600 text-white rounded-full hover:bg-gray-700 transition duration-300 shadow-md" aria-label="Copy link"><i class="fas fa-link"></i></button>
+        <button onclick="copyToClipboard('{{ $canonicalUrl }}')" class="w-10 h-10 flex items-center justify-center bg-gray-600 text-white rounded-full hover:bg-gray-700 transition duration-300 shadow-md" aria-label="Copy link"><i class="fas fa-link"></i></button>
     </div>
     
     <main class="flex-grow container mx-auto px-2 sm:px-4 pt-2 sm:pt-24 pb-4 sm:pb-8 max-w-3xl">
@@ -259,7 +312,7 @@
                             </span>
                         </div>
                         <div class="text-gray-500">
-                            {{ $article->created_at->translatedFormat('d M Y, H:i') }} WIB
+                            {{ $article->created_at->translatedFormat('d M Y') }}
                         </div>
                     </div>
 
@@ -269,7 +322,7 @@
                                 class="flex-1 inline-flex items-center justify-center px-4 py-2 rounded-xl bg-emerald-600 text-white font-semibold text-sm shadow hover:bg-emerald-700">
                             <i class="fas fa-quote-right mr-2"></i> Bagikan Kutipan
                         </button>
-                        <button type="button" onclick="copyToClipboard('{{ url()->current() }}')"
+                        <button type="button" onclick="copyToClipboard('{{ $canonicalUrl }}')"
                                 class="px-4 py-2 rounded-xl bg-gray-800 text-white font-semibold text-sm shadow hover:bg-gray-900" aria-label="Copy link">
                             <i class="fas fa-link"></i>
                         </button>
@@ -290,9 +343,9 @@
             <div id="articleContent"
                  class="article-content px-6 pb-8"
                  data-ss-title="{{ $article->judul }}"
-                 data-ss-url="{{ url()->current() }}"
+                 data-ss-url="{{ $canonicalUrl }}"
                  data-ss-brand="Pesantren Al-Anwar"
-                 data-ss-logo="{{ asset('images/logo.webp') }}">
+                 data-ss-logo="{{ $publisherLogoUrl }}">
                 {!! $article->isi !!}
             </div>
             
