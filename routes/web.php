@@ -52,6 +52,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // --- Admin ---
     Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
+        Route::get('artikel/trash', [AdminArticleController::class, 'trash'])->name('artikel.trash');
+        Route::post('artikel/{id}/restore', [AdminArticleController::class, 'restore'])->name('artikel.restore');
+        Route::delete('artikel/{id}/force-delete', [AdminArticleController::class, 'forceDelete'])->name('artikel.force-delete');
+        Route::post('artikel/autosave', [AdminArticleController::class, 'autosave'])->name('artikel.autosave');
         Route::resource('artikel', AdminArticleController::class);
         Route::resource('users', AdminUserController::class);
         Route::resource('events', AdminEventController::class);

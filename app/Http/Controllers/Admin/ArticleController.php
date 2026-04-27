@@ -129,14 +129,89 @@ class ArticleController extends Controller
 
     public function destroy(Article $artikel)
     {
+        $this->logActivity('hapus artikel (ke sampah)', 'Judul: ' . $artikel->judul);
+
+        $artikel->delete();
+
+        return redirect()->route('admin.artikel.index')->with('success', 'Artikel dipindahkan ke sampah.');
+    }
+
+    public function trash()
+    {
+        $articles = Article::onlyTrashed()->latest()->paginate(10);
+        return view('admin.artikel.trash', compact('articles'));
+    }
+
+    public function restore($id)
+    {
+        $artikel = Article::onlyTrashed()->findOrFail($id);
+        $artikel->restore();
+
+        $this->logActivity('restore artikel', 'Judul: ' . $artikel->judul);
+
+        return redirect()->route('admin.artikel.trash')->with('success', 'Artikel berhasil dipulihkan.');
+    }
+
+    public function forceDelete($id)
+    {
+        $artikel = Article::onlyTrashed()->findOrFail($id);
+
         if ($artikel->gambar && !Str::startsWith($artikel->gambar, 'http')) {
             Storage::disk('public')->delete($artikel->gambar);
         }
 
-        $this->logActivity('hapus artikel', 'Judul: ' . $artikel->judul);
+        $this->logActivity('hapus permanen artikel', 'Judul: ' . $artikel->judul);
 
-        $artikel->delete();
+        $artikel->forceDelete();
 
-        return redirect()->route('admin.artikel.index')->with('success', 'Artikel berhasil dihapus.');
+        return redirect()->route('admin.artikel.trash')->with('success', 'Artikel dihapus secara permanen.');
+    }
+
+    public function autosave(Request $request)
+    {
+        $id = $request->input('id');
+
+        $validated = $request->validate([
+            'judul' => 'nullable|string|max:255',
+            'penulis' => 'nullable|string|max:255',
+            'isi' => 'nullable|string',
+            'category_id' => 'nullable|exists:categories,id',
+            'status' => 'nullable|in:draft,published,archived',
+        ]);
+
+        if ($id) {
+            $artikel = Article::findOrFail($id);
+            // Don't update slug if title is empty/default and it already has a slug
+            if (empty($validated['judul'])) {
+                unset($validated['judul']);
+            }
+            $artikel->update($validated);
+        } else {
+            // New article
+            $data = $validated;
+            if (empty($data['judul'])) {
+                $data['judul'] = 'Tanpa Judul - ' . now()->translatedFormat('d F Y H:i');
+            }
+            if (empty($data['penulis'])) {
+                $data['penulis'] = auth()->user()->name;
+            }
+            if (empty($data['status'])) {
+                $data['status'] = 'draft';
+            }
+            if (empty($data['category_id'])) {
+                $data['category_id'] = Category::first()?->id;
+            }
+            $data['user_id'] = auth()->id();
+
+            $artikel = Article::create($data);
+        }
+
+        return response()->json([
+            'success' => true,
+            'id' => $artikel->id,
+            'slug' => $artikel->slug,
+            'judul' => $artikel->judul,
+            'message' => 'Tersimpan otomatis pada ' . now()->format('H:i:s')
+        ]);
     }
 }

@@ -16,6 +16,11 @@
             #editor { min-height: 400px; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; }
             .ql-toolbar.ql-snow { border-top-left-radius: 1rem; border-top-right-radius: 1rem; border-color: #f3f4f6; background: #f9fafb; padding: 0.75rem; }
             .ql-container.ql-snow { border-color: #f3f4f6; font-family: 'Inter', sans-serif; font-size: 1rem; }
+            .ql-editor p { margin-bottom: 1.5rem; line-height: 1.8; }
+            .ql-editor h1, .ql-editor h2, .ql-editor h3 { margin-bottom: 1rem; margin-top: 2rem; font-weight: 800; }
+            .ql-editor h1 { font-size: 2rem; }
+            .ql-editor h2 { font-size: 1.5rem; }
+            .ql-editor h3 { font-size: 1.25rem; }
             .ql-editor.ql-blank::before { color: #9ca3af; font-style: normal; font-weight: 500; }
         </style>
     @endpush
@@ -216,6 +221,7 @@
 
     @push('scripts')
         <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
             var quill = new Quill('#editor', {
                 theme: 'snow',
@@ -232,65 +238,123 @@
                 }
             });
 
-            // Mencegah keluar tanpa sengaja
-            let isSubmitting = false;
-            const draftKey = 'admin_article_draft_content';
-            const titleInput = document.getElementById('judul');
+            const form = document.querySelector('#artikel-form');
+            const titleInput = form.querySelector('[name="judul"]');
+            const penulisInput = form.querySelector('[name="penulis"]');
+            const categorySelect = form.querySelector('[name="category_id"]');
+            const statusSelect = form.querySelector('[name="status"]');
+            const isiHidden = form.querySelector('[name="isi"]');
+            
+            // Add hidden input for article ID to track autosaves
+            let articleId = null;
+            const idInput = document.createElement('input');
+            idInput.type = 'hidden';
+            idInput.name = 'id';
+            form.appendChild(idInput);
 
-            // Pulihkan Draft jika ada
-            const savedDraft = localStorage.getItem(draftKey);
-            // Jangan over-ride jika sedang mode editing old('isi') dari error
-            if (savedDraft && !{{ old('isi') ? 'true' : 'false' }}) {
-                const draftData = JSON.parse(savedDraft);
-                if ((draftData.judul && draftData.judul.trim() !== '') || (draftData.isi && draftData.isi.trim() !== '' && draftData.isi !== '<p><br></p>')) {
-                    Swal.fire({
-                        title: 'DRAFT DITEMUKAN',
-                        html: '<p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-2">Sistem menemukan draf yang belum tersimpan padat saat sesi terakhir Anda.</p>',
-                        icon: 'info',
-                        showCancelButton: true,
-                        confirmButtonColor: '#059669',
-                        cancelButtonColor: '#f43f5e',
-                        confirmButtonText: 'YA, PULIHKAN DRAFT',
-                        cancelButtonText: 'BUANG DRAF',
-                        borderRadius: '2rem',
-                        customClass: {
-                            title: 'text-xl font-black tracking-widest text-gray-800',
-                            confirmButton: 'px-8 py-3 rounded-xl font-black text-xs',
-                            cancelButton: 'px-8 py-3 rounded-xl font-black text-xs'
-                        }
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            if(draftData.judul && !titleInput.value) titleInput.value = draftData.judul;
-                            if(draftData.isi) quill.root.innerHTML = draftData.isi;
-                        } else if (result.dismiss === Swal.DismissReason.cancel) {
-                            localStorage.removeItem(draftKey);
-                        }
-                    });
+            // UI for autosave status
+            const statusIndicator = document.createElement('div');
+            statusIndicator.className = 'fixed bottom-6 left-6 px-4 py-2 bg-white/80 backdrop-blur border border-gray-100 rounded-2xl shadow-xl z-50 text-[10px] font-black text-gray-400 uppercase tracking-widest flex items-center gap-2 transition-all opacity-0 pointer-events-none';
+            statusIndicator.innerHTML = '<div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div> <span id="autosave-text">Draft Tersimpan</span>';
+            document.body.appendChild(statusIndicator);
+
+            function showStatus(text, duration = 3000) {
+                const textEl = document.getElementById('autosave-text');
+                textEl.innerText = text;
+                statusIndicator.classList.remove('opacity-0', 'translate-y-4');
+                statusIndicator.classList.add('opacity-100', 'translate-y-0');
+                
+                if (duration) {
+                    setTimeout(() => {
+                        statusIndicator.classList.add('opacity-0', 'translate-y-4');
+                        statusIndicator.classList.remove('opacity-100', 'translate-y-0');
+                    }, duration);
                 }
             }
 
-            // Simpan perubahan form
-            function saveDraft() {
-                localStorage.setItem(draftKey, JSON.stringify({
+            async function performAutosave() {
+                if (isSubmitting) return;
+
+                const formData = {
+                    id: articleId,
                     judul: titleInput.value,
-                    isi: quill.root.innerHTML
-                }));
+                    penulis: penulisInput.value,
+                    category_id: categorySelect.value,
+                    status: statusSelect.value,
+                    isi: quill.root.innerHTML,
+                    _token: '{{ csrf_token() }}'
+                };
+
+                // Don't save if everything is empty
+                if (!formData.judul && (formData.isi === '<p><br></p>' || !formData.isi)) return;
+
+                try {
+                    const response = await fetch('{{ route("admin.artikel.autosave") }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        articleId = data.id;
+                        idInput.value = data.id;
+                        // Update form action to update instead of store if we want, 
+                        // but actually autosave endpoint handles it.
+                        // If user clicks "Terbitkan", we might want to redirect to the new edit page or just submit.
+                        // Let's update the form action to the update route for the real submit.
+                        if (data.slug) {
+                            const updateUrl = '{{ route("admin.artikel.update", ":slug") }}'.replace(':slug', data.slug);
+                            form.action = updateUrl;
+                            if (!form.querySelector('input[name="_method"]')) {
+                                const methodInput = document.createElement('input');
+                                methodInput.type = 'hidden';
+                                methodInput.name = '_method';
+                                methodInput.value = 'PUT';
+                                form.appendChild(methodInput);
+                            }
+                        }
+                        
+                        showStatus(data.message);
+                    }
+                } catch (error) {
+                    console.error('Autosave error:', error);
+                    showStatus('Gagal menyimpan otomatis', 5000);
+                }
             }
 
-            quill.on('text-change', saveDraft);
-            titleInput.addEventListener('input', saveDraft);
-
-            window.addEventListener('beforeunload', function (e) {
-                if (!isSubmitting && (quill.getText().trim().length > 0 || titleInput.value.trim().length > 0)) {
+            // Keyboard Shortcut Ctrl + Alt + S
+            window.addEventListener('keydown', function(e) {
+                if (e.ctrlKey && e.altKey && e.key === 's') {
                     e.preventDefault();
-                    e.returnValue = 'Draf tersedia, anda yakin menutupnya?';
+                    showStatus('Sedang menyimpan...', 0);
+                    performAutosave();
                 }
             });
 
-            document.querySelector('#artikel-form').addEventListener('submit', function () {
+            // Auto-save every 30 seconds
+            let autosaveInterval = setInterval(performAutosave, 30000);
+
+            // Mencegah keluar tanpa sengaja
+            let isSubmitting = false;
+
+            window.addEventListener('beforeunload', function (e) {
+                if (!isSubmitting && (quill.getText().trim().length > 0 || titleInput.value.trim().length > 0)) {
+                    // If we have an articleId, it means it's already saved on server, so maybe less urgent?
+                    // But usually we still want to warn about unsaved changes since last autosave.
+                    e.preventDefault();
+                    e.returnValue = 'Pastikan perubahan Anda telah tersimpan.';
+                }
+            });
+
+            form.addEventListener('submit', function () {
                 isSubmitting = true;
-                localStorage.removeItem(draftKey);
-                document.querySelector('#isi_hidden').value = quill.root.innerHTML;
+                isiHidden.value = quill.root.innerHTML;
             });
         </script>
     @endpush

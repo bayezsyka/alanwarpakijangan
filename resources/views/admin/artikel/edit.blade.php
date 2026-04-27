@@ -16,6 +16,11 @@
             #editor { min-height: 400px; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; }
             .ql-toolbar.ql-snow { border-top-left-radius: 1rem; border-top-right-radius: 1rem; border-color: #f3f4f6; background: #f9fafb; padding: 0.75rem; }
             .ql-container.ql-snow { border-color: #f3f4f6; font-family: 'Inter', sans-serif; font-size: 1rem; }
+            .ql-editor p { margin-bottom: 1.5rem; line-height: 1.8; }
+            .ql-editor h1, .ql-editor h2, .ql-editor h3 { margin-bottom: 1rem; margin-top: 2rem; font-weight: 800; }
+            .ql-editor h1 { font-size: 2rem; }
+            .ql-editor h2 { font-size: 1.5rem; }
+            .ql-editor h3 { font-size: 1.25rem; }
         </style>
     @endpush
 
@@ -253,8 +258,92 @@
                 }
             });
 
-            document.querySelector('#artikel-form').addEventListener('submit', function () {
-                document.querySelector('#isi_hidden').value = quill.root.innerHTML;
+            const form = document.querySelector('#artikel-form');
+            const titleInput = form.querySelector('[name="judul"]');
+            const penulisInput = form.querySelector('[name="penulis"]');
+            const categorySelect = form.querySelector('[name="category_id"]');
+            const statusSelect = form.querySelector('[name="status"]');
+            const isiHidden = form.querySelector('[name="isi"]');
+            let articleId = {{ $artikel->id }};
+
+            // UI for autosave status
+            const statusIndicator = document.createElement('div');
+            statusIndicator.className = 'fixed bottom-6 left-6 px-4 py-2 bg-white/80 backdrop-blur border border-gray-100 rounded-2xl shadow-xl z-50 text-[10px] font-black text-gray-400 uppercase tracking-widest flex items-center gap-2 transition-all opacity-0 pointer-events-none';
+            statusIndicator.innerHTML = '<div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div> <span id="autosave-text">Perubahan Tersimpan</span>';
+            document.body.appendChild(statusIndicator);
+
+            function showStatus(text, duration = 3000) {
+                const textEl = document.getElementById('autosave-text');
+                textEl.innerText = text;
+                statusIndicator.classList.remove('opacity-0', 'translate-y-4');
+                statusIndicator.classList.add('opacity-100', 'translate-y-0');
+                
+                if (duration) {
+                    setTimeout(() => {
+                        statusIndicator.classList.add('opacity-0', 'translate-y-4');
+                        statusIndicator.classList.remove('opacity-100', 'translate-y-0');
+                    }, duration);
+                }
+            }
+
+            async function performAutosave() {
+                if (isSubmitting) return;
+
+                const formData = {
+                    id: articleId,
+                    judul: titleInput.value,
+                    penulis: penulisInput.value,
+                    category_id: categorySelect.value,
+                    status: statusSelect.value,
+                    isi: quill.root.innerHTML,
+                    _token: '{{ csrf_token() }}'
+                };
+
+                try {
+                    const response = await fetch('{{ route("admin.artikel.autosave") }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        showStatus(data.message);
+                    }
+                } catch (error) {
+                    console.error('Autosave error:', error);
+                    showStatus('Gagal menyimpan otomatis', 5000);
+                }
+            }
+
+            // Keyboard Shortcut Ctrl + Alt + S
+            window.addEventListener('keydown', function(e) {
+                if (e.ctrlKey && e.altKey && e.key === 's') {
+                    e.preventDefault();
+                    showStatus('Sedang menyimpan...', 0);
+                    performAutosave();
+                }
+            });
+
+            // Auto-save every 30 seconds
+            let autosaveInterval = setInterval(performAutosave, 30000);
+
+            let isSubmitting = false;
+            form.addEventListener('submit', function () {
+                isSubmitting = true;
+                isiHidden.value = quill.root.innerHTML;
+            });
+
+            window.addEventListener('beforeunload', function (e) {
+                if (!isSubmitting) {
+                    // We could track if changes were made since last autosave, 
+                    // but for simplicity we'll just let them leave if autosave is running.
+                }
             });
         </script>
     @endpush

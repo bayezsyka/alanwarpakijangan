@@ -90,11 +90,9 @@ class ArticleManagementTable extends Component
                 return;
             }
 
-            if ($article->gambar && !str_starts_with($article->gambar, 'http')) {
-                Storage::disk('public')->delete($article->gambar);
-            }
+            // Don't delete image on soft delete
             $article->delete();
-            $this->dispatch('article-deleted', 'Artikel berhasil dihapus.');
+            $this->dispatch('article-deleted', 'Artikel dipindahkan ke sampah.');
         }
     }
 }

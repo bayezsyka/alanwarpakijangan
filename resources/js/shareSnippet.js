@@ -291,31 +291,51 @@
       }
     }
 
+    const footerMid = footerY + Math.round(footerH / 2);
+    const textLeft = footerX + innerPad + (logoW ? logoW + 16 : 0);
+
+    // URL (right) - Render this first to know its width
+    ctx.save();
+    ctx.textAlign = "right";
+    ctx.font = `600 ${Math.round(fmt.w * 0.024)}px "Plus Jakarta Sans", system-ui, -apple-system, Segoe UI, sans-serif`;
+    ctx.globalAlpha = 0.9;
+    const urlWidth = ctx.measureText(urlText).width;
+    ctx.fillText(urlText, footerX + contentW - innerPad, footerMid + Math.round(fmt.h * 0.020));
+    ctx.restore();
+
+    // Article title (left, with wrapping)
     ctx.save();
     ctx.fillStyle = "#ffffff";
     ctx.textBaseline = "middle";
     ctx.textAlign = "left";
+    const maxTitleW = (footerX + contentW - innerPad) - textLeft - urlWidth - 30; // 30px gap
+    
+    let titleFontSize = Math.round(fmt.w * 0.030);
+    ctx.font = `700 ${titleFontSize}px "Instrument Sans", system-ui, -apple-system, Segoe UI, sans-serif`;
+    
+    // Wrap title
+    let titleLines = wrapText(ctx, titleText, maxTitleW);
+    if (titleLines.length > 2) {
+        titleLines = titleLines.slice(0, 2);
+        titleLines[1] = titleLines[1].slice(0, -1) + "…";
+    }
 
-    const textLeft = footerX + innerPad + (logoW ? logoW + 16 : 0);
-    const footerMid = footerY + Math.round(footerH / 2);
-
-    // Article title (left)
-    ctx.font = `700 ${Math.round(fmt.w * 0.030)}px "Instrument Sans", system-ui, -apple-system, Segoe UI, sans-serif`;
     ctx.globalAlpha = 0.98;
-    ctx.fillText(titleText, textLeft, footerMid - Math.round(fmt.h * 0.015));
+    const titleLineH = Math.round(titleFontSize * 1.15);
+    const titleTotalH = titleLines.length * titleLineH;
+    const titleStartY = footerMid - (brandText ? Math.round(fmt.h * 0.015) : 0) - (titleTotalH / 2) + (titleLineH / 2);
+
+    for (let i = 0; i < titleLines.length; i++) {
+        ctx.fillText(titleLines[i], textLeft, titleStartY + i * titleLineH);
+    }
 
     // Brand (left, smaller)
     if (brandText) {
       ctx.font = `600 ${Math.round(fmt.w * 0.024)}px "Plus Jakarta Sans", system-ui, -apple-system, Segoe UI, sans-serif`;
       ctx.globalAlpha = 0.82;
-      ctx.fillText(brandText, textLeft, footerMid + Math.round(fmt.h * 0.018));
+      const brandY = footerMid + Math.round(fmt.h * 0.018) + (titleLines.length > 1 ? 5 : 0);
+      ctx.fillText(brandText, textLeft, brandY);
     }
-
-    // URL (right)
-    ctx.textAlign = "right";
-    ctx.font = `600 ${Math.round(fmt.w * 0.024)}px "Plus Jakarta Sans", system-ui, -apple-system, Segoe UI, sans-serif`;
-    ctx.globalAlpha = 0.9;
-    ctx.fillText(urlText, footerX + contentW - innerPad, footerMid + Math.round(fmt.h * 0.020));
     ctx.restore();
   }
 
