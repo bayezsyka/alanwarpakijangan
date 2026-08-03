@@ -3,12 +3,7 @@
 @section('title', 'Artikel - Pesantren Al-Anwar')
 
 @section('content')
-<section class="bg-gray-50 pb-6 sm:pb-12">
-    <div class="container mx-auto max-w-7xl">
-        
-        {{-- Seluruh logika tampilan dan pencarian sekarang ada di dalam komponen ini --}}
-        @livewire('search-artikel-tamu')
-
-    </div>
+<section class="section bg-surface-alt !pt-20 lg:!pt-24">
+    @livewire('search-artikel-tamu')
 </section>
 @endsection

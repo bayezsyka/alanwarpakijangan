@@ -19,6 +19,7 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^7.0.0",
+        "aos": "^2.3.4",
         "chartjs-chart-matrix": "^3.0.0"
     }
 }

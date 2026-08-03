@@ -6,7 +6,7 @@
     <title>{{ $selasanan->title }} - Kajian Selasanan | Pesantren Al-Anwar</title>
     <meta name="description" content="Jurnal Kajian Rutinan Selasanan - {{ $selasanan->title }}. {{ \Illuminate\Support\Str::limit(strip_tags($selasanan->isi), 150) }}">
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600|plus-jakarta-sans:400,500,600,700" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=playfair-display:500,600,700|dm-sans:400,500,600,700" rel="stylesheet" />
     <link rel="icon" type="image/png" href="{{ asset('images/logo.webp') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -15,8 +15,8 @@
     <style>
         /* Improved typography for better reading experience */
         .article-content {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            color: #333;
+            font-family: 'DM Sans', sans-serif;
+            color: #2a2a26;
             line-height: 1.8;
             font-size: 1.125rem;
         }
@@ -24,16 +24,16 @@
         .article-content h1,
         .article-content h2,
         .article-content h3 {
-            font-family: 'Instrument Sans', sans-serif;
-            font-weight: 700;
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 600;
             margin-top: 2.5rem;
             margin-bottom: 1.25rem;
             line-height: 1.3;
-            color: #1a1a1a;
+            color: #1b1b18;
         }
         
-        .article-content h1 { font-size: 2rem; }
-        .article-content h2 { font-size: 1.75rem; }
+        .article-content h1 { font-size: 2.25rem; letter-spacing: -0.02em; }
+        .article-content h2 { font-size: 1.875rem; letter-spacing: -0.015em; }
         .article-content h3 { font-size: 1.5rem; }
         
         .article-content p {
@@ -49,7 +49,7 @@
         }
         
         .article-content a:hover {
-            color: #005a46;
+            color: #006b50;
         }
         
         .article-content ul,
@@ -64,18 +64,21 @@
         }
         
         .article-content blockquote {
-            border-left: 4px solid #008362;
+            border-left: 3px solid #008362;
             padding: 1rem 1.5rem;
             margin: 2rem 0;
-            background-color: #f8f9fa;
+            background-color: #f6f4ef;
+            font-family: 'Playfair Display', Georgia, serif;
             font-style: italic;
-            color: #555;
+            color: #1b1b18;
+            font-size: 1.125rem;
+            border-radius: 0 10px 10px 0;
         }
         
         .article-content pre {
             background-color: #f3f4f6;
             padding: 1.25rem;
-            border-radius: 0.375rem;
+            border-radius: 10px;
             overflow-x: auto;
             margin: 1.5rem 0;
             font-size: 0.95rem;
@@ -86,7 +89,7 @@
             height: auto;
             margin: 2rem auto;
             display: block;
-            border-radius: 0.5rem;
+            border-radius: 10px;
         }
         
         /* Reading progress indicator */
@@ -94,16 +97,16 @@
             position: fixed;
             top: 0;
             left: 0;
-            height: 4px;
-            background: linear-gradient(to right, #008362, #059669);
-            z-index: 40; /* Lower than navbar z-50 */
+            height: 3px;
+            background: linear-gradient(to right, #008362, #b8932d);
+            z-index: 60;
             transition: width 0.1s;
         }
         
         /* Audio player styling */
         .audio-player-card {
-            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
-            border: 2px solid #a7f3d0;
+            background: #f6f4ef;
+            border: 1px solid rgba(27, 27, 24, 0.10);
         }
         
         /* Floating share buttons */
@@ -119,11 +122,8 @@
         }
         
         @media (max-width: 768px) {
-            .article-content {
-                font-size: 1rem;
-            }
-            
-            .article-content h1 { font-size: 1.75rem; }
+            .article-content { font-size: 1rem; }
+            .article-content h1 { font-size: 1.875rem; }
             .article-content h2 { font-size: 1.5rem; }
             .article-content h3 { font-size: 1.25rem; }
             
@@ -137,7 +137,7 @@
         }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen flex flex-col">
+<body class="bg-surface-alt min-h-screen flex flex-col font-sans">
     <!-- Reading progress bar -->
     <div class="reading-progress" id="readingProgress"></div>
     
@@ -155,59 +155,58 @@
     </div>
     
     
-    <main class="flex-grow container mx-auto px-2 sm:px-4 pt-2 sm:pt-24 pb-4 sm:pb-8 max-w-3xl">
-        <article class="bg-white rounded-lg sm:rounded-xl shadow-sm overflow-hidden">
+    <main class="flex-grow container-editorial px-2 sm:px-4 pt-2 sm:pt-24 pb-4 sm:pb-8 max-w-3xl">
+        <article class="bg-surface rounded-lg shadow-soft overflow-hidden border border-black/8">
             <!-- Article header with improved spacing -->
-            <header class="px-4 sm:px-6 pt-4 sm:pt-8 pb-4 sm:pb-6">
+            <header class="px-4 sm:px-8 pt-6 sm:pt-10 pb-4 sm:pb-6">
                 <div class="mb-4 sm:mb-6">
-                    <a href="{{ route('selasanan.index') }}" class="inline-flex items-center text-[#008362] hover:text-cyan-950 text-sm sm:text-base font-medium transition duration-300 mb-3 sm:mb-4">
-                        <i class="fas fa-arrow-left mr-1.5 sm:mr-2"></i> Kembali
+                    <a href="{{ route('selasanan.index') }}" class="inline-flex items-center text-[11px] font-bold uppercase tracking-[0.14em] text-muted hover:text-primary transition duration-300 mb-4">
+                        <i class="fas fa-arrow-left mr-2 text-[10px]"></i> Kembali ke Arsip
                     </a>
                     
-                    {{-- Badge Kajian Selasanan - compact on mobile --}}
-                    <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-3 sm:mb-4">
-                        <span class="bg-emerald-600 text-white text-[10px] sm:text-xs font-semibold px-2 sm:px-3 py-1 sm:py-1.5 rounded-full flex items-center gap-1">
-                            <i class="fas fa-book-open text-[9px] sm:text-[11px]"></i>
-                            Selasanan
+                    {{-- Badge Kajian Selasanan --}}
+                    <div class="flex flex-wrap items-center gap-2 mb-4">
+                        <span class="inline-flex items-center gap-1.5 bg-primary text-white text-[11px] font-bold px-3 py-1.5 rounded-full">
+                            <i class="fas fa-book-open text-[10px]"></i> Selasanan
                         </span>
-                        <span class="bg-emerald-100 text-emerald-700 text-[10px] sm:text-xs font-semibold px-2 sm:px-3 py-1 sm:py-1.5 rounded-full">
+                        <span class="bg-primary-soft text-primary text-[11px] font-bold px-3 py-1.5 rounded-full">
                             {{ \Carbon\Carbon::create($selasanan->year, $selasanan->month, 1)->locale('id')->translatedFormat('M Y') }}, Minggu {{ $selasanan->week_of_month }}
                         </span>
                     </div>
                     
-                    <h1 class="text-xl sm:text-3xl md:text-4xl font-bold text-gray-900 leading-tight mb-3 sm:mb-4">{{ $selasanan->title }}</h1>
+                    <h1 class="font-display text-2xl sm:text-3xl md:text-4xl font-semibold text-dark leading-[1.15] tracking-[-0.02em] mb-4">{{ $selasanan->title }}</h1>
                     
-                    <div class="flex flex-col gap-2 text-xs sm:text-sm text-gray-600 mb-3 sm:mb-6">
-                        <div class="flex items-center flex-wrap gap-1">
+                    <div class="flex flex-col gap-2 text-sm text-muted mb-4 sm:mb-6">
+                        <div class="flex items-center flex-wrap gap-2">
                             @php
                                 $speakerName = $selasanan->speaker ?? 'KH. Muhammad Miftah';
-                                $avatarUrl = "https://ui-avatars.com/api/?name=" . urlencode($speakerName) . "&background=059669&color=fff&size=32";
+                                $avatarUrl = "https://ui-avatars.com/api/?name=" . urlencode($speakerName) . "&background=008362&color=fff&size=32";
                             @endphp
-                            <img src="{{ $avatarUrl }}" class="w-5 h-5 sm:w-6 sm:h-6 rounded-full" alt="{{ $speakerName }}">
-                            <span class="font-medium">{{ $speakerName }}</span>
+                            <img src="{{ $avatarUrl }}" class="w-6 h-6 rounded-full" alt="{{ $speakerName }}">
+                            <span class="font-bold text-dark">{{ $speakerName }}</span>
                         </div>
-                        <div class="text-gray-500">
+                        <div class="text-muted">
                             Senin, {{ $selasanan->monday_date->locale('id')->translatedFormat('d M Y') }}
                         </div>
                     </div>
                 </div>
                 
                 @if($selasanan->cover_image_path)
-                    <img src="{{ asset('storage/' . $selasanan->cover_image_path) }}" alt="{{ $selasanan->title }}" class="w-full h-auto max-h-64 sm:max-h-96 object-cover rounded-lg mb-4 sm:mb-6 shadow-md">
+                    <img src="{{ asset('storage/' . $selasanan->cover_image_path) }}" alt="{{ $selasanan->title }}" class="w-full h-auto max-h-64 sm:max-h-96 object-cover rounded-md mb-4 sm:mb-6 shadow-card">
                 @endif
             </header>
             
             {{-- Audio Player Section --}}
             @if($selasanan->audio_path)
-                <div class="mx-6 mb-6">
-                    <div class="audio-player-card rounded-2xl p-6 shadow-sm">
+                <div class="mx-6 sm:mx-8 mb-6">
+                    <div class="audio-player-card rounded-md p-6 shadow-card">
                         <div class="flex items-center gap-3 mb-4">
-                            <div class="w-12 h-12 bg-emerald-600 rounded-xl flex items-center justify-center shadow-md">
-                                <i class="fas fa-headphones text-white text-xl"></i>
+                            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+                                <i class="fas fa-headphones text-white"></i>
                             </div>
                             <div>
-                                <h3 class="font-bold text-gray-900">Rekaman Audio Kajian</h3>
-                                <p class="text-sm text-gray-600">Dengarkan atau unduh rekaman kajian</p>
+                                <h3 class="font-display font-semibold text-dark">Rekaman Audio Kajian</h3>
+                                <p class="text-sm text-muted">Dengarkan atau unduh rekaman kajian</p>
                             </div>
                         </div>
                         
@@ -217,11 +216,11 @@
                         </audio>
                         
                         <a href="{{ route('selasanan.download', $selasanan->slug) }}" 
-                           class="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-600 text-white font-semibold rounded-xl hover:bg-emerald-700 transition-colors shadow-md">
-                            <i class="fas fa-download"></i>
+                           class="btn btn-primary !min-h-[44px] !text-xs">
+                            <i class="fas fa-download text-[10px]"></i>
                             Download Audio
                             @if($selasanan->audio_size)
-                                <span class="text-emerald-200 text-sm">({{ number_format($selasanan->audio_size / 1048576, 1) }} MB)</span>
+                                <span class="text-white/70 text-xs">({{ number_format($selasanan->audio_size / 1048576, 1) }} MB)</span>
                             @endif
                         </a>
                     </div>
@@ -234,13 +233,13 @@
             </div>
             
             <!-- Article footer -->
-            <footer class="px-6 py-6 border-t border-gray-100">
+            <footer class="px-6 sm:px-8 py-6 border-t border-black/8">
                 <div class="flex flex-col sm:flex-row justify-between items-center">
                     <div class="mb-4 sm:mb-0">
                     </div>
                     <div class="flex space-x-4">
-                        <button onclick="scrollToTop()" class="flex items-center text-gray-600 hover:text-[#008362] transition duration-300">
-                            <i class="fas fa-arrow-up mr-2"></i> Ke Atas
+                        <button onclick="scrollToTop()" class="inline-flex items-center gap-2 text-sm font-bold text-primary hover:gap-3 transition-all">
+                            <i class="fas fa-arrow-up"></i> Ke Atas
                         </button>
                     </div>
                 </div>

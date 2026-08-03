@@ -1,187 +1,92 @@
-<section>
-    <div class="container mx-auto py-2 sm:py-4 max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="text-center pt-6 sm:pt-8">
-            <div class="inline-flex items-center rounded-lg border-2 border-[#008362] px-5 sm:px-8 py-3 sm:py-4 transition-all duration-300 hover:bg-[#008362] hover:shadow-md group cursor-pointer">
-                <span class="text-lg sm:text-xl md:text-2xl font-bold tracking-wide text-[#008362] group-hover:text-white transition-colors duration-300">
-                    Jadwal Rutinan
-                </span>
+<section class="section bg-dark text-white relative overflow-hidden">
+    {{-- Decorative arch --}}
+    <div class="hidden md:block absolute top-10 right-10 w-[300px] h-[300px] border border-white/8 rounded-full pointer-events-none" aria-hidden="true"></div>
+
+    <div class="container-editorial relative z-10">
+        <div class="grid lg:grid-cols-[0.85fr_1.15fr] gap-12 lg:gap-24">
+
+            {{-- Left column: heading + sticky --}}
+            <div class="lg:sticky lg:top-32 self-start" data-aos="fade-right">
+                <p class="eyebrow eyebrow-light">Agenda Rutin Mingguan</p>
+                <div class="section-heading section-heading--light">
+                    <h2>Jadwal Rutinan</h2>
+                    <p class="description">
+                        Kegiatan rutin mingguan yang dilaksanakan di Pondok Pesantren Al-Anwar Pakijangan &mdash;
+                        kajian kitab, pengajian, dan pembinaan santri.
+                    </p>
+                </div>
+
+                <div class="mt-8 inline-flex items-center gap-3 bg-white/5 border border-white/15 rounded-full px-5 py-3">
+                    <i class="fas fa-calendar-day text-accent"></i>
+                    <span class="text-sm text-white/80">Rolling 7 hari terdekat</span>
+                </div>
             </div>
-        </div>
-    </div>
-<style>
-.timeline-wrapper { position: relative; padding: 4rem 0; margin-left: 0.5rem; margin-right: 0.5rem; }
-    .timeline-line { position: absolute; left: 0; right: 0; top: 50%; height: 4px; background: linear-gradient(90deg, rgba(16,185,129,0.2) 0%, rgba(16,185,129,0.8) 50%, rgba(16,185,129,0.2) 100%); transform: translateY(-50%); z-index: 1; border-radius: 2px; }
-    .timeline-nodes { position: relative; display: flex; justify-content: space-between; z-index: 2; }
-    .timeline-node-container { position: relative; display: flex; justify-content: center; width: calc(100% / 7); }
-    .timeline-date-node { width: 50px; height: 50px; background-color: white; border: 3px solid #d1d5db; border-radius: 9999px; z-index: 10; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); }
-    .timeline-date-node.is-active { border-color: #10B981; transform: scale(1.2); box-shadow: 0 0 20px rgba(16, 185, 129, 0.4); background-color: #f0fdf4; }
-    .timeline-date-node.has-events { border-color: #a7f3d0; }
-    .timeline-content-box { position: absolute; left: 0; right: 0; display: flex; justify-content: center; z-index: 20; }
-    .timeline-content-box.is-top { bottom: 50%; padding-bottom: 40px; }
-    .timeline-content-box.is-bottom { top: 50%; padding-top: 40px; }
-    .bubble { position: relative; background-color: #008362; color: white; padding: 0.75rem; border-radius: 0.75rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); width: 180px; }
-    .bubble-pointer { position: absolute; left: 50%; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; transform: translateX(-50%); }
-    .is-top .bubble-pointer { bottom: -10px; border-top: 10px solid #008362; }
-    .is-bottom .bubble-pointer { top: -10px; border-bottom: 10px solid #008362; }
-    .day-date { display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    .day-number { font-weight: 700; font-size: 1rem; color: #1f2937; }
-    .month-name { font-size: 0.6rem; font-weight: 600; text-transform: uppercase; color: #6b7280; margin-top: -0.2rem; }
-    .event-item { position: relative; padding: 0.4rem; border-radius: 0.375rem; transition: background-color 0.2s ease; }
-    .event-item:hover { background-color: rgba(255, 255, 255, 0.1); }
-    .event-detail-popup {
-        display: none;
-        position: absolute;
-        bottom: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        margin-bottom: 12px;
-        width: 200px;
-        max-width: 90vw; /* Ensure popup fits within viewport */
-        background-color: white;
-        color: #1f2937;
-        border-radius: 0.5rem;
-        padding: 0.8rem;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        z-index: 30;
-        box-sizing: border-box;
-    }
-    .event-item:hover .event-detail-popup { display: block; }
 
-    /* Responsive adjustments */
-    @media (max-width: 1024px) {
-        .timeline-date-node { width: 45px; height: 45px; }
-        .bubble { width: 160px; padding: 0.6rem; }
-        .day-number { font-size: 0.9rem; }
-        .month-name { font-size: 0.55rem; }
-        .event-detail-popup { width: 180px; }
-    }
+            {{-- Right column: vertical timeline --}}
+            <div data-aos="fade-left" data-aos-delay="100">
+                <div class="relative pl-8">
+                    {{-- Vertical line --}}
+                    <div class="absolute left-[7px] top-2 bottom-2 w-px bg-white/15"></div>
 
-    @media (max-width: 768px) {
-        .timeline-wrapper { padding: 3.5rem 0; }
-        .timeline-date-node { width: 40px; height: 40px; }
-        .bubble { width: 140px; padding: 0.5rem; }
-        .day-number { font-size: 0.85rem; }
-        .month-name { font-size: 0.5rem; }
-        .timeline-content-box.is-top { padding-bottom: 35px; }
-        .timeline-content-box.is-bottom { padding-top: 35px; }
-        .event-detail-popup {
-            width: 160px;
-            max-width: 85vw;
-            font-size: 0.9rem;
-        }
-    }
-
-    @media (max-width: 640px) {
-        .timeline-wrapper { padding: 3rem 0; margin-left: 0.25rem; margin-right: 0.25rem; }
-        .timeline-date-node { width: 36px; height: 36px; border-width: 2px; }
-        .timeline-date-node.is-active { transform: scale(1.15); }
-        .bubble { width: 120px; padding: 0.4rem; }
-        .day-number { font-size: 0.8rem; }
-        .month-name { font-size: 0.45rem; }
-        .timeline-content-box.is-top { padding-bottom: 30px; }
-        .timeline-content-box.is-bottom { padding-top: 30px; }
-        .event-detail-popup {
-            width: 140px;
-            max-width: 80vw;
-            padding: 0.6rem;
-            font-size: 0.8rem;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .timeline-wrapper { padding: 2.5rem 0; }
-        .timeline-date-node { width: 32px; height: 32px; }
-        .bubble { width: 100px; padding: 0.3rem; font-size: 0.8rem; }
-        .day-number { font-size: 0.75rem; }
-        .month-name { font-size: 0.4rem; }
-        .event-detail-popup {
-            width: 120px;
-            max-width: 75vw;
-            padding: 0.5rem;
-            font-size: 0.7rem;
-        }
-    }
-
-    @media (max-width: 400px) {
-        .timeline-date-node { width: 28px; height: 28px; }
-        .bubble { width: 90px; padding: 0.25rem; font-size: 0.7rem; }
-        .day-number { font-size: 0.7rem; }
-        .event-detail-popup {
-            width: 100px;
-            max-width: 70vw;
-            padding: 0.4rem;
-            font-size: 0.65rem;
-        }
-    }
-
-    /* Adjust popup position for leftmost and rightmost nodes to prevent cutoff */
-    .timeline-node-container:first-child .event-detail-popup {
-        left: 10px;
-        transform: none;
-    }
-    .timeline-node-container:last-child .event-detail-popup {
-        right: 10px;
-        left: auto;
-        transform: none;
-    }
-</style>
-
-<div class="container mx-auto py-12 sm:py-20 md:py-32 max-w-7xl px-4 sm:px-6 lg:px-8">
-    
-    <div class="timeline-wrapper">
-        <div class="timeline-line"></div>
-        
-        <div class="timeline-nodes">
-            @foreach($rollingDays as $day)
-                <div class="timeline-node-container">
                     @php
-                        $hasEvents = $groupedRutinans->get($day['day_of_week'], collect())->isNotEmpty();
+                        $dayNames = [0 => 'Ahad', 1 => 'Senin', 2 => 'Selasa', 3 => 'Rabu', 4 => 'Kamis', 5 => 'Jumat', 6 => 'Sabtu'];
                     @endphp
-                    <div @class(['timeline-date-node', 'is-active' => $day['is_today'], 'has-events' => $hasEvents])>
-                        <div class="day-date">
-                            <span class="day-number">{{ $day['date'] }}</span>
-                            <span class="month-name">{{ $day['month'] }}</span>
-                        </div>
-                    </div>
-                    
-                    @if($hasEvents)
-                        <div @class(['timeline-content-box', 'is-top' => $loop->odd, 'is-bottom' => $loop->even])>
-                            <div class="bubble">
-                                <h4 class="font-bold text-center mb-1 sm:mb-2 text-xs sm:text-sm md:text-base">{{ $day['day_name'] }}</h4>
-                                <div class="text-xs sm:text-sm space-y-1">
-                                    @foreach($groupedRutinans->get($day['day_of_week'], collect()) as $rutinan)
+
+                    @foreach($rollingDays as $day)
+                        @php
+                            $hasEvents = $groupedRutinans->get($day['day_of_week'], collect())->isNotEmpty();
+                            $dayEvents = $groupedRutinans->get($day['day_of_week'], collect());
+                        @endphp
+                        <div class="relative pb-10 last:pb-0">
+                            {{-- Dot --}}
+                            <span class="absolute -left-8 top-1.5 w-4 h-4 rounded-full border-2
+                                {{ $day['is_today'] ? 'bg-accent border-accent' : ($hasEvents ? 'bg-primary border-primary' : 'bg-transparent border-white/30') }}"></span>
+
+                            {{-- Year/date label --}}
+                            <div class="flex items-center gap-3 mb-1">
+                                <span class="font-display text-lg font-semibold {{ $day['is_today'] ? 'text-accent' : 'text-white' }}">
+                                    {{ $day['date'] }} {{ $day['month'] }}
+                                </span>
+                                <span class="text-xs uppercase tracking-[0.14em] text-white/50">{{ $day['day_name'] }}</span>
+                                @if($day['is_today'])
+                                    <span class="text-[10px] font-bold uppercase tracking-[0.14em] bg-accent text-dark px-2 py-0.5 rounded-full">Hari ini</span>
+                                @endif
+                            </div>
+
+                            @if($hasEvents)
+                                <div class="space-y-2 mt-2">
+                                    @foreach($dayEvents as $rutinan)
                                         @php
                                             $isLibur = $rutinan->exceptions->contains('libur_date', $day['full_date']);
                                         @endphp
-                                        <div class="event-item">
-                                            <div class="{{ $isLibur ? 'opacity-60' : '' }}">
-                                                <p class="font-semibold">{{ $rutinan->nama_acara }}</p>
-                                                @if($isLibur)
-                                                    <p class="text-amber-300 font-bold text-2xs sm:text-xs">LIBUR</p>
-                                                @else
-                                                    <p class="opacity-90 text-2xs sm:text-xs">{{ \Carbon\Carbon::parse($rutinan->waktu)->format('H:i') }} WIB</p>
-                                                @endif
-                                            </div>
-                                            
-                                            <div class="event-detail-popup">
-                                                <p class="font-bold text-sm sm:text-base mb-1 sm:mb-2 border-b pb-1 sm:pb-2">{{ $rutinan->nama_acara }}</p>
-                                                <dl class="text-2xs sm:text-xs space-y-1">
-                                                    <dt class="font-semibold">Tempat:</dt><dd>{{ $rutinan->tempat }}</dd>
-                                                    @if($rutinan->pengisi)<dt class="font-semibold mt-1 sm:mt-2">Pengisi:</dt><dd>{{ $rutinan->pengisi }}</dd>@endif
-                                                    @if($rutinan->kitab)<dt class="font-semibold mt-1 sm:mt-2">Kitab:</dt><dd>{{ $rutinan->kitab }}</dd>@endif
-                                                    @if($rutinan->isi)<dt class="font-semibold mt-1 sm:mt-2">Keterangan:</dt><dd>{{ $rutinan->isi }}</dd>@endif
-                                                </dl>
+                                        <div class="group bg-white/5 hover:bg-white/8 border border-white/10 rounded-md p-4 transition-colors">
+                                            <div class="flex items-start justify-between gap-3">
+                                                <div class="min-w-0">
+                                                    <p class="font-semibold text-white text-[15px]">{{ $rutinan->nama_acara }}</p>
+                                                    @if($isLibur)
+                                                        <p class="text-amber-400 text-xs font-bold mt-0.5 uppercase tracking-wide">Libur</p>
+                                                    @else
+                                                        <p class="text-white/60 text-xs mt-0.5">
+                                                            <i class="far fa-clock mr-1"></i>{{ \Carbon\Carbon::parse($rutinan->waktu)->format('H:i') }} WIB
+                                                            &middot; <i class="fas fa-map-marker-alt mr-1"></i>{{ $rutinan->tempat }}
+                                                        </p>
+                                                    @endif
+                                                    @if($rutinan->pengisi)
+                                                        <p class="text-white/50 text-xs mt-1">Pengisi: {{ $rutinan->pengisi }}</p>
+                                                    @endif
+                                                </div>
                                             </div>
                                         </div>
                                     @endforeach
                                 </div>
-                                <div class="bubble-pointer"></div>
-                            </div>
+                            @else
+                                <p class="text-white/40 text-sm italic">Tidak ada agenda</p>
+                            @endif
                         </div>
-                    @endif
+                    @endforeach
                 </div>
-            @endforeach
+            </div>
+
         </div>
     </div>
-</div>
 </section>

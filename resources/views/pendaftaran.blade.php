@@ -3,381 +3,260 @@
 @section('title', 'Informasi Pendaftaran - Pondok Pesantren Al-Anwar Pakijangan')
 
 @section('content')
-    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-[#FDFDFC]">
-        <div class="max-w-5xl mx-auto">
-            <!-- Header Section -->
-            <div class="text-center mb-16">
-                <span class="text-[#008362] font-bold tracking-widest uppercase text-sm block mb-2">Penerimaan Santri
-                    Baru</span>
-                <h1 class="text-4xl md:text-5xl font-extrabold text-[#1b1b18] mb-4">Informasi Pendaftaran</h1>
-                <p class="text-xl font-semibold text-[#008362]">Pondok Pesantren Al Anwar Pakijangan</p>
-                <p class="text-gray-500 mt-2 font-medium">Tahun Ajaran 2026/2027 M (1447/1448 H)</p>
+    <section class="section bg-surface-alt !pt-20 lg:!pt-24">
+        <div class="container-editorial max-w-5xl">
+
+            {{-- Header --}}
+            <div class="text-center mb-16" data-aos="fade-up">
+                <p class="eyebrow justify-center">Penerimaan Santri Baru</p>
+                <h1 class="font-display font-semibold leading-[1.05] tracking-[-0.03em] text-dark text-[clamp(36px,5vw,58px)] mb-4">
+                    Informasi Pendaftaran
+                </h1>
+                <p class="font-display text-xl text-primary italic">Pondok Pesantren Al Anwar Pakijangan</p>
+                <p class="text-muted mt-2 text-sm">Tahun Ajaran 2026/2027 M (1447/1448 H)</p>
             </div>
 
-            <!-- Program Unggulan Section -->
-            <div class="bg-[#1b1b18] text-white p-8 rounded-2xl shadow-xl mb-12 relative overflow-hidden group">
-                <div
-                    class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110">
-                </div>
-                <div class="flex items-center mb-8 relative z-10">
-                    <div
-                        class="w-10 h-10 bg-white/10 text-white rounded-lg flex items-center justify-center mr-4 backdrop-blur-sm">
-                        <i class="fas fa-star text-lg text-yellow-400"></i>
+            {{-- Program Unggulan - dark section --}}
+            <div class="bg-dark text-white p-8 lg:p-10 rounded-lg shadow-soft mb-12 relative overflow-hidden" data-aos="fade-up">
+                <div class="absolute top-0 right-0 w-40 h-40 border border-white/8 rounded-full -mr-12 -mt-12 pointer-events-none" aria-hidden="true"></div>
+                <div class="flex items-center gap-3 mb-8 relative z-10">
+                    <div class="w-11 h-11 rounded-full bg-white/10 border border-white/15 flex items-center justify-center">
+                        <i class="fas fa-star text-accent"></i>
                     </div>
-                    <h2 class="text-2xl font-bold">Program Unggulan</h2>
+                    <h2 class="font-display text-2xl lg:text-3xl font-semibold">Program Unggulan</h2>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 relative z-10">
-                    <div
-                        class="flex items-center p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
-                        <i class="fas fa-book-reader text-[#008362] mr-3"></i>
-                        <span class="font-medium">Kitab</span>
-                    </div>
-                    <div
-                        class="flex items-center p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
-                        <i class="fas fa-quran text-[#008362] mr-3"></i>
-                        <span class="font-medium">Tahfidz</span>
-                    </div>
-                    <div
-                        class="flex items-center p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
-                        <i class="fas fa-robot text-[#008362] mr-3"></i>
-                        <span class="font-medium">Robotik</span>
-                    </div>
-                    <div
-                        class="flex items-center p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
-                        <i class="fas fa-microscope text-[#008362] mr-3"></i>
-                        <span class="font-medium">Sains Club</span>
-                    </div>
-                    <div
-                        class="flex items-center p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
-                        <i class="fas fa-language text-[#008362] mr-3"></i>
-                        <span class="font-medium">English Club</span>
-                    </div>
-                    <div
-                        class="flex items-center p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
-                        <i class="fas fa-mosque text-[#008362] mr-3"></i>
-                        <span class="font-medium">Arab Club</span>
-                    </div>
-                    <div
-                        class="flex items-center p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
-                        <i class="fas fa-star text-[#008362] mr-3"></i>
-                        <span class="font-medium">Hafalan Surat Pilihan</span>
-                    </div>
-                    <div
-                        class="flex items-center p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
-                        <i class="fas fa-pen-nib text-[#008362] mr-3"></i>
-                        <span class="font-medium">Jurnalistik</span>
-                    </div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 relative z-10">
+                    @php
+                        $programs = [
+                            ['book-reader', 'Kitab'],
+                            ['quran', 'Tahfidz'],
+                            ['robot', 'Robotik'],
+                            ['microscope', 'Sains Club'],
+                            ['language', 'English Club'],
+                            ['mosque', 'Arab Club'],
+                            ['star', 'Hafalan Surat Pilihan'],
+                            ['pen-nib', 'Jurnalistik'],
+                        ];
+                    @endphp
+                    @foreach ($programs as $prog)
+                        <div class="flex items-center gap-2 p-3 rounded-md bg-white/5 border border-white/10 hover:bg-white/8 hover:-translate-y-0.5 transition-all">
+                            <i class="fas fa-{{ $prog[0] }} text-accent"></i>
+                            <span class="text-sm font-medium">{{ $prog[1] }}</span>
+                        </div>
+                    @endforeach
                 </div>
             </div>
 
-            <!-- Important Policy Note -->
-            <div class="mb-12 p-6 bg-blue-50 border-l-8 border-blue-500 rounded-r-2xl shadow-sm">
-                <div class="flex items-start">
-                    <div class="flex-shrink-0 mt-1">
-                        <i class="fas fa-info-circle text-blue-600 text-2xl"></i>
-                    </div>
-                    <div class="ml-4">
-                        <h3 class="text-lg font-bold text-blue-900 mb-1">Informasi Penting (Wajib):</h3>
-                        <p class="text-blue-800 leading-relaxed">
-                            Calon siswa <span class="font-bold underline">SMP Al-Anwar wajib mondok</span> di Pondok
-                            Pesantren Al-Anwar, dan santri Al-Anwar yang mengikuti sekolah formal <span
-                                class="font-bold underline">wajib bersekolah di SMP Al-Anwar</span>.
+            {{-- Important Policy Note --}}
+            <div class="mb-12 p-6 bg-accent-soft border-l-4 border-accent rounded-r-md shadow-card" data-aos="fade-up">
+                <div class="flex items-start gap-3">
+                    <i class="fas fa-info-circle text-accent text-xl mt-0.5"></i>
+                    <div>
+                        <h3 class="font-display text-lg font-semibold text-dark mb-1">Informasi Penting (Wajib)</h3>
+                        <p class="text-dark/80 leading-relaxed text-[15px]">
+                            Calon siswa <strong class="underline">SMP Al-Anwar wajib mondok</strong> di Pondok
+                            Pesantren Al-Anwar, dan santri Al-Anwar yang mengikuti sekolah formal
+                            <strong class="underline">wajib bersekolah di SMP Al-Anwar</strong>.
                         </p>
                     </div>
                 </div>
             </div>
 
-            <!-- 1. Persyaratan Section -->
-            <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 mb-12">
-                <div class="flex items-center mb-6">
-                    <div class="w-10 h-10 bg-green-100 text-[#008362] rounded-lg flex items-center justify-center mr-4">
-                        <i class="fas fa-file-contract text-lg"></i>
+            {{-- 1. Persyaratan --}}
+            <div class="card-editorial p-8 mb-12" data-aos="fade-up">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-11 h-11 rounded-full bg-primary-soft text-primary flex items-center justify-center">
+                        <i class="fas fa-file-contract"></i>
                     </div>
-                    <h2 class="text-2xl font-bold text-gray-900">1. Persyaratan Administrasi</h2>
+                    <h2 class="font-display text-2xl lg:text-3xl font-semibold text-dark">1. Persyaratan Administrasi</h2>
                 </div>
-                <p class="text-gray-600 mb-6">Calon santri wajib melengkapi berkas pendaftaran sebagai berikut :</p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <ul class="space-y-3">
-                        <li class="flex items-start">
-                            <span class="text-[#008362] mr-3 mt-1"><i class="fas fa-check-circle"></i></span>
-                            <span class="text-gray-700">Fotokopi Kartu Keluarga (4 Lembar)</span>
+                <p class="text-muted mb-6">Calon santri wajib melengkapi berkas pendaftaran sebagai berikut:</p>
+                <div class="grid md:grid-cols-2 gap-x-10 gap-y-3">
+                    @php
+                        $berkas = [
+                            'Fotokopi Kartu Keluarga (4 Lembar)',
+                            'Fotokopi Akte Kelahiran (4 Lembar)',
+                            'Fotokopi Ijazah Formal/SKL (4 Lembar)',
+                            'Fotokopi Ijazah Madin (4 Lembar)',
+                            'Fotokopi SKHU/SKNR (4 Lembar)',
+                            'Fotokopi NISN (4 Lembar)',
+                            'Fotokopi KIP (4 Lembar) - jika ada',
+                            'Fotokopi KTP Orang Tua (4 Lembar)',
+                            'Pas Foto 3x2 (2 Lembar)',
+                            'Pas Foto 3x4 (4 Lembar)',
+                        ];
+                    @endphp
+                    @foreach ($berkas as $b)
+                        <li class="flex items-start gap-3 list-none">
+                            <span class="mt-1 inline-flex w-5 h-5 rounded-full bg-primary-soft text-primary items-center justify-center shrink-0">
+                                <i class="fas fa-check text-[9px]"></i>
+                            </span>
+                            <span class="text-dark/80 text-[15px]">{{ $b }}</span>
                         </li>
-                        <li class="flex items-start">
-                            <span class="text-[#008362] mr-3 mt-1"><i class="fas fa-check-circle"></i></span>
-                            <span class="text-gray-700">Fotokopi Akte Kelahiran (4 Lembar)</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-[#008362] mr-3 mt-1"><i class="fas fa-check-circle"></i></span>
-                            <span class="text-gray-700">Fotokopi Ijazah Formal/SKL (4 Lembar)</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-[#008362] mr-3 mt-1"><i class="fas fa-check-circle"></i></span>
-                            <span class="text-gray-700">Fotokopi Ijazah Madin (4 Lembar)</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-[#008362] mr-3 mt-1"><i class="fas fa-check-circle"></i></span>
-                            <span class="text-gray-700">Fotokopi SKHU/SKNR (4 Lembar)</span>
-                        </li>
-                    </ul>
-                    <ul class="space-y-3">
-                        <li class="flex items-start">
-                            <span class="text-[#008362] mr-3 mt-1"><i class="fas fa-check-circle"></i></span>
-                            <span class="text-gray-700">Fotokopi NISN (4 Lembar)</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-[#008362] mr-3 mt-1"><i class="fas fa-check-circle"></i></span>
-                            <span class="text-gray-700">Fotokopi KIP (4 Lembar) - <span class="italic text-sm">jika
-                                    ada</span></span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-[#008362] mr-3 mt-1"><i class="fas fa-check-circle"></i></span>
-                            <span class="text-gray-700">Fotokopi KTP Orang Tua (4 Lembar)</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-[#008362] mr-3 mt-1"><i class="fas fa-check-circle"></i></span>
-                            <span class="text-gray-700">Pas Foto 3x2 (2 Lembar)</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-[#008362] mr-3 mt-1"><i class="fas fa-check-circle"></i></span>
-                            <span class="text-gray-700">Pas Foto 3x4 (4 Lembar)</span>
-                        </li>
-                    </ul>
+                    @endforeach
                 </div>
-                <div class="mt-8 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-lg">
-                    <p class="text-red-700 text-sm">
-                        <span class="font-bold">Catatan Foto:</span> Foto terbaru harus menggunakan <span
-                            class="font-bold underline">background merah</span> dan mengenakan <span
-                            class="font-bold underline">seragam putih</span>.
+                <div class="mt-8 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-md">
+                    <p class="text-red-800 text-sm">
+                        <strong>Catatan Foto:</strong> Foto terbaru harus menggunakan <strong class="underline">background merah</strong> dan mengenakan <strong class="underline">seragam putih</strong>.
                     </p>
                 </div>
             </div>
 
-            <!-- 2. Pilihan Paket Section -->
-            <div class="mb-12">
-                <div class="flex items-center mb-8">
-                    <div class="w-10 h-10 bg-green-100 text-[#008362] rounded-lg flex items-center justify-center mr-4">
-                        <i class="fas fa-layer-group text-lg"></i>
+            {{-- 2. Pilihan Paket --}}
+            <div class="mb-12" data-aos="fade-up">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-11 h-11 rounded-full bg-primary-soft text-primary flex items-center justify-center">
+                        <i class="fas fa-layer-group"></i>
                     </div>
-                    <h2 class="text-2xl font-bold text-gray-900">2. Pilihan Paket & Rincian Biaya</h2>
+                    <h2 class="font-display text-2xl lg:text-3xl font-semibold text-dark">2. Pilihan Paket &amp; Rincian Biaya</h2>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <!-- Paket A -->
-                    <div
-                        class="bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100 flex flex-col h-full border-t-8 border-t-[#008362]">
+                <div class="grid md:grid-cols-2 gap-8">
+                    {{-- Paket A --}}
+                    <div class="bg-surface rounded-lg overflow-hidden shadow-card border border-black/8 flex flex-col h-full border-t-4 border-t-primary">
                         <div class="p-8 pb-0">
-                            <h3 class="text-2xl font-black text-gray-900 mb-2">PAKET A</h3>
-                            <p class="text-[#008362] font-bold text-lg mb-6 leading-tight">Mondok + SMP</p>
-                            <div class="bg-gray-50 p-4 rounded-xl mb-6">
-                                <span class="text-sm text-gray-500 block uppercase tracking-wider font-bold">Total Biaya
-                                    Awal</span>
-                                <span class="text-3xl font-black text-[#008362]">Rp 4.235.000</span>
+                            <h3 class="font-display text-2xl font-bold text-dark mb-1">PAKET A</h3>
+                            <p class="text-primary font-bold text-lg mb-6">Mondok + SMP</p>
+                            <div class="bg-surface-alt p-4 rounded-md mb-6">
+                                <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-muted block">Total Biaya Awal</span>
+                                <span class="font-display text-3xl font-bold text-primary">Rp 4.235.000</span>
                             </div>
                         </div>
                         <div class="p-8 pt-0 flex-grow">
-                            <h4 class="font-bold text-gray-900 mb-4 flex items-center">
-                                <i class="fas fa-list-ul mr-2 text-xs"></i> Rincian Biaya Awal:
+                            <h4 class="font-bold text-dark mb-4 text-sm flex items-center gap-2">
+                                <i class="fas fa-list-ul text-xs text-accent"></i> Rincian Biaya Awal:
                             </h4>
-                            <ul class="space-y-3 text-sm text-gray-600 border-b border-gray-100 pb-6 mb-6">
-                                <li class="flex justify-between"><span>Pendaftaran</span> <span
-                                        class="font-semibold text-gray-900">Rp 150.000</span></li>
-                                <li class="flex justify-between"><span>Uang Gedung</span> <span
-                                        class="font-semibold text-gray-900">Rp 2.000.000</span></li>
-                                <li class="flex justify-between"><span>Seragam & Perlengkapan Pesantren</span> <span
-                                        class="font-semibold text-gray-900">Rp 410.000</span></li>
-                                <li class="flex justify-between"><span>Seragam & Perlengkapan SMP</span> <span
-                                        class="font-semibold text-gray-900">Rp 600.000</span></li>
-                                <li class="flex justify-between"><span>Biaya Makan & Syahriyah</span> <span
-                                        class="font-semibold text-gray-900">Rp 650.000</span></li>
-                                <li class="flex justify-between"><span>Infaq Kegiatan</span> <span
-                                        class="font-semibold text-gray-900">Rp 100.000</span></li>
-                                <li class="flex justify-between"><span>Loker</span> <span
-                                        class="font-semibold text-gray-900">Rp 325.000</span></li>
+                            <ul class="space-y-3 text-sm text-dark/70 border-b border-black/8 pb-6 mb-6">
+                                <li class="flex justify-between"><span>Pendaftaran</span> <span class="font-semibold text-dark">Rp 150.000</span></li>
+                                <li class="flex justify-between"><span>Uang Gedung</span> <span class="font-semibold text-dark">Rp 2.000.000</span></li>
+                                <li class="flex justify-between"><span>Seragam &amp; Perlengkapan Pesantren</span> <span class="font-semibold text-dark">Rp 410.000</span></li>
+                                <li class="flex justify-between"><span>Seragam &amp; Perlengkapan SMP</span> <span class="font-semibold text-dark">Rp 600.000</span></li>
+                                <li class="flex justify-between"><span>Biaya Makan &amp; Syahriyah</span> <span class="font-semibold text-dark">Rp 650.000</span></li>
+                                <li class="flex justify-between"><span>Infaq Kegiatan</span> <span class="font-semibold text-dark">Rp 100.000</span></li>
+                                <li class="flex justify-between"><span>Loker</span> <span class="font-semibold text-dark">Rp 325.000</span></li>
                             </ul>
-                            <h4 class="font-bold text-gray-900 mb-4 flex items-center">
-                                <i class="fas fa-sync-alt mr-2 text-xs"></i> Biaya Lanjutan (Rutin/Berkala):
+                            <h4 class="font-bold text-dark mb-4 text-sm flex items-center gap-2">
+                                <i class="fas fa-sync-alt text-xs text-accent"></i> Biaya Lanjutan (Rutin/Berkala):
                             </h4>
-                            <ul class="space-y-3 text-sm text-gray-600">
-                                <li class="flex justify-between"><span>Biaya Bulanan (SPP)</span> <span
-                                        class="font-semibold text-gray-900">Rp 650.000</span></li>
-                                <li class="flex justify-between"><span>Daftar Ulang Pesantren (Tahunan)</span> <span
-                                        class="font-semibold text-gray-900">Rp 300.000</span></li>
-                                <li class="flex justify-between"><span>Biaya Semesteran</span> <span
-                                        class="font-semibold text-gray-900">Rp 500.000</span></li>
+                            <ul class="space-y-3 text-sm text-dark/70">
+                                <li class="flex justify-between"><span>Biaya Bulanan (SPP)</span> <span class="font-semibold text-dark">Rp 650.000</span></li>
+                                <li class="flex justify-between"><span>Daftar Ulang Pesantren (Tahunan)</span> <span class="font-semibold text-dark">Rp 300.000</span></li>
+                                <li class="flex justify-between"><span>Biaya Semesteran</span> <span class="font-semibold text-dark">Rp 500.000</span></li>
                             </ul>
                         </div>
                     </div>
 
-                    <!-- Paket B -->
-                    <div
-                        class="bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100 flex flex-col h-full border-t-8 border-t-gray-800">
+                    {{-- Paket B --}}
+                    <div class="bg-surface rounded-lg overflow-hidden shadow-card border border-black/8 flex flex-col h-full border-t-4 border-t-dark">
                         <div class="p-8 pb-0">
-                            <h3 class="text-2xl font-black text-gray-900 mb-2">PAKET B</h3>
-                            <p class="text-gray-500 font-bold text-lg mb-6 leading-tight">Mondok Saja</p>
-                            <div class="bg-gray-50 p-4 rounded-xl mb-6">
-                                <span class="text-sm text-gray-500 block uppercase tracking-wider font-bold">Total Biaya
-                                    Awal</span>
-                                <span class="text-3xl font-black text-gray-800">Rp 2.485.000</span>
+                            <h3 class="font-display text-2xl font-bold text-dark mb-1">PAKET B</h3>
+                            <p class="text-muted font-bold text-lg mb-6">Mondok Saja</p>
+                            <div class="bg-surface-alt p-4 rounded-md mb-6">
+                                <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-muted block">Total Biaya Awal</span>
+                                <span class="font-display text-3xl font-bold text-dark">Rp 2.485.000</span>
                             </div>
                         </div>
                         <div class="p-8 pt-0 flex-grow">
-                            <h4 class="font-bold text-gray-900 mb-4 flex items-center">
-                                <i class="fas fa-list-ul mr-2 text-xs"></i> Rincian Biaya Awal:
+                            <h4 class="font-bold text-dark mb-4 text-sm flex items-center gap-2">
+                                <i class="fas fa-list-ul text-xs text-accent"></i> Rincian Biaya Awal:
                             </h4>
-                            <ul class="space-y-3 text-sm text-gray-600 border-b border-gray-100 pb-6 mb-6">
-                                <li class="flex justify-between"><span>Pendaftaran</span> <span
-                                        class="font-semibold text-gray-900">Rp 150.000</span></li>
-                                <li class="flex justify-between"><span>Uang Gedung</span> <span
-                                        class="font-semibold text-gray-900">Rp 1.000.000</span></li>
-                                <li class="flex justify-between"><span>Seragam & Perlengkapan Pesantren</span> <span
-                                        class="font-semibold text-gray-900">Rp 410.000</span></li>
-                                <li class="flex justify-between"><span>Biaya Makan & Syahriyah</span> <span
-                                        class="font-semibold text-gray-900">Rp 500.000</span></li>
-                                <li class="flex justify-between"><span>Infaq Kegiatan</span> <span
-                                        class="font-semibold text-gray-900">Rp 100.000</span></li>
-                                <li class="flex justify-between"><span>Loker</span> <span
-                                        class="font-semibold text-gray-900">Rp 325.000</span></li>
+                            <ul class="space-y-3 text-sm text-dark/70 border-b border-black/8 pb-6 mb-6">
+                                <li class="flex justify-between"><span>Pendaftaran</span> <span class="font-semibold text-dark">Rp 150.000</span></li>
+                                <li class="flex justify-between"><span>Uang Gedung</span> <span class="font-semibold text-dark">Rp 1.000.000</span></li>
+                                <li class="flex justify-between"><span>Seragam &amp; Perlengkapan Pesantren</span> <span class="font-semibold text-dark">Rp 410.000</span></li>
+                                <li class="flex justify-between"><span>Biaya Makan &amp; Syahriyah</span> <span class="font-semibold text-dark">Rp 500.000</span></li>
+                                <li class="flex justify-between"><span>Infaq Kegiatan</span> <span class="font-semibold text-dark">Rp 100.000</span></li>
+                                <li class="flex justify-between"><span>Loker</span> <span class="font-semibold text-dark">Rp 325.000</span></li>
                             </ul>
-                            <h4 class="font-bold text-gray-900 mb-4 flex items-center">
-                                <i class="fas fa-sync-alt mr-2 text-xs"></i> Biaya Lanjutan (Rutin/Berkala):
+                            <h4 class="font-bold text-dark mb-4 text-sm flex items-center gap-2">
+                                <i class="fas fa-sync-alt text-xs text-accent"></i> Biaya Lanjutan (Rutin/Berkala):
                             </h4>
-                            <ul class="space-y-3 text-sm text-gray-600">
-                                <li class="flex justify-between"><span>Biaya Bulanan (SPP)</span> <span
-                                        class="font-semibold text-gray-900">Rp 500.000</span></li>
-                                <li class="flex justify-between"><span>Daftar Ulang Pesantren (Tahunan)</span> <span
-                                        class="font-semibold text-gray-900">Rp 300.000</span></li>
+                            <ul class="space-y-3 text-sm text-dark/70">
+                                <li class="flex justify-between"><span>Biaya Bulanan (SPP)</span> <span class="font-semibold text-dark">Rp 500.000</span></li>
+                                <li class="flex justify-between"><span>Daftar Ulang Pesantren (Tahunan)</span> <span class="font-semibold text-dark">Rp 300.000</span></li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 3. Ketentuan Section -->
-            <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 mb-12">
-                <div class="flex items-center mb-8">
-                    <div class="w-10 h-10 bg-green-100 text-[#008362] rounded-lg flex items-center justify-center mr-4">
-                        <i class="fas fa-info-circle text-lg"></i>
+            {{-- 3. Ketentuan --}}
+            <div class="card-editorial p-8 mb-12" data-aos="fade-up">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-11 h-11 rounded-full bg-primary-soft text-primary flex items-center justify-center">
+                        <i class="fas fa-info-circle"></i>
                     </div>
-                    <h2 class="text-2xl font-bold text-gray-900">3. Ketentuan Pembayaran & Fasilitas</h2>
+                    <h2 class="font-display text-2xl lg:text-3xl font-semibold text-dark">3. Ketentuan Pembayaran &amp; Fasilitas</h2>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
-                    <div class="flex items-start">
-                        <div
-                            class="w-8 h-8 rounded-full bg-green-50 text-[#008362] flex items-center justify-center mr-4 flex-shrink-0 font-bold text-sm">
-                            1</div>
-                        <p class="text-gray-700 leading-relaxed"><span class="font-bold">Waktu Pembayaran
-                                Pendaftaran:</span> Biaya pendaftaran dibayarkan <span
-                                class="font-bold text-red-600 underline">sebelum</span> siswa mengisi formulir pendaftaran.
-                        </p>
-                    </div>
-                    <div class="flex items-start">
-                        <div
-                            class="w-8 h-8 rounded-full bg-green-50 text-[#008362] flex items-center justify-center mr-4 flex-shrink-0 font-bold text-sm">
-                            2</div>
-                        <p class="text-gray-700 leading-relaxed"><span class="font-bold">Pembayaran Daftar Ulang:</span>
-                            Biaya uang gedung, seragam, dan perlengkapan dibayar tunai (kontan) saat melakukan daftar ulang.
-                        </p>
-                    </div>
-                    <div class="flex items-start">
-                        <div
-                            class="w-8 h-8 rounded-full bg-green-50 text-[#008362] flex items-center justify-center mr-4 flex-shrink-0 font-bold text-sm">
-                            3</div>
-                        <p class="text-gray-700 leading-relaxed"><span class="font-bold">Cakupan Seragam Pesantren:</span>
-                            Biaya ini mencakup Jas Almamater dan Seragam Putih.</p>
-                    </div>
-                    <div class="flex items-start">
-                        <div
-                            class="w-8 h-8 rounded-full bg-green-50 text-[#008362] flex items-center justify-center mr-4 flex-shrink-0 font-bold text-sm">
-                            4</div>
-                        <p class="text-gray-700 leading-relaxed"><span class="font-bold">Cakupan Seragam SMP (Khusus Paket
-                                A):</span> Biaya ini mencakup LKS untuk 2 Semester dan Seragam Olahraga.</p>
-                    </div>
-                    <div class="flex items-start">
-                        <div
-                            class="w-8 h-8 rounded-full bg-green-50 text-[#008362] flex items-center justify-center mr-4 flex-shrink-0 font-bold text-sm">
-                            5</div>
-                        <p class="text-gray-700 leading-relaxed"><span class="font-bold">Jatuh Tempo SPP:</span> Biaya
-                            bulanan/SPP wajib dibayarkan setiap bulan maksimal tanggal 10.</p>
-                    </div>
-                    <div class="flex items-start">
-                        <div
-                            class="w-8 h-8 rounded-full bg-green-50 text-[#008362] flex items-center justify-center mr-4 flex-shrink-0 font-bold text-sm">
-                            6</div>
-                        <p class="text-gray-700 leading-relaxed"><span class="font-bold">Biaya Tahunan:</span> Biaya
-                            daftar ulang pesantren dibayarkan saat pemberangkatan bulan Syawal.</p>
-                    </div>
-                    <div class="flex items-start">
-                        <div
-                            class="w-8 h-8 rounded-full bg-green-50 text-[#008362] flex items-center justify-center mr-4 flex-shrink-0 font-bold text-sm">
-                            7</div>
-                        <p class="text-gray-700 leading-relaxed"><span class="font-bold">Biaya Semesteran (Khusus Paket
-                                A):</span> Sudah termasuk paket untuk 2 semester.</p>
-                    </div>
-                    <div class="flex items-start">
-                        <div
-                            class="w-8 h-8 rounded-full bg-red-50 text-red-600 flex items-center justify-center mr-4 flex-shrink-0 font-bold text-sm">
-                            8</div>
-                        <p class="text-gray-700 leading-relaxed"><span class="font-bold">Kebijakan Pengunduran
-                                Diri:</span> Apabila santri mengundurkan diri, maka biaya yang telah masuk <span
-                                class="font-bold text-red-600 underline">tidak dapat dikembalikan</span>.</p>
-                    </div>
+                <div class="grid md:grid-cols-2 gap-x-12 gap-y-6">
+                    @php
+                        $ketentuan = [
+                            ['<strong>Waktu Pembayaran Pendaftaran:</strong> Biaya pendaftaran dibayarkan <strong class="text-red-600 underline">sebelum</strong> siswa mengisi formulir pendaftaran.', false],
+                            ['<strong>Pembayaran Daftar Ulang:</strong> Biaya uang gedung, seragam, dan perlengkapan dibayar tunai (kontan) saat melakukan daftar ulang.', false],
+                            ['<strong>Cakupan Seragam Pesantren:</strong> Biaya ini mencakup Jas Almamater dan Seragam Putih.', false],
+                            ['<strong>Cakupan Seragam SMP (Khusus Paket A):</strong> Biaya ini mencakup LKS untuk 2 Semester dan Seragam Olahraga.', false],
+                            ['<strong>Jatuh Tempo SPP:</strong> Biaya bulanan/SPP wajib dibayarkan setiap bulan maksimal tanggal 10.', false],
+                            ['<strong>Biaya Tahunan:</strong> Biaya daftar ulang pesantren dibayarkan saat pemberangkatan bulan Syawal.', false],
+                            ['<strong>Biaya Semesteran (Khusus Paket A):</strong> Sudah termasuk paket untuk 2 semester.', false],
+                            ['<strong>Kebijakan Pengunduran Diri:</strong> Apabila santri mengundurkan diri, maka biaya yang telah masuk <strong class="text-red-600 underline">tidak dapat dikembalikan</strong>.', true],
+                        ];
+                    @endphp
+                    @foreach ($ketentuan as $i => $k)
+                        <div class="flex items-start gap-4">
+                            <div class="w-8 h-8 rounded-full {{ $k[1] ? 'bg-red-50 text-red-600' : 'bg-primary-soft text-primary' }} flex items-center justify-center shrink-0 font-bold text-sm font-display">
+                                {{ $i + 1 }}
+                            </div>
+                            <p class="text-dark/80 leading-relaxed text-[15px]">{!! $k[0] !!}</p>
+                        </div>
+                    @endforeach
                 </div>
             </div>
 
-            <!-- 4. Komitmen Section -->
-            <div class="bg-[#1b1b18] text-white p-10 rounded-3xl shadow-xl relative overflow-hidden mb-12">
-                <div class="absolute top-0 right-0 -mt-10 -mr-10 w-64 h-64 bg-white opacity-5 rounded-full"></div>
-                <div class="flex items-center mb-8 relative z-10">
-                    <div
-                        class="w-10 h-10 bg-white/10 text-white rounded-lg flex items-center justify-center mr-4 backdrop-blur-sm">
-                        <i class="fas fa-handshake text-lg"></i>
+            {{-- 4. Komitmen - dark section --}}
+            <div class="bg-dark text-white p-8 lg:p-10 rounded-lg shadow-soft relative overflow-hidden mb-12" data-aos="fade-up">
+                <div class="absolute top-0 right-0 w-64 h-64 border border-white/5 rounded-full -mr-16 -mt-16 pointer-events-none" aria-hidden="true"></div>
+                <div class="flex items-center gap-3 mb-8 relative z-10">
+                    <div class="w-11 h-11 rounded-full bg-white/10 border border-white/15 flex items-center justify-center">
+                        <i class="fas fa-handshake text-accent"></i>
                     </div>
-                    <h2 class="text-2xl font-bold">4. Komitmen Santri & Wali Santri</h2>
+                    <h2 class="font-display text-2xl lg:text-3xl font-semibold">4. Komitmen Santri &amp; Wali Santri</h2>
                 </div>
-                <p class="text-gray-400 mb-8 relative z-10">Dengan mendaftar di Pondok Pesantren Al Anwar Pakijangan,
-                    santri dan wali santri menyatakan bersedia untuk :</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 relative z-10">
-                    <div class="flex items-start">
-                        <i class="fas fa-check text-[#008362] mt-1 mr-3"></i>
-                        <span class="text-gray-300">Dididik dan dibina sesuai Visi dan Misi Pondok Pesantren.</span>
-                    </div>
-                    <div class="flex items-start">
-                        <i class="fas fa-check text-[#008362] mt-1 mr-3"></i>
-                        <span class="text-gray-300">Mematuhi segala peraturan dan tata tertib yang berlaku.</span>
-                    </div>
-                    <div class="flex items-start">
-                        <i class="fas fa-check text-[#008362] mt-1 mr-3"></i>
-                        <span class="text-gray-300">Menyelesaikan target pembelajaran yang ditentukan pesantren dan
-                            sekolah.</span>
-                    </div>
-                    <div class="flex items-start">
-                        <i class="fas fa-check text-[#008362] mt-1 mr-3"></i>
-                        <span class="text-gray-300">Melunasi semua biaya daftar ulang dan administrasi lainnya sesuai
-                            ketentuan.</span>
-                    </div>
-                    <div class="flex items-start">
-                        <i class="fas fa-check text-[#008362] mt-1 mr-3"></i>
-                        <span class="text-gray-300">Menerima konsekuensi/sanksi atas pelanggaran tata tertib, termasuk jika
-                            harus dikembalikan kepada orang tua.</span>
-                    </div>
-                    <div class="flex items-start">
-                        <i class="fas fa-check text-[#008362] mt-1 mr-3"></i>
-                        <span class="text-gray-300">Tidak menuntut pengembalian uang pendaftaran jika mengundurkan
-                            diri.</span>
-                    </div>
+                <p class="text-white/60 mb-8 relative z-10">Dengan mendaftar di Pondok Pesantren Al Anwar Pakijangan, santri dan wali santri menyatakan bersedia untuk:</p>
+                <div class="grid sm:grid-cols-2 gap-x-8 gap-y-4 relative z-10">
+                    @php
+                        $komitmen = [
+                            'Dididik dan dibina sesuai Visi dan Misi Pondok Pesantren.',
+                            'Mematuhi segala peraturan dan tata tertib yang berlaku.',
+                            'Menyelesaikan target pembelajaran yang ditentukan pesantren dan sekolah.',
+                            'Melunasi semua biaya daftar ulang dan administrasi lainnya sesuai ketentuan.',
+                            'Menerima konsekuensi/sanksi atas pelanggaran tata tertib, termasuk jika harus dikembalikan kepada orang tua.',
+                            'Tidak menuntut pengembalian uang pendaftaran jika mengundurkan diri.',
+                        ];
+                    @endphp
+                    @foreach ($komitmen as $k)
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-check text-primary mt-1 shrink-0"></i>
+                            <span class="text-white/80 text-[15px]">{{ $k }}</span>
+                        </div>
+                    @endforeach
                 </div>
             </div>
 
-            <!-- CTA Section -->
-            <div class="text-center bg-green-50 p-10 rounded-3xl border border-green-100">
-                <h3 class="text-2xl font-black text-gray-900 mb-4">Mulai Langkah Pertama Anda Sekarang</h3>
-                <p class="text-gray-600 mb-8 max-w-xl mx-auto">Silakan kunjungi Sekretariat Pendaftaran di Pondok Pesantren
-                    Al-Anwar Pakijangan untuk proses pendaftaran langsung.</p>
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <a href="https://wa.me/6289629671089" target="_blank"
-                        class="flex items-center justify-center px-8 py-4 bg-[#008362] text-white font-bold rounded-full hover:bg-[#006b50] transition-all transform hover:scale-105 shadow-lg group w-full sm:w-auto">
-                        <i class="fab fa-whatsapp mr-3 text-2xl"></i>
+            {{-- CTA Section --}}
+            <div class="bg-dark text-white p-10 lg:p-12 rounded-lg shadow-soft relative overflow-hidden" data-aos="zoom-in">
+                <div class="absolute top-0 left-0 w-72 h-72 border border-white/8 rounded-full -ml-20 -mt-20 pointer-events-none" aria-hidden="true"></div>
+                <div class="absolute bottom-0 right-0 w-80 h-80 border border-accent/10 rounded-full -mr-24 -mb-24 pointer-events-none" aria-hidden="true"></div>
+
+                <div class="relative z-10 text-center max-w-2xl mx-auto">
+                    <p class="eyebrow eyebrow-light justify-center">Siap Memulai?</p>
+                    <h3 class="font-display text-2xl lg:text-4xl font-semibold mb-4">Mulai Langkah Pertama Anda Sekarang</h3>
+                    <p class="text-white/70 mb-8 text-[15px] leading-relaxed">
+                        Silakan kunjungi Sekretariat Pendaftaran di Pondok Pesantren Al-Anwar Pakijangan
+                        untuk proses pendaftaran langsung.
+                    </p>
+                    <a href="https://wa.me/6289629671089" target="_blank" class="btn btn-light">
+                        <i class="fab fa-whatsapp text-lg"></i>
                         Hubungi Panitia Pendaftaran
                     </a>
                 </div>

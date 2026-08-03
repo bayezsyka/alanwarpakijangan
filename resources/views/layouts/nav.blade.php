@@ -1,214 +1,202 @@
-<header id="navbar" data-landing="{{ request()->is('/') ? '1' : '0' }}"
-    class="fixed top-0 right-0 w-full p-3 text-sm z-50 transition-all duration-300 ease-in-out bg-white shadow-md">
+{{-- Announcement bar + Navbar --}}
+<div id="navbarWrap" class="fixed top-0 left-0 w-full z-50">
 
-    <!-- ===== DESKTOP: PERSIS PUNYA KAMU (JANGAN DIUBAH) ===== -->
-    <nav class="hidden lg:grid grid-cols-3 items-center w-full">
-        <!-- Kolom Kiri -->
-        <div>
-            <a id="navbarSlogan" class="text-m font-bold leading-tight text-[#008362]">
-                MENDAMPINGI POTENSI
-                <br>MEMBENTUK KARAKTER</br>
+    {{-- Announcement bar --}}
+    <div id="announcementBar" class="bg-primary text-white text-[12px] hidden lg:block transition-all duration-300">
+        <div class="container-editorial flex items-center justify-between h-[34px]">
+            <span class="flex items-center gap-2">
+                <i class="fas fa-bullhorn text-[10px] opacity-80"></i>
+                Penerimaan Santri Baru Tahun Ajaran 2026/2027 M telah dibuka
+            </span>
+            <a href="{{ route('pendaftaran') }}" class="font-bold underline underline-offset-2 hover:text-accent transition-colors">
+                Daftar Sekarang &rarr;
             </a>
         </div>
+    </div>
 
-        <!-- Kolom Tengah: Logo -->
-        <div class="flex justify-center">
-            <a href="{{ url('/') }}" class="flex items-center">
+    {{-- Navbar --}}
+    <header id="navbar" data-landing="{{ request()->is('/') ? '1' : '0' }}"
+            class="w-full transition-all duration-300 ease-in-out">
+        <nav class="container-editorial flex items-center justify-between gap-6 min-h-[72px] lg:min-h-[82px]">
+
+            {{-- Logo / Brand --}}
+            <a href="{{ url('/') }}" class="flex items-center gap-3 shrink-0">
                 <img id="navbarLogo" src="{{ asset('images/logoarab.webp') }}" alt="Logo Al-Anwar"
-                    class="h-10 w-auto hidden lg:block transition-opacity duration-300 opacity-100" />
-            </a>
-        </div>
-
-        <!-- Kolom Kanan: Menu -->
-        <div class="flex justify-end items-center space-x-2">
-            <a id="navSelasanan" href="{{ route('selasanan.index') }}"
-                class="flex items-center gap-2 px-4 py-2 rounded-md focus:outline-none text-gray-900 hover:bg-gray-100">
-                Selasanan
+                     class="h-10 w-auto transition-opacity duration-300" />
+                <span id="navbarSlogan" class="hidden md:block font-display font-semibold text-[15px] leading-tight text-primary transition-colors duration-300">
+                    Pondok Pesantren<br>Al-Anwar Pakijangan
+                </span>
             </a>
 
-            <a id="navArtikel" href="{{ url('artikel') }}"
-                class="flex items-center gap-2 px-4 py-2 rounded-md focus:outline-none text-gray-900 hover:bg-gray-100">
-                Artikel
-            </a>
+            {{-- Desktop navigation --}}
+            <div class="hidden lg:flex items-center gap-8">
+                <a href="{{ route('selasanan.index') }}" id="navSelasanan"
+                   class="nav-link-editorial text-gray-700 hover:text-primary">Selasanan</a>
+                <a href="{{ url('artikel') }}" id="navArtikel"
+                   class="nav-link-editorial text-gray-700 hover:text-primary">Artikel</a>
+                <a href="{{ url('galeri-acara') }}" id="navGaleri"
+                   class="nav-link-editorial text-gray-700 hover:text-primary">Galeri</a>
+            </div>
 
-            <a id="navGaleri" href="{{ url('galeri-acara') }}"
-                class="flex items-center gap-2 px-4 py-2 rounded-md focus:outline-none text-gray-900 hover:bg-gray-100">
-                Galeri
-            </a>
+            {{-- Primary CTA + Mobile menu button --}}
+            <div class="flex items-center gap-3">
+                <a href="{{ route('pendaftaran') }}" id="navPendaftaran"
+                   class="btn btn-primary hidden sm:inline-flex !min-h-[44px] !px-5 !text-[13px]">
+                    Pendaftaran
+                </a>
 
-            <a id="navPendaftaran" href="{{ route('pendaftaran') }}"
-                class="flex items-center gap-2 px-4 py-2 rounded-md focus:outline-none text-white bg-[#008362] hover:bg-[#006b50] transition-colors duration-200 font-semibold shadow-sm">
-                Pendaftaran
-            </a>
+                {{-- Mobile menu toggle (min 44x44) --}}
+                <button id="mobileMenuBtn" type="button"
+                        class="lg:hidden w-11 h-11 flex items-center justify-center rounded-full text-gray-900 hover:bg-black/5 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                        aria-label="Buka menu" aria-expanded="false">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </nav>
+    </header>
 
-            <!-- Dropdown Tentang Kami -->
-            <!-- <div class="relative">
-        <button id="dropdownNavbarLink" type="button"
-          class="flex items-center gap-2 px-4 py-2 rounded-md focus:outline-none text-gray-900 hover:bg-gray-100"
-          onclick="document.getElementById('dropdownNavbar').classList.toggle('hidden')">
-          Tentang Kami
-          <svg class="w-3 h-3" aria-hidden="true" fill="none" viewBox="0 0 10 6">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="m1 1 4 4 4-4" />
-          </svg>
-        </button>
-
-        <div id="dropdownNavbar"
-          class="absolute right-0 mt-2 z-20 hidden bg-white rounded-lg shadow-lg w-44 divide-y divide-gray-100">
-          <ul class="py-2 text-sm text-gray-700">
-            <li><a href="/profil" class="block px-4 py-2 hover:bg-gray-100">Profil Pesantren</a></li>
-            <li><a href="/galeri-acara" class="block px-4 py-2 hover:bg-gray-100">Galeri</a></li>
-          </ul>
-        </div>
-      </div> -->
-        </div>
-    </nav>
-
-    <!-- ===== MOBILE: BARU (logo kiri + hamburger kanan) ===== -->
-    <div class="lg:hidden flex items-center justify-between w-full">
-        <a href="{{ url('/') }}" class="flex items-center">
-            <img src="{{ asset('images/logoarab.webp') }}" alt="Logo Al-Anwar" class="h-9 w-auto" />
-        </a>
-
-        <button id="mobileMenuBtn" type="button"
-            class="p-2 rounded-md text-gray-900 hover:bg-gray-100 focus:outline-none" aria-label="Open menu">
-            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-        </button>
+    {{-- Mobile menu --}}
+    <div id="mobileMenu" class="lg:hidden hidden bg-white border-t border-black/5 shadow-soft overflow-hidden">
+        <nav class="container-editorial py-2">
+            <a href="{{ route('selasanan.index') }}" class="block min-h-[48px] flex items-center border-b border-black/5 px-2 text-gray-700 hover:text-primary transition">Selasanan</a>
+            <a href="{{ url('artikel') }}" class="block min-h-[48px] flex items-center border-b border-black/5 px-2 text-gray-700 hover:text-primary transition">Artikel</a>
+            <a href="{{ url('galeri-acara') }}" class="block min-h-[48px] flex items-center border-b border-black/5 px-2 text-gray-700 hover:text-primary transition">Galeri</a>
+            <a href="{{ route('pendaftaran') }}" class="block min-h-[48px] flex items-center px-2 mt-2 font-bold text-primary">Pendaftaran &rarr;</a>
+        </nav>
     </div>
+</div>
 
-    <div id="mobileMenu"
-        class="lg:hidden hidden mt-2 bg-white rounded-lg shadow-lg divide-y divide-gray-100 overflow-hidden">
-        <div class="py-2 text-sm text-gray-700">
-            <a href="{{ route('selasanan.index') }}" class="block px-4 py-3 hover:bg-gray-100">Selasanan</a>
-            <a href="{{ url('artikel') }}" class="block px-4 py-3 hover:bg-gray-100">Artikel</a>
-            <!-- <a href="/profil" class="block px-4 py-3 hover:bg-gray-100">Profil Pesantren</a> -->
-            <a href="/galeri-acara" class="block px-4 py-3 hover:bg-gray-100">Galeri</a>
-            <a href="{{ route('pendaftaran') }}"
-                class="block px-4 py-3 bg-[#008362] text-white font-semibold">Pendaftaran</a>
-        </div>
-    </div>
+{{-- Spacer to offset fixed navbar (non-landing pages) --}}
+@if(!request()->is('/'))
+    <div class="h-[72px] lg:h-[116px]"></div>
+@endif
 
-    <script>
-        // ====== tetap: tutup dropdown desktop kalau klik luar (punyamu) ======
-        document.addEventListener('click', function(e) {
-            const dropdown = document.getElementById('dropdownNavbar');
-            const button = document.getElementById('dropdownNavbarLink');
-            if (button && dropdown && !button.contains(e.target) && !dropdown.contains(e.target)) {
-                dropdown.classList.add('hidden');
-            }
-        });
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const mobileBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
 
-        document.addEventListener('DOMContentLoaded', function() {
-            // ====== MOBILE MENU ======
-            const mobileBtn = document.getElementById('mobileMenuBtn');
-            const mobileMenu = document.getElementById('mobileMenu');
+        // ====== Mobile menu toggle ======
+        if (mobileBtn && mobileMenu) {
+            mobileBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                const isHidden = mobileMenu.classList.toggle('hidden');
+                mobileBtn.setAttribute('aria-expanded', !isHidden);
+            });
 
-            if (mobileBtn && mobileMenu) {
-                mobileBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    mobileMenu.classList.toggle('hidden');
-                });
-
-                document.addEventListener('click', function(e) {
-                    if (!mobileMenu.classList.contains('hidden')) {
-                        const inside = mobileMenu.contains(e.target) || mobileBtn.contains(e.target);
-                        if (!inside) mobileMenu.classList.add('hidden');
+            // Close on outside click
+            document.addEventListener('click', function (e) {
+                if (!mobileMenu.classList.contains('hidden')) {
+                    const inside = mobileMenu.contains(e.target) || mobileBtn.contains(e.target);
+                    if (!inside) {
+                        mobileMenu.classList.add('hidden');
+                        mobileBtn.setAttribute('aria-expanded', 'false');
                     }
+                }
+            });
+
+            // Close on item click
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    mobileBtn.setAttribute('aria-expanded', 'false');
                 });
-            }
+            });
 
-            // ====== SCROLL EFFECT: desktop tetap punyamu, MOBILE topmode dipaksa putih ======
-            const navbar = document.getElementById('navbar');
-            const isLanding = navbar.dataset.landing === "1";
-            if (!isLanding) return;
-
-            const scrollThreshold = 20;
-            const logo = document.getElementById('navbarLogo');
-            const slogan = document.getElementById('navbarSlogan');
-            const selasanan = document.getElementById('navSelasanan');
-            const artikel = document.getElementById('navArtikel');
-            const dropdownBtn = document.getElementById('dropdownNavbarLink');
-            const galeri = document.getElementById('navGaleri');
-            const pendaftaran = document.getElementById('navPendaftaran');
-
-            function isMobile() {
-                return window.innerWidth < 1024; // tailwind lg
-            }
-
-            function setTopMode() {
-                if (isMobile()) {
-                    // MOBILE: dipaksa putih saat topmode
-                    navbar.classList.remove('bg-transparent');
-                    navbar.classList.add('bg-white');
-                    navbar.classList.remove('shadow-md');
-                    return;
+            // Close on Escape
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && !mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                    mobileBtn.setAttribute('aria-expanded', 'false');
                 }
+            });
+        }
 
-                // DESKTOP: persis punyamu
-                navbar.classList.remove('bg-white', 'shadow-md');
-                navbar.classList.add('bg-transparent');
+        // ====== Scroll effect (landing page only) ======
+        const navbar = document.getElementById('navbar');
+        const announcementBar = document.getElementById('announcementBar');
+        const isLanding = navbar.dataset.landing === "1";
+        if (!isLanding) {
+            navbar.classList.add('bg-white/85', 'backdrop-blur-md', 'border-b', 'border-black/5', 'shadow-sm');
+            return;
+        }
 
-                logo.classList.add('opacity-0', 'pointer-events-none');
-                logo.classList.remove('opacity-100');
+        const logo = document.getElementById('navbarLogo');
+        const slogan = document.getElementById('navbarSlogan');
+        const selasanan = document.getElementById('navSelasanan');
+        const artikel = document.getElementById('navArtikel');
+        const galeri = document.getElementById('navGaleri');
+        const pendaftaran = document.getElementById('navPendaftaran');
+        const navLinks = [selasanan, artikel, galeri].filter(Boolean);
 
-                slogan.classList.remove('text-[#008362]');
-                slogan.classList.add('text-white');
+        function isMobile() {
+            return window.innerWidth < 1024;
+        }
 
-                [selasanan, artikel, galeri].forEach(el => {
-                    el.classList.remove('text-gray-900', 'hover:bg-gray-100');
-                    el.classList.add('text-white', 'hover:bg-white/10');
-                });
+        function setTopMode() {
+            // Hide announcement bar at very top on landing for immersive hero
+            if (announcementBar) announcementBar.classList.add('lg:hidden');
 
-                // Pendaftaran button adjustment for top mode
-                if (pendaftaran) {
-                    pendaftaran.classList.remove('shadow-sm');
-                    pendaftaran.classList.add('bg-white', 'text-[#008362]');
-                    pendaftaran.classList.remove('bg-[#008362]', 'text-white');
-                }
+            if (isMobile()) {
+                navbar.classList.remove('bg-white/85', 'backdrop-blur-md', 'shadow-sm', 'border-b', 'border-black/5');
+                navbar.classList.add('bg-white/80', 'backdrop-blur-sm');
+                return;
             }
 
-            function setScrolledMode() {
-                if (isMobile()) {
-                    // MOBILE: putih + shadow saat scroll
-                    navbar.classList.remove('bg-transparent');
-                    navbar.classList.add('bg-white', 'shadow-md');
-                    return;
-                }
+            // Desktop: transparent over hero
+            navbar.classList.remove('bg-white/85', 'backdrop-blur-md', 'shadow-sm', 'border-b', 'border-black/5');
 
-                // DESKTOP: persis punyamu
-                navbar.classList.remove('bg-transparent');
-                navbar.classList.add('bg-white', 'shadow-md');
+            slogan.classList.remove('text-primary', 'text-gray-700');
+            slogan.classList.add('text-white');
 
-                logo.classList.remove('opacity-0', 'pointer-events-none');
-                logo.classList.add('opacity-100');
+            navLinks.forEach(el => {
+                el.classList.remove('text-gray-700');
+                el.classList.add('text-white/90', 'hover:text-white');
+            });
 
-                slogan.classList.remove('text-white');
-                slogan.classList.add('text-[#008362]');
+            if (pendaftaran) {
+                pendaftaran.classList.remove('btn-primary');
+                pendaftaran.classList.add('btn-light');
+            }
+        }
 
-                [selasanan, artikel, galeri].forEach(el => {
-                    el.classList.remove('text-white', 'hover:bg-white/10');
-                    el.classList.add('text-gray-900', 'hover:bg-gray-100');
-                });
+        function setScrolledMode() {
+            if (announcementBar) announcementBar.classList.remove('lg:hidden');
 
-                // Pendaftaran button adjustment for scrolled mode
-                if (pendaftaran) {
-                    pendaftaran.classList.add('shadow-sm');
-                    pendaftaran.classList.remove('bg-white', 'text-[#008362]');
-                    pendaftaran.classList.add('bg-[#008362]', 'text-white');
-                }
+            if (isMobile()) {
+                navbar.classList.remove('bg-white/80', 'backdrop-blur-sm');
+                navbar.classList.add('bg-white/90', 'backdrop-blur-md', 'shadow-sm', 'border-b', 'border-black/5');
+                return;
             }
 
-            function onScroll() {
-                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                if (scrollTop <= scrollThreshold) setTopMode();
-                else setScrolledMode();
-            }
+            // Desktop: frosted white
+            navbar.classList.remove('bg-white/80');
+            navbar.classList.add('bg-white/85', 'backdrop-blur-md', 'shadow-sm', 'border-b', 'border-black/5');
 
-            onScroll();
-            window.addEventListener('scroll', onScroll);
-            window.addEventListener('resize', onScroll);
-        });
-    </script>
-</header>
+            slogan.classList.remove('text-white');
+            slogan.classList.add('text-primary');
+
+            navLinks.forEach(el => {
+                el.classList.remove('text-white/90', 'hover:text-white');
+                el.classList.add('text-gray-700', 'hover:text-primary');
+            });
+
+            if (pendaftaran) {
+                pendaftaran.classList.remove('btn-light');
+                pendaftaran.classList.add('btn-primary');
+            }
+        }
+
+        function onScroll() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop <= 20) setTopMode();
+            else setScrolledMode();
+        }
+
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll);
+    });
+</script>

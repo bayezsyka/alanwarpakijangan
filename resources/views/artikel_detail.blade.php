@@ -59,7 +59,7 @@
     <meta name="twitter:image" content="{{ $seoImageUrl }}">
     <script type="application/ld+json">{!! json_encode($articleSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600|plus-jakarta-sans:400,500,600,700" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=playfair-display:500,600,700|dm-sans:400,500,600,700" rel="stylesheet" />
     <link rel="icon" type="image/png" href="{{ asset('images/logo.webp') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -68,8 +68,8 @@
     <style>
         /* Improved typography for better reading experience */
         .article-content {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            color: #333;
+            font-family: 'DM Sans', sans-serif;
+            color: #2a2a26;
             line-height: 1.8;
             font-size: 1.125rem; /* 18px base size */
         }
@@ -77,16 +77,16 @@
         .article-content h1,
         .article-content h2,
         .article-content h3 {
-            font-family: 'Instrument Sans', sans-serif;
-            font-weight: 700;
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 600;
             margin-top: 2.5rem;
             margin-bottom: 1.25rem;
             line-height: 1.3;
-            color: #1a1a1a;
+            color: #1b1b18;
         }
         
-        .article-content h1 { font-size: 2rem; }
-        .article-content h2 { font-size: 1.75rem; }
+        .article-content h1 { font-size: 2.25rem; letter-spacing: -0.02em; }
+        .article-content h2 { font-size: 1.875rem; letter-spacing: -0.015em; }
         .article-content h3 { font-size: 1.5rem; }
         
         .article-content p {
@@ -102,7 +102,7 @@
         }
         
         .article-content a:hover {
-            color: #005a46;
+            color: #006b50;
         }
         
         .article-content ul,
@@ -117,18 +117,21 @@
         }
         
         .article-content blockquote {
-            border-left: 4px solid #008362;
+            border-left: 3px solid #008362;
             padding: 1rem 1.5rem;
             margin: 2rem 0;
-            background-color: #f8f9fa;
+            background-color: #f6f4ef;
+            font-family: 'Playfair Display', Georgia, serif;
             font-style: italic;
-            color: #555;
+            color: #1b1b18;
+            font-size: 1.125rem;
+            border-radius: 0 10px 10px 0;
         }
         
         .article-content pre {
             background-color: #f3f4f6;
             padding: 1.25rem;
-            border-radius: 0.375rem;
+            border-radius: 10px;
             overflow-x: auto;
             margin: 1.5rem 0;
             font-size: 0.95rem;
@@ -139,7 +142,7 @@
             height: auto;
             margin: 2rem auto;
             display: block;
-            border-radius: 0.5rem;
+            border-radius: 10px;
         }
         
         /* Reading progress indicator */
@@ -147,9 +150,9 @@
             position: fixed;
             top: 0;
             left: 0;
-            height: 4px;
-            background: #008362;
-            z-index: 40; /* Lower than navbar z-50 */
+            height: 3px;
+            background: linear-gradient(to right, #008362, #b8932d);
+            z-index: 60;
             transition: width 0.1s;
         }
         
@@ -161,44 +164,27 @@
             transform: translateY(-50%);
             background: white;
             padding: 1rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-radius: 18px;
+            box-shadow: 0 8px 28px rgba(27,27,24,0.07);
             max-height: 80vh;
             overflow-y: auto;
             display: none;
         }
         
-        .toc ul {
-            list-style: none;
-            padding-left: 0;
-        }
-        
-        .toc li {
-            margin-bottom: 0.5rem;
-        }
-        
-        .toc a {
-            color: #333;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-        
-        .toc a:hover {
-            color: #008362;
-        }
+        .toc ul { list-style: none; padding-left: 0; }
+        .toc li { margin-bottom: 0.5rem; }
+        .toc a { color: #1b1b18; text-decoration: none; transition: color 0.2s; font-size: 0.875rem; }
+        .toc a:hover { color: #008362; }
         
         @media (max-width: 1024px) {
-            .toc {
-                display: none !important;
-            }
+            .toc { display: none !important; }
         }
         
-        /* Reading time and progress */
         .reading-meta {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: #666;
+            color: #6b6b66;
             font-size: 0.875rem;
             margin-bottom: 1.5rem;
         }
@@ -216,11 +202,8 @@
         }
         
         @media (max-width: 768px) {
-            .article-content {
-                font-size: 1rem;
-            }
-            
-            .article-content h1 { font-size: 1.75rem; }
+            .article-content { font-size: 1rem; }
+            .article-content h1 { font-size: 1.875rem; }
             .article-content h2 { font-size: 1.5rem; }
             .article-content h3 { font-size: 1.25rem; }
             
@@ -234,7 +217,7 @@
         }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen flex flex-col">
+<body class="bg-surface-alt min-h-screen flex flex-col font-sans">
     <!-- Reading progress bar -->
     <div class="reading-progress" id="readingProgress"></div>
     
@@ -287,31 +270,31 @@
         <button onclick="copyToClipboard('{{ $canonicalUrl }}')" class="w-10 h-10 flex items-center justify-center bg-gray-600 text-white rounded-full hover:bg-gray-700 transition duration-300 shadow-md" aria-label="Copy link"><i class="fas fa-link"></i></button>
     </div>
     
-    <main class="flex-grow container mx-auto px-2 sm:px-4 pt-2 sm:pt-24 pb-4 sm:pb-8 max-w-3xl">
-        <article class="bg-white rounded-lg sm:rounded-xl shadow-sm overflow-hidden">
+    <main class="flex-grow container-editorial px-2 sm:px-4 pt-2 sm:pt-24 pb-4 sm:pb-8 max-w-3xl">
+        <article class="bg-surface rounded-lg shadow-soft overflow-hidden border border-black/8">
             <!-- Article header with improved spacing -->
-            <header class="px-4 sm:px-6 pt-4 sm:pt-8 pb-4 sm:pb-6">
+            <header class="px-4 sm:px-8 pt-6 sm:pt-10 pb-4 sm:pb-6">
                 <div class="mb-4 sm:mb-6">
-                    <a href="{{ route('artikel') }}" class="inline-flex items-center text-[#008362] hover:text-cyan-950 text-sm sm:text-base font-medium transition duration-300 mb-3 sm:mb-4">
-                        <i class="fas fa-arrow-left mr-1.5 sm:mr-2"></i> Kembali
+                    <a href="{{ route('artikel') }}" class="inline-flex items-center text-[11px] font-bold uppercase tracking-[0.14em] text-muted hover:text-primary transition duration-300 mb-4">
+                        <i class="fas fa-arrow-left mr-2 text-[10px]"></i> Kembali ke Artikel
                     </a>
-                    <h1 class="text-xl sm:text-3xl md:text-4xl font-bold text-gray-900 leading-tight mb-3 sm:mb-4">{{ $article->judul }}</h1>
+                    <h1 class="font-display text-2xl sm:text-3xl md:text-4xl font-semibold text-dark leading-[1.15] tracking-[-0.02em] mb-4">{{ $article->judul }}</h1>
                     
-                    <div class="flex flex-col gap-2 text-xs sm:text-sm text-gray-600 mb-3 sm:mb-6">
-                        <div class="flex items-center flex-wrap gap-2">
+                    <div class="flex flex-col gap-3 text-xs sm:text-sm text-muted mb-4 sm:mb-6">
+                        <div class="flex items-center flex-wrap gap-3">
                             @php
                                 $authorName = $article->penulis ?? $article->user->name ?? 'Admin';
                             @endphp
-                            <div class="flex items-center bg-gray-50 px-3 py-1 rounded-full border border-gray-100">
-                                <span class="text-gray-400 font-medium mr-1.5 whitespace-nowrap">Ditulis oleh:</span>
-                                <span class="font-bold text-gray-800">{{ $authorName }}</span>
+                            <div class="flex items-center bg-surface-alt px-3 py-1.5 rounded-full border border-black/8">
+                                <span class="text-muted font-medium mr-1.5 whitespace-nowrap">Ditulis oleh:</span>
+                                <span class="font-bold text-dark">{{ $authorName }}</span>
                             </div>
-                            <span class="flex items-center text-gray-400 ml-1">
+                            <span class="flex items-center text-muted">
                                 <i class="far fa-eye mr-1.5"></i>
                                 <span class="font-medium">{{ $article->views }}x</span>
                             </span>
                         </div>
-                        <div class="text-gray-500">
+                        <div class="text-muted">
                             {{ $article->created_at->translatedFormat('d M Y') }}
                         </div>
                     </div>
@@ -319,11 +302,11 @@
                     <!-- Mobile quick actions (Share Snippet + Copy link) -->
                     <div class="sm:hidden mt-4 flex gap-2">
                         <button type="button" data-ss-open
-                                class="flex-1 inline-flex items-center justify-center px-4 py-2 rounded-xl bg-emerald-600 text-white font-semibold text-sm shadow hover:bg-emerald-700">
-                            <i class="fas fa-quote-right mr-2"></i> Bagikan Kutipan
+                                class="flex-1 inline-flex items-center justify-center px-4 py-2.5 rounded-full bg-primary text-white font-semibold text-sm hover:bg-primary-hover transition">
+                            <i class="fas fa-quote-right mr-2 text-xs"></i> Bagikan Kutipan
                         </button>
                         <button type="button" onclick="copyToClipboard('{{ $canonicalUrl }}')"
-                                class="px-4 py-2 rounded-xl bg-gray-800 text-white font-semibold text-sm shadow hover:bg-gray-900" aria-label="Copy link">
+                                class="w-11 h-11 flex items-center justify-center rounded-full bg-dark text-white hover:bg-black transition" aria-label="Copy link">
                             <i class="fas fa-link"></i>
                         </button>
                     </div>
@@ -335,7 +318,7 @@
                             ? $article->gambar
                             : asset('storage/' . $article->gambar);
                     @endphp
-                    <img src="{{ $imageUrl }}" alt="{{ $article->judul }}" class="w-full h-auto max-h-64 sm:max-h-96 object-cover rounded-lg mb-4 sm:mb-6 shadow-md">
+                    <img src="{{ $imageUrl }}" alt="{{ $article->judul }}" class="w-full h-auto max-h-64 sm:max-h-96 object-cover rounded-md mb-4 sm:mb-6 shadow-card">
                 @endif
             </header>
             
@@ -350,13 +333,13 @@
             </div>
             
             <!-- Article footer -->
-            <footer class="px-6 py-6 border-t border-gray-100">
+            <footer class="px-6 sm:px-8 py-6 border-t border-black/8">
                 <div class="flex flex-col sm:flex-row justify-between items-center">
                     <div class="mb-4 sm:mb-0">
                     </div>
                     <div class="flex space-x-4">
-                        <button onclick="scrollToTop()" class="flex items-center text-gray-600 hover:text-[#008362] transition duration-300">
-                            <i class="fas fa-arrow-up mr-2"></i> Ke Atas
+                        <button onclick="scrollToTop()" class="inline-flex items-center gap-2 text-sm font-bold text-primary hover:gap-3 transition-all">
+                            <i class="fas fa-arrow-up"></i> Ke Atas
                         </button>
                     </div>
                 </div>
