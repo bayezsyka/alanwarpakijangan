@@ -47,7 +47,7 @@
     <link rel="apple-touch-icon" href="{{ asset('images/logo.webp') }}">
 
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=playfair-display:500,600,700|dm-sans:400,500,600,700" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
@@ -66,12 +66,17 @@
     @stack('styles')
 </head>
 
-<body class="bg-surface text-dark min-h-screen flex flex-col font-sans">
+<body class="bg-[#FDFDFC] text-[#1b1b18] min-h-screen flex flex-col">
     
     @include('layouts.nav')
 
-    {{-- Main content --}}
-    <main class="flex-grow">
+    {{-- Main content with padding for fixed navbar --}}
+    {{-- Landing page (/) has fullscreen hero, so no padding needed --}}
+    {{-- Other pages need padding to not overlap with navbar --}}
+    @php
+        $isLanding = request()->is('/');
+    @endphp
+    <main class="flex-grow {{ $isLanding ? '' : 'pt-16 sm:pt-20' }}">
         @yield('content')
     </main>
 
