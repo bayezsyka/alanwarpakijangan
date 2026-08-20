@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @php
-        $descriptionText = trim(preg_replace('/\s+/', ' ', strip_tags($article->isi ?? '')));
-        $seoDescription = \Illuminate\Support\Str::limit($descriptionText, 155, '');
+        $seoDescription = \App\Support\SeoUrl::cleanDescription($article->isi, 155);
         $canonicalUrl = \App\Support\SeoUrl::articleUrl($article);
         $seoImageUrl = \App\Support\SeoUrl::articleImageUrl($article->gambar);
         $publisherName = 'Pondok Pesantren Al-Anwar Pakijangan';
@@ -16,6 +15,8 @@
             ? \Illuminate\Support\Carbon::parse($article->tanggal)->toAtomString()
             : optional($article->created_at)->toAtomString();
         $modifiedDate = optional($article->updated_at)->toAtomString();
+        $categoryName = $article->category->name ?? 'Artikel';
+
         $articleSchema = [
             '@context' => 'https://schema.org',
             '@type' => 'Article',
@@ -29,6 +30,8 @@
             ],
             'datePublished' => $publishedDate,
             'dateModified' => $modifiedDate,
+            'articleSection' => $categoryName,
+            'inLanguage' => 'id-ID',
             'author' => [
                 '@type' => 'Person',
                 'name' => $authorName,
@@ -36,28 +39,51 @@
             'publisher' => [
                 '@type' => 'Organization',
                 'name' => $publisherName,
+                'url' => \App\Support\SeoUrl::baseUrl(),
                 'logo' => [
                     '@type' => 'ImageObject',
                     'url' => $publisherLogoUrl,
                 ],
             ],
         ];
+
+        $breadcrumbSchema = \App\Support\SeoUrl::breadcrumbSchema([
+            ['name' => 'Beranda', 'url' => \App\Support\SeoUrl::baseUrl() . '/'],
+            ['name' => 'Artikel', 'url' => \App\Support\SeoUrl::url('artikel')],
+            ['name' => $article->judul, 'url' => $canonicalUrl],
+        ]);
     @endphp
-    <title>{{ $article->judul }}</title>
+    <title>{{ $article->judul }} | Al-Anwar Pakijangan</title>
     <meta name="description" content="{{ $seoDescription }}">
+    <meta name="keywords" content="{{ $article->judul }}, {{ $categoryName }}, Pondok Pesantren Al-Anwar Pakijangan, Al-Anwar Pakijangan, santri Pakijangan, Brebes">
+    <meta name="author" content="{{ $authorName }}">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <link rel="canonical" href="{{ $canonicalUrl }}">
+
+    {{-- Open Graph / Facebook --}}
+    <meta property="og:locale" content="id_ID">
     <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Pondok Pesantren Al-Anwar Pakijangan">
     <meta property="og:title" content="{{ $article->judul }}">
     <meta property="og:description" content="{{ $seoDescription }}">
     <meta property="og:url" content="{{ $canonicalUrl }}">
     <meta property="og:image" content="{{ $seoImageUrl }}">
+    <meta property="og:image:alt" content="{{ $article->judul }}">
     <meta property="article:published_time" content="{{ $publishedDate }}">
     <meta property="article:modified_time" content="{{ $modifiedDate }}">
+    <meta property="article:section" content="{{ $categoryName }}">
+    <meta property="article:author" content="{{ $authorName }}">
+
+    {{-- Twitter Card --}}
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ $article->judul }}">
     <meta name="twitter:description" content="{{ $seoDescription }}">
     <meta name="twitter:image" content="{{ $seoImageUrl }}">
+
+    {{-- Structured Data --}}
     <script type="application/ld+json">{!! json_encode($articleSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
+    <script type="application/ld+json">{!! json_encode($breadcrumbSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
+    <script type="application/ld+json">{!! json_encode(\App\Support\SeoUrl::organizationSchema(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=playfair-display:500,600,700|dm-sans:400,500,600,700" rel="stylesheet" />
     <link rel="icon" type="image/png" href="{{ asset('images/logo.webp') }}">

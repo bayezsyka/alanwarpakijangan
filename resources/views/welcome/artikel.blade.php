@@ -19,7 +19,7 @@
                         @php
                             $selasananImage = $latestSelasanan->cover_image_path
                                 ? asset('storage/' . $latestSelasanan->cover_image_path)
-                                : 'https://via.placeholder.com/600x400/059669/ffffff?text=Kajian';
+                                : asset('images/landingpage/bgppdb.png');
                         @endphp
                         <img src="{{ $selasananImage }}" alt="{{ $latestSelasanan->title }}"
                              class="w-full h-56 object-cover group-hover:scale-[1.04] transition-transform duration-500" />
@@ -54,7 +54,7 @@
                         @php
                             $imageUrl = $article->gambar && Illuminate\Support\Str::startsWith($article->gambar, 'http')
                                 ? $article->gambar
-                                : ($article->gambar ? asset('storage/' . $article->gambar) : 'https://via.placeholder.com/600x400/f3f4f6/6b7280?text=Artikel');
+                                : ($article->gambar ? asset('storage/' . $article->gambar) : asset('images/landingpage/bgppdb.png'));
                         @endphp
                         <img src="{{ $imageUrl }}" alt="{{ $article->judul }}"
                              class="w-full h-56 object-cover group-hover:scale-[1.04] transition-transform duration-500" />

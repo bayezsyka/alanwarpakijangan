@@ -1,9 +1,24 @@
 @extends('layouts.public')
-@section('title', 'Galeri Acara - Pesantren Al-Anwar')
-@push('styles')
+
+@section('title', 'Galeri Pondok Pesantren Al-Anwar Pakijangan')
+@section('meta_description', 'Dokumentasi kegiatan santri, pendidikan, kajian, akhirussanah, dan aktivitas Pondok Pesantren Al-Anwar Pakijangan di Brebes.')
+@section('meta_keywords', 'galeri pesantren, kegiatan santri, dokumentasi Al-Anwar Pakijangan, akhirussanah Al-Anwar, kajian santri Brebes, foto kegiatan pesantren')
+@section('og_title', 'Galeri Pondok Pesantren Al-Anwar Pakijangan')
+@section('og_description', 'Dokumentasi kegiatan santri, pendidikan, kajian, akhirussanah, dan aktivitas Pondok Pesantren Al-Anwar Pakijangan di Brebes.')
+@section('canonical_url', \App\Support\SeoUrl::url('galeri-acara'))
+
+@push('schema')
+@php
+    $breadcrumbs = \App\Support\SeoUrl::breadcrumbSchema([
+        ['name' => 'Beranda', 'url' => \App\Support\SeoUrl::baseUrl() . '/'],
+        ['name' => 'Galeri', 'url' => \App\Support\SeoUrl::url('galeri-acara')],
+    ]);
+@endphp
+<script type="application/ld+json">
+{!! json_encode($breadcrumbs, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
+</script>
 @endpush
 
-@section('content')
     <div class="section bg-surface-alt !pt-20 lg:!pt-24">
         <div class="container-editorial">
 

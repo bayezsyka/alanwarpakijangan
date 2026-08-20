@@ -1,7 +1,14 @@
 User-agent: *
 Disallow: /admin/
+Disallow: /penulis/
+Disallow: /manage/
+Disallow: /dashboard
+Disallow: /profile
 Disallow: /keuangan/
 
 Allow: /
+Allow: /images/
+Allow: /build/
+Allow: /storage/
 
 Sitemap: https://alanwarpakijangan.com/sitemap.xml

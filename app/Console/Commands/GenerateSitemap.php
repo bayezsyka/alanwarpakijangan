@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Article;
+use App\Models\SelasananEntry;
 use App\Support\SeoUrl;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\URL;
@@ -28,9 +29,14 @@ class GenerateSitemap extends Command
         $xml->startElement('urlset');
         $xml->writeAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
 
-        $this->writeUrl($xml, route('welcome'), null, 'weekly', '1.0');
-        $this->writeUrl($xml, route('artikel'), null, 'daily', '0.8');
+        // Halaman Utama & Sekunder
+        $this->writeUrl($xml, SeoUrl::baseUrl() . '/', null, 'daily', '1.0');
+        $this->writeUrl($xml, SeoUrl::url('artikel'), null, 'daily', '0.9');
+        $this->writeUrl($xml, SeoUrl::url('selasanan'), null, 'weekly', '0.8');
+        $this->writeUrl($xml, SeoUrl::url('pendaftaran'), null, 'monthly', '0.8');
+        $this->writeUrl($xml, SeoUrl::url('galeri-acara'), null, 'weekly', '0.7');
 
+        // Semua Artikel Published
         Article::published()
             ->whereNotNull('slug')
             ->where('slug', '!=', '')
@@ -39,9 +45,25 @@ class GenerateSitemap extends Command
             ->each(function (Article $article) use ($xml) {
                 $this->writeUrl(
                     $xml,
-                    route('artikel.detail', ['article' => $article->slug]),
+                    SeoUrl::articleUrl($article),
                     $article->updated_at?->toAtomString(),
                     'weekly',
+                    '0.8'
+                );
+            });
+
+        // Semua Jurnal Selasanan Published
+        SelasananEntry::where('is_published', true)
+            ->whereNotNull('slug')
+            ->where('slug', '!=', '')
+            ->orderByDesc('updated_at')
+            ->get()
+            ->each(function (SelasananEntry $entry) use ($xml) {
+                $this->writeUrl(
+                    $xml,
+                    SeoUrl::selasananUrl($entry),
+                    $entry->updated_at?->toAtomString(),
+                    'monthly',
                     '0.7'
                 );
             });

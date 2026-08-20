@@ -1,6 +1,23 @@
 @extends('layouts.public')
 
-@section('title', 'Informasi Pendaftaran - Pondok Pesantren Al-Anwar Pakijangan')
+@section('title', 'Informasi Pendaftaran Santri Baru | Pondok Pesantren Al-Anwar Pakijangan')
+@section('meta_description', 'Informasi penerimaan santri baru, pendaftaran SMP Al Anwar Pakijangan dan Madrasah Diniyah Pondok Pesantren Al-Anwar Bulakamba Brebes.')
+@section('meta_keywords', 'pendaftaran santri baru, PPDB Al-Anwar, SMP Al Anwar Pakijangan, pendaftaran pondok pesantren Brebes, biaya pesantren Brebes, syarat masuk pesantren, Bulakamba')
+@section('og_title', 'Informasi Pendaftaran Santri Baru Al-Anwar Pakijangan')
+@section('og_description', 'Informasi penerimaan santri baru, pendaftaran SMP Al Anwar Pakijangan dan Madrasah Diniyah Pondok Pesantren Al-Anwar Bulakamba Brebes.')
+@section('canonical_url', \App\Support\SeoUrl::url('pendaftaran'))
+
+@push('schema')
+@php
+    $breadcrumbs = \App\Support\SeoUrl::breadcrumbSchema([
+        ['name' => 'Beranda', 'url' => \App\Support\SeoUrl::baseUrl() . '/'],
+        ['name' => 'Pendaftaran Santri Baru', 'url' => \App\Support\SeoUrl::url('pendaftaran')],
+    ]);
+@endphp
+<script type="application/ld+json">
+{!! json_encode($breadcrumbs, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
+</script>
+@endpush
 
 @section('content')
     <section class="section bg-surface-alt !pt-20 lg:!pt-24">

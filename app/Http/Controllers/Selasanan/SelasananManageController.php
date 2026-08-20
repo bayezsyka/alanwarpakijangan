@@ -171,6 +171,7 @@ class SelasananManageController extends Controller
         $entry = SelasananEntry::create($data);
 
         $this->logActivity('buat selasanan', 'Judul: ' . $entry->title . ' | ' . $entry->monday_date);
+        $this->regenerateSitemap();
 
         if ($request->expectsJson()) {
             return response()->json([
@@ -291,6 +292,7 @@ class SelasananManageController extends Controller
         $entry->update($data);
 
         $this->logActivity('edit selasanan', 'Judul: ' . $entry->title . ' | ' . $entry->monday_date);
+        $this->regenerateSitemap();
 
         return redirect()->route('manage.selasanan.index')->with('success', 'Selasanan berhasil diperbarui.');
     }
@@ -307,8 +309,20 @@ class SelasananManageController extends Controller
         $this->logActivity('hapus selasanan', 'Judul: ' . $entry->title . ' | ' . $entry->monday_date);
 
         $entry->delete();
+        $this->regenerateSitemap();
 
         return redirect()->route('manage.selasanan.index')->with('success', 'Selasanan berhasil dihapus.');
+    }
+
+    private function regenerateSitemap(): void
+    {
+        try {
+            \Illuminate\Support\Facades\Artisan::call('sitemap:generate');
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('Gagal regenerate sitemap setelah selasanan berubah.', [
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 
     private function weekOfMonthMondayBased(Carbon $date): int

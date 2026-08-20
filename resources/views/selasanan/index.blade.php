@@ -1,5 +1,24 @@
 @extends('layouts.public')
 
+@section('title', 'Kajian Selasanan KH Muhammad Miftah | Al-Anwar Pakijangan')
+@section('meta_description', 'Jurnal dokumentasi, rekaman audio, dan rangkuman kajian rutin Selasanan bersama KH Muhammad Miftah di Pondok Pesantren Al-Anwar Pakijangan Brebes.')
+@section('meta_keywords', 'Kajian Selasanan, KH Muhammad Miftah, pengajian Selasanan Brebes, kajian kitab Pakijangan, rekaman kajian Selasanan, Al-Anwar Pakijangan')
+@section('og_title', 'Kajian Selasanan KH Muhammad Miftah | Al-Anwar Pakijangan')
+@section('og_description', 'Jurnal dokumentasi, rekaman audio, dan rangkuman kajian rutin Selasanan bersama KH Muhammad Miftah di Pondok Pesantren Al-Anwar Pakijangan Brebes.')
+@section('canonical_url', \App\Support\SeoUrl::url('selasanan'))
+
+@push('schema')
+@php
+    $breadcrumbs = \App\Support\SeoUrl::breadcrumbSchema([
+        ['name' => 'Beranda', 'url' => \App\Support\SeoUrl::baseUrl() . '/'],
+        ['name' => 'Kajian Selasanan', 'url' => \App\Support\SeoUrl::url('selasanan')],
+    ]);
+@endphp
+<script type="application/ld+json">
+{!! json_encode($breadcrumbs, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
+</script>
+@endpush
+
 @section('content')
 <section class="section bg-surface-alt !pt-20 lg:!pt-24">
     <div class="container-editorial">

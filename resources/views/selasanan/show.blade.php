@@ -1,13 +1,103 @@
+@php
+    $seoDescription = \App\Support\SeoUrl::cleanDescription($selasanan->isi, 155);
+    $canonicalUrl = \App\Support\SeoUrl::selasananUrl($selasanan);
+    $seoImageUrl = $selasanan->cover_image_path
+        ? \App\Support\SeoUrl::assetUrl('storage/' . $selasanan->cover_image_path)
+        : \App\Support\SeoUrl::assetUrl('images/landingpage/bgppdb.png');
+    $speakerName = $selasanan->speaker ?? 'KH. Muhammad Miftah';
+    $publishedDate = optional($selasanan->monday_date)->toAtomString() ?? optional($selasanan->created_at)->toAtomString();
+    $modifiedDate = optional($selasanan->updated_at)->toAtomString() ?? $publishedDate;
+
+    $selasananSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'Article',
+        'headline' => $selasanan->title,
+        'description' => $seoDescription,
+        'image' => [$seoImageUrl],
+        'url' => $canonicalUrl,
+        'mainEntityOfPage' => [
+            '@type' => 'WebPage',
+            '@id' => $canonicalUrl,
+        ],
+        'datePublished' => $publishedDate,
+        'dateModified' => $modifiedDate,
+        'articleSection' => 'Kajian Selasanan',
+        'inLanguage' => 'id-ID',
+        'author' => [
+            '@type' => 'Person',
+            'name' => $speakerName,
+        ],
+        'publisher' => [
+            '@type' => 'Organization',
+            'name' => 'Pondok Pesantren Al-Anwar Pakijangan',
+            'url' => \App\Support\SeoUrl::baseUrl(),
+            'logo' => [
+                '@type' => 'ImageObject',
+                'url' => \App\Support\SeoUrl::assetUrl('images/logo.webp'),
+            ],
+        ],
+    ];
+
+    if ($selasanan->audio_path) {
+        $selasananSchema['audio'] = [
+            '@type' => 'AudioObject',
+            'name' => 'Rekaman ' . $selasanan->title,
+            'description' => 'Rekaman audio kajian Selasanan bersama ' . $speakerName,
+            'contentUrl' => route('selasanan.download', $selasanan->slug),
+            'encodingFormat' => 'audio/mpeg',
+        ];
+    }
+
+    $breadcrumbSchema = \App\Support\SeoUrl::breadcrumbSchema([
+        ['name' => 'Beranda', 'url' => \App\Support\SeoUrl::baseUrl() . '/'],
+        ['name' => 'Kajian Selasanan', 'url' => \App\Support\SeoUrl::url('selasanan')],
+        ['name' => $selasanan->title, 'url' => $canonicalUrl],
+    ]);
+@endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $selasanan->title }} - Kajian Selasanan | Pesantren Al-Anwar</title>
-    <meta name="description" content="Jurnal Kajian Rutinan Selasanan - {{ $selasanan->title }}. {{ \Illuminate\Support\Str::limit(strip_tags($selasanan->isi), 150) }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    {{-- SEO Primary --}}
+    <title>{{ $selasanan->title }} | Kajian Selasanan Al-Anwar Pakijangan</title>
+    <meta name="description" content="{{ $seoDescription }}">
+    <meta name="keywords" content="{{ $selasanan->title }}, Kajian Selasanan, {{ $speakerName }}, pengajian Brebes, kajian kitab Al-Anwar Pakijangan, audio pengajian">
+    <meta name="author" content="{{ $speakerName }}">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <link rel="canonical" href="{{ $canonicalUrl }}">
+
+    {{-- Open Graph / Facebook --}}
+    <meta property="og:locale" content="id_ID">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Pondok Pesantren Al-Anwar Pakijangan">
+    <meta property="og:title" content="{{ $selasanan->title }}">
+    <meta property="og:description" content="{{ $seoDescription }}">
+    <meta property="og:url" content="{{ $canonicalUrl }}">
+    <meta property="og:image" content="{{ $seoImageUrl }}">
+    <meta property="og:image:alt" content="{{ $selasanan->title }}">
+    <meta property="article:published_time" content="{{ $publishedDate }}">
+    <meta property="article:modified_time" content="{{ $modifiedDate }}">
+    <meta property="article:section" content="Kajian Selasanan">
+    <meta property="article:author" content="{{ $speakerName }}">
+
+    {{-- Twitter Card --}}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $selasanan->title }}">
+    <meta name="twitter:description" content="{{ $seoDescription }}">
+    <meta name="twitter:image" content="{{ $seoImageUrl }}">
+
+    {{-- Structured Data (JSON-LD) --}}
+    <script type="application/ld+json">{!! json_encode($selasananSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
+    <script type="application/ld+json">{!! json_encode($breadcrumbSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
+    <script type="application/ld+json">{!! json_encode(\App\Support\SeoUrl::organizationSchema(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
+
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=playfair-display:500,600,700|dm-sans:400,500,600,700" rel="stylesheet" />
     <link rel="icon" type="image/png" href="{{ asset('images/logo.webp') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
