@@ -1,3 +1,4 @@
+@if($latestSelasanan || (isset($latestArticles) && $latestArticles->isNotEmpty()))
 <section class="py-6 sm:py-12 lg:py-20">
     <div class="container text-center mx-auto max-w-3xl px-3 sm:px-6 lg:px-8">
         <div class="inline-flex items-center rounded-lg border-2 border-[#008362] px-4 sm:px-8 py-2 sm:py-4 transition-all duration-300 hover:bg-[#008362] hover:shadow-md group cursor-pointer mb-4 sm:mb-6">
@@ -48,52 +49,56 @@
             @endif
 
             {{-- CARD ARTIKEL --}}
-            @forelse($latestArticles as $article)
-                <a href="{{ route('artikel.detail', $article->slug) }}" 
-                   class="flex bg-white rounded-xl overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300 group">
-                    {{-- Gambar kiri --}}
-                    <div class="w-28 sm:w-36 flex-shrink-0">
-                        @php
-                            $imageUrl = $article->gambar && Illuminate\Support\Str::startsWith($article->gambar, 'http')
-                                ? $article->gambar
-                                : ($article->gambar ? asset('storage/' . $article->gambar) : asset('images/landingpage/bgppdb.png'));
-                        @endphp
-                        <img src="{{ $imageUrl }}" 
-                             alt="{{ $article->judul }}" 
-                             class="w-full h-full object-cover aspect-square group-hover:scale-105 transition-transform duration-300">
-                    </div>
-                    
-                    {{-- Content kanan --}}
-                    <div class="flex-1 p-3 sm:p-4 flex flex-col justify-center text-left min-w-0">
-                        @if($article->category)
-                            <span class="inline-flex bg-[#008362] text-white text-[10px] sm:text-xs font-semibold px-2 py-0.5 rounded-full w-fit mb-1.5 sm:mb-2">
-                                {{ $article->category->name }}
-                            </span>
-                        @endif
-                        <h3 class="text-sm sm:text-base font-bold text-gray-900 leading-snug line-clamp-2 group-hover:text-emerald-600 transition-colors">
-                            {{ $article->judul }}
-                        </h3>
-                        <div class="flex items-center justify-between text-[10px] sm:text-xs text-gray-500 mt-1.5 sm:mt-2">
-                            <span class="truncate">{{ $article->penulis ?? 'Admin' }}</span>
-                            <span class="flex-shrink-0">{{ $article->created_at->format('d/m/y') }}</span>
+            @if(isset($latestArticles) && $latestArticles->isNotEmpty())
+                @foreach($latestArticles as $article)
+                    <a href="{{ route('artikel.detail', $article->slug) }}" 
+                       class="flex bg-white rounded-xl overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300 group">
+                        {{-- Gambar kiri --}}
+                        <div class="w-28 sm:w-36 flex-shrink-0">
+                            @php
+                                $imageUrl = $article->gambar && Illuminate\Support\Str::startsWith($article->gambar, 'http')
+                                    ? $article->gambar
+                                    : ($article->gambar ? asset('storage/' . $article->gambar) : asset('images/landingpage/bgppdb.png'));
+                            @endphp
+                            <img src="{{ $imageUrl }}" 
+                                 alt="{{ $article->judul }}" 
+                                 class="w-full h-full object-cover aspect-square group-hover:scale-105 transition-transform duration-300">
                         </div>
-                    </div>
-                </a>
-            @empty
-                @if(!$latestSelasanan)
-                    <div class="text-center py-8">
-                        <p class="text-gray-500 text-sm">Belum ada informasi.</p>
-                    </div>
-                @endif
-            @endforelse
+                        
+                        {{-- Content kanan --}}
+                        <div class="flex-1 p-3 sm:p-4 flex flex-col justify-center text-left min-w-0">
+                            @if($article->category)
+                                <span class="inline-flex bg-[#008362] text-white text-[10px] sm:text-xs font-semibold px-2 py-0.5 rounded-full w-fit mb-1.5 sm:mb-2">
+                                    {{ $article->category->name }}
+                                </span>
+                            @endif
+                            <h3 class="text-sm sm:text-base font-bold text-gray-900 leading-snug line-clamp-2 group-hover:text-emerald-600 transition-colors">
+                                {{ $article->judul }}
+                            </h3>
+                            <div class="flex items-center justify-between text-[10px] sm:text-xs text-gray-500 mt-1.5 sm:mt-2">
+                                <span class="truncate">{{ $article->penulis ?? 'Admin' }}</span>
+                                <span class="flex-shrink-0">{{ $article->created_at->format('d/m/y') }}</span>
+                            </div>
+                        </div>
+                    </a>
+                @endforeach
+            @endif
         </div>
 
-        {{-- Link ke halaman artikel --}}
+        {{-- Link ke halaman selengkapnya --}}
         <div class="mt-4 sm:mt-6">
-            <a href="{{ route('artikel') }}" class="inline-flex items-center gap-1.5 text-sm text-[#008362] font-medium hover:underline">
-                Lihat semua artikel
-                <i class="fas fa-arrow-right text-xs"></i>
-            </a>
+            @if(isset($latestArticles) && $latestArticles->isNotEmpty())
+                <a href="{{ route('artikel') }}" class="inline-flex items-center gap-1.5 text-sm text-[#008362] font-medium hover:underline">
+                    Lihat semua artikel
+                    <i class="fas fa-arrow-right text-xs"></i>
+                </a>
+            @elseif($latestSelasanan)
+                <a href="{{ route('selasanan.index') }}" class="inline-flex items-center gap-1.5 text-sm text-[#008362] font-medium hover:underline">
+                    Lihat semua kajian Selasanan
+                    <i class="fas fa-arrow-right text-xs"></i>
+                </a>
+            @endif
         </div>
     </div>
 </section>
+@endif

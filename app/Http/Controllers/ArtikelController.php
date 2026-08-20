@@ -89,6 +89,10 @@ class ArtikelController extends Controller
      */
     public function index()
     {
+        if (Article::published()->doesntExist()) {
+            return redirect()->route('welcome');
+        }
+
         return view('artikel');
     }
 

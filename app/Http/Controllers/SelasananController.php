@@ -10,6 +10,10 @@ class SelasananController extends Controller
 {
     public function index()
     {
+        if (SelasananEntry::where('is_published', true)->doesntExist()) {
+            return redirect()->route('welcome');
+        }
+
         $latest = SelasananEntry::where('is_published', true)
             ->orderByDesc('monday_date')
             ->first();

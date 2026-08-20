@@ -31,10 +31,21 @@ class GenerateSitemap extends Command
 
         // Halaman Utama & Sekunder
         $this->writeUrl($xml, SeoUrl::baseUrl() . '/', null, 'daily', '1.0');
-        $this->writeUrl($xml, SeoUrl::url('artikel'), null, 'daily', '0.9');
-        $this->writeUrl($xml, SeoUrl::url('selasanan'), null, 'weekly', '0.8');
         $this->writeUrl($xml, SeoUrl::url('pendaftaran'), null, 'monthly', '0.8');
-        $this->writeUrl($xml, SeoUrl::url('galeri-acara'), null, 'weekly', '0.7');
+
+        if (Article::published()->exists()) {
+            $this->writeUrl($xml, SeoUrl::url('artikel'), null, 'daily', '0.9');
+        }
+
+        if (SelasananEntry::where('is_published', true)->exists()) {
+            $this->writeUrl($xml, SeoUrl::url('selasanan'), null, 'weekly', '0.8');
+        }
+
+        $hasGallery = \App\Models\Event::has('photos')->exists()
+            || SelasananEntry::where('is_published', true)->whereNotNull('cover_image_path')->exists();
+        if ($hasGallery) {
+            $this->writeUrl($xml, SeoUrl::url('galeri-acara'), null, 'weekly', '0.7');
+        }
 
         // Semua Artikel Published
         Article::published()

@@ -18,6 +18,10 @@ class GalleryController extends Controller
             ->orderByDesc('monday_date')
             ->get();
 
+        if ($events->isEmpty() && $selasananEntries->isEmpty()) {
+            return redirect()->route('welcome');
+        }
+
         return view('galeri', compact('events', 'selasananEntries'));
     }
 }

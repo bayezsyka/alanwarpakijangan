@@ -67,7 +67,7 @@ class Article extends Model
      * @param int|null $exceptId ID artikel saat ini (untuk diabaikan saat update).
      * @return string Slug yang unik.
      */
-    private static function createUniqueSlug(string $title, int $exceptId = null): string
+    private static function createUniqueSlug(string $title, ?int $exceptId = null): string
     {
         $slug = Str::slug($title, '-');
         $originalSlug = $slug;
@@ -85,7 +85,7 @@ class Article extends Model
     /**
      * Fungsi pembantu untuk mengecek keberadaan slug.
      */
-    private static function isSlugExists(string $slug, int $exceptId = null): bool
+    private static function isSlugExists(string $slug, ?int $exceptId = null): bool
     {
         $query = self::where('slug', '=', $slug);
 

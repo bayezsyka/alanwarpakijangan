@@ -1,3 +1,4 @@
+@if(isset($groupedRutinans) && $groupedRutinans->isNotEmpty())
 <section>
     <div class="container mx-auto py-2 sm:py-4 max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="text-center pt-6 sm:pt-8">
@@ -154,7 +155,7 @@
                                             $isLibur = $rutinan->exceptions->contains('libur_date', $day['full_date']);
                                         @endphp
                                         <div class="event-item">
-                                            <div class="{{ $isLibur ? 'opacity-60' : '' }}">
+                                             <div class="{{ $isLibur ? 'opacity-60' : '' }}">
                                                 <p class="font-semibold">{{ $rutinan->nama_acara }}</p>
                                                 @if($isLibur)
                                                     <p class="text-amber-300 font-bold text-2xs sm:text-xs">LIBUR</p>
@@ -185,3 +186,4 @@
     </div>
 </div>
 </section>
+@endif

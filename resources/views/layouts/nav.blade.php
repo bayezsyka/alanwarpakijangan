@@ -21,46 +21,31 @@
 
         <!-- Kolom Kanan: Menu -->
         <div class="flex justify-end items-center space-x-2">
-            <a id="navSelasanan" href="{{ route('selasanan.index') }}"
-                class="flex items-center gap-2 px-4 py-2 rounded-md focus:outline-none text-gray-900 hover:bg-gray-100">
-                Selasanan
-            </a>
+            @if($hasSelasanan ?? false)
+                <a id="navSelasanan" href="{{ route('selasanan.index') }}"
+                    class="flex items-center gap-2 px-4 py-2 rounded-md focus:outline-none text-gray-900 hover:bg-gray-100">
+                    Selasanan
+                </a>
+            @endif
 
-            <a id="navArtikel" href="{{ url('artikel') }}"
-                class="flex items-center gap-2 px-4 py-2 rounded-md focus:outline-none text-gray-900 hover:bg-gray-100">
-                Artikel
-            </a>
+            @if($hasArticles ?? false)
+                <a id="navArtikel" href="{{ url('artikel') }}"
+                    class="flex items-center gap-2 px-4 py-2 rounded-md focus:outline-none text-gray-900 hover:bg-gray-100">
+                    Artikel
+                </a>
+            @endif
 
-            <a id="navGaleri" href="{{ url('galeri-acara') }}"
-                class="flex items-center gap-2 px-4 py-2 rounded-md focus:outline-none text-gray-900 hover:bg-gray-100">
-                Galeri
-            </a>
+            @if($hasGallery ?? false)
+                <a id="navGaleri" href="{{ url('galeri-acara') }}"
+                    class="flex items-center gap-2 px-4 py-2 rounded-md focus:outline-none text-gray-900 hover:bg-gray-100">
+                    Galeri
+                </a>
+            @endif
 
             <a id="navPendaftaran" href="{{ route('pendaftaran') }}"
                 class="flex items-center gap-2 px-4 py-2 rounded-md focus:outline-none text-white bg-[#008362] hover:bg-[#006b50] transition-colors duration-200 font-semibold shadow-sm">
                 Pendaftaran
             </a>
-
-            <!-- Dropdown Tentang Kami -->
-            <!-- <div class="relative">
-        <button id="dropdownNavbarLink" type="button"
-          class="flex items-center gap-2 px-4 py-2 rounded-md focus:outline-none text-gray-900 hover:bg-gray-100"
-          onclick="document.getElementById('dropdownNavbar').classList.toggle('hidden')">
-          Tentang Kami
-          <svg class="w-3 h-3" aria-hidden="true" fill="none" viewBox="0 0 10 6">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="m1 1 4 4 4-4" />
-          </svg>
-        </button>
-
-        <div id="dropdownNavbar"
-          class="absolute right-0 mt-2 z-20 hidden bg-white rounded-lg shadow-lg w-44 divide-y divide-gray-100">
-          <ul class="py-2 text-sm text-gray-700">
-            <li><a href="/profil" class="block px-4 py-2 hover:bg-gray-100">Profil Pesantren</a></li>
-            <li><a href="/galeri-acara" class="block px-4 py-2 hover:bg-gray-100">Galeri</a></li>
-          </ul>
-        </div>
-      </div> -->
         </div>
     </nav>
 
@@ -81,10 +66,15 @@
     <div id="mobileMenu"
         class="lg:hidden hidden mt-2 bg-white rounded-lg shadow-lg divide-y divide-gray-100 overflow-hidden">
         <div class="py-2 text-sm text-gray-700">
-            <a href="{{ route('selasanan.index') }}" class="block px-4 py-3 hover:bg-gray-100">Selasanan</a>
-            <a href="{{ url('artikel') }}" class="block px-4 py-3 hover:bg-gray-100">Artikel</a>
-            <!-- <a href="/profil" class="block px-4 py-3 hover:bg-gray-100">Profil Pesantren</a> -->
-            <a href="/galeri-acara" class="block px-4 py-3 hover:bg-gray-100">Galeri</a>
+            @if($hasSelasanan ?? false)
+                <a href="{{ route('selasanan.index') }}" class="block px-4 py-3 hover:bg-gray-100">Selasanan</a>
+            @endif
+            @if($hasArticles ?? false)
+                <a href="{{ url('artikel') }}" class="block px-4 py-3 hover:bg-gray-100">Artikel</a>
+            @endif
+            @if($hasGallery ?? false)
+                <a href="/galeri-acara" class="block px-4 py-3 hover:bg-gray-100">Galeri</a>
+            @endif
             <a href="{{ route('pendaftaran') }}"
                 class="block px-4 py-3 bg-[#008362] text-white font-semibold">Pendaftaran</a>
         </div>
