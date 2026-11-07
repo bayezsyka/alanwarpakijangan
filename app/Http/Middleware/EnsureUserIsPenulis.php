@@ -12,7 +12,7 @@ class EnsureUserIsPenulis
     {
         $user = $request->user();
 
-        if (! $user || ! $user->isPenulis()) {
+        if (! $user || ! $user->isAdmin()) {
             abort(403, 'Anda tidak diizinkan mengakses halaman penulis.');
         }
 

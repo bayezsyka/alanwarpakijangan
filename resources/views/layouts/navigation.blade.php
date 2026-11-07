@@ -1,12 +1,8 @@
 @php
+    $isSuperAdmin = Auth::user() && Auth::user()->isSuperAdmin();
     $isAdmin = Auth::user() && Auth::user()->isAdmin();
-    $isSelasananManager = Auth::user() && Auth::user()->isSelasananManager();
-    $isPenulis = Auth::user() && Auth::user()->isPenulis();
 
-    $mainRole = 'User Guest';
-    if($isAdmin) $mainRole = 'Administrator';
-    elseif($isSelasananManager) $mainRole = 'Manajer Selasanan';
-    elseif($isPenulis) $mainRole = 'Penulis Konten';
+    $mainRole = $isSuperAdmin ? 'Super Admin' : ($isAdmin ? 'Admin' : 'User Guest');
 @endphp
 
 <div class="h-full flex flex-col w-full">
@@ -18,9 +14,8 @@
         <div :class="sidebarOpen ? 'opacity-100 max-w-xs ml-3' : 'opacity-0 max-w-0 ml-0'" class="whitespace-nowrap overflow-hidden transition-all duration-500">
             <h1 class="text-sm font-black text-gray-800 tracking-tight uppercase">Al-Anwar</h1>
             <p class="text-[10px] font-bold text-emerald-600 tracking-widest uppercase opacity-80">
-                @if($isAdmin) Admin Panel
-                @elseif($isSelasananManager) Selasanan
-                @elseif($isPenulis) Penulis
+                @if($isSuperAdmin) Super Admin
+                @elseif($isAdmin) Admin Panel
                 @else Dashboard
                 @endif
             </p>

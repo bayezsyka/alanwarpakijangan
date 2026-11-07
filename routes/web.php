@@ -12,7 +12,6 @@ use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\Admin\RutinanController as AdminRutinanController;
 use App\Http\Controllers\Admin\RutinanExceptionController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
-use App\Http\Controllers\Penulis\PenulisArticleController;
 use App\Http\Controllers\Admin\AnnouncementController as AdminAnnouncementController;
 use App\Http\Controllers\SelasananController;
 use App\Http\Controllers\Selasanan\SelasananManageController;
@@ -34,7 +33,6 @@ Route::get('/galeri-acara', [GalleryController::class, 'index'])->name('galeri.i
 Route::get('/pendaftaran', function () {
     return view('pendaftaran');
 })->name('pendaftaran');
-// Route::get('/profil', function () { return view('profil'); })->name('profil');
 
 // == SELASANAN (PUBLIK) ==
 Route::get('/selasanan', [SelasananController::class, 'index'])->name('selasanan.index');
@@ -50,25 +48,29 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // --- Admin ---
-    Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    // --- Panel Admin (Superadmin & Admin) ---
+    Route::middleware(['role:superadmin,admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('artikel/trash', [AdminArticleController::class, 'trash'])->name('artikel.trash');
         Route::post('artikel/{id}/restore', [AdminArticleController::class, 'restore'])->name('artikel.restore');
         Route::delete('artikel/{id}/force-delete', [AdminArticleController::class, 'forceDelete'])->name('artikel.force-delete');
         Route::post('artikel/autosave', [AdminArticleController::class, 'autosave'])->name('artikel.autosave');
         Route::resource('artikel', AdminArticleController::class);
-        Route::resource('users', AdminUserController::class);
         Route::resource('events', AdminEventController::class);
         Route::resource('rutinan', AdminRutinanController::class);
         Route::resource('categories', AdminCategoryController::class);
         Route::resource('announcements', AdminAnnouncementController::class)->except(['show']);
-        Route::get('/logs', [\App\Http\Controllers\Admin\ActivityLogController::class, 'index'])->name('logs.index');
         Route::post('/rutinan/{rutinan}/exceptions', [RutinanExceptionController::class, 'store'])->name('rutinan.exceptions.store');
         Route::delete('/rutinan/exceptions/{exception}', [RutinanExceptionController::class, 'destroy'])->name('rutinan.exceptions.destroy');
+
+        // Khusus Superadmin: Manajemen Pengguna & Log Aktivitas
+        Route::middleware(['role:superadmin'])->group(function () {
+            Route::resource('users', AdminUserController::class);
+            Route::get('/logs', [\App\Http\Controllers\Admin\ActivityLogController::class, 'index'])->name('logs.index');
+        });
     });
 
-    // --- Panel Pengurus Selasanan (admin bisa akses juga) ---
-    Route::middleware(['role:selasanan_manager,admin'])->prefix('manage')->name('manage.')->group(function () {
+    // --- Panel Pengurus Selasanan (Superadmin & Admin bisa akses) ---
+    Route::middleware(['role:superadmin,admin'])->prefix('manage')->name('manage.')->group(function () {
         Route::get('/selasanan', [SelasananManageController::class, 'index'])->name('selasanan.index');
         Route::get('/selasanan/create', [SelasananManageController::class, 'create'])->name('selasanan.create');
         Route::post('/selasanan', [SelasananManageController::class, 'store'])->name('selasanan.store');
@@ -77,18 +79,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('/selasanan/{entry}', [SelasananManageController::class, 'destroy'])->name('selasanan.destroy');
     });
 
-    // --- Backend Penulis ---
-    Route::middleware(['auth', 'verified', 'penulis'])
-        ->prefix('penulis')
-        ->name('penulis.')
-        ->group(function () {
-            Route::get('/artikel', [PenulisArticleController::class, 'index'])->name('articles.index');
-            Route::get('/artikel/create', [PenulisArticleController::class, 'create'])->name('articles.create');
-            Route::post('/artikel', [PenulisArticleController::class, 'store'])->name('articles.store');
-            Route::get('/artikel/{article}/edit', [PenulisArticleController::class, 'edit'])->name('articles.edit');
-            Route::put('/artikel/{article}', [PenulisArticleController::class, 'update'])->name('articles.update');
-            Route::delete('/artikel/{article}', [PenulisArticleController::class, 'destroy'])->name('articles.destroy');
-        });
+    // --- Rute Kompatibilitas Penulis (dialihkan ke kelola artikel admin) ---
+    Route::get('/penulis/artikel', function () {
+        return redirect()->route('admin.artikel.index');
+    })->name('penulis.articles.index');
 });
 
 require __DIR__ . '/auth.php';

@@ -2,9 +2,8 @@
     $linkBase = 'group flex items-center h-12 text-sm font-semibold rounded-xl transition-all duration-300 border border-transparent overflow-hidden px-0';
     $linkActive = 'bg-emerald-50 text-emerald-700 border-emerald-100 shadow-sm';
     $linkInactive = 'text-gray-500 hover:bg-gray-50 hover:text-emerald-600 hover:border-gray-100';
+    $isSuperAdmin = Auth::user() && Auth::user()->isSuperAdmin();
     $isAdmin = Auth::user() && Auth::user()->isAdmin();
-    $isSelasananManager = Auth::user() && Auth::user()->isSelasananManager();
-    $isPenulis = Auth::user() && Auth::user()->isPenulis();
 @endphp
 
 <div class="space-y-1">
@@ -69,48 +68,6 @@
 
         <div class="mb-4">
             <p :class="sidebarOpen ? 'opacity-100 translate-x-0' : 'lg:opacity-0 lg:-translate-x-4'" class="px-3 mb-2 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] transition-all duration-500 overflow-hidden whitespace-nowrap">
-                Sistem & Master
-            </p>
-            <nav class="space-y-1">
-                <a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
-                    <div class="w-12 h-12 shrink-0 flex items-center justify-center">
-                        <svg class="w-5 h-5 transition-transform duration-300 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h10M7 11h10M7 15h10" />
-                        </svg>
-                    </div>
-                    <span :class="sidebarOpen ? 'opacity-100 max-w-xs' : 'lg:opacity-0 lg:max-w-0'" class="whitespace-nowrap font-bold transition-all duration-500 overflow-hidden">Kategori</span>
-                </a>
-                <a href="{{ route('admin.rutinan.index') }}" class="{{ request()->routeIs('admin.rutinan.*') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
-                    <div class="w-12 h-12 shrink-0 flex items-center justify-center">
-                        <svg class="w-5 h-5 transition-transform duration-300 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                        </svg>
-                    </div>
-                    <span :class="sidebarOpen ? 'opacity-100 max-w-xs' : 'lg:opacity-0 lg:max-w-0'" class="whitespace-nowrap font-bold transition-all duration-500 overflow-hidden">Jadwal Rutinan</span>
-                </a>
-                <a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.*') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
-                    <div class="w-12 h-12 shrink-0 flex items-center justify-center">
-                        <svg class="w-5 h-5 transition-transform duration-300 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                        </svg>
-                    </div>
-                    <span :class="sidebarOpen ? 'opacity-100 max-w-xs' : 'lg:opacity-0 lg:max-w-0'" class="whitespace-nowrap font-bold transition-all duration-500 overflow-hidden">Manajemen User</span>
-                </a>
-                <a href="{{ route('admin.logs.index') }}" class="{{ request()->routeIs('admin.logs.*') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
-                    <div class="w-12 h-12 shrink-0 flex items-center justify-center">
-                        <svg class="w-5 h-5 transition-transform duration-300 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-                        </svg>
-                    </div>
-                    <span :class="sidebarOpen ? 'opacity-100 max-w-xs' : 'lg:opacity-0 lg:max-w-0'" class="whitespace-nowrap font-bold transition-all duration-500 overflow-hidden">Log Aktivitas</span>
-                </a>
-            </nav>
-        </div>
-    @endif
-
-    @if ($isAdmin || $isSelasananManager)
-        <div class="mb-4">
-            <p :class="sidebarOpen ? 'opacity-100 translate-x-0' : 'lg:opacity-0 lg:-translate-x-4'" class="px-3 mb-2 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] transition-all duration-500 overflow-hidden whitespace-nowrap">
                 Selasanan
             </p>
             <nav class="space-y-1">
@@ -132,49 +89,47 @@
                 </a>
             </nav>
         </div>
-    @endif
 
-    @if ($isPenulis)
         <div class="mb-4">
             <p :class="sidebarOpen ? 'opacity-100 translate-x-0' : 'lg:opacity-0 lg:-translate-x-4'" class="px-3 mb-2 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] transition-all duration-500 overflow-hidden whitespace-nowrap">
-                Penulis
+                Sistem & Master
             </p>
             <nav class="space-y-1">
-                <a href="{{ route('penulis.articles.index') }}" class="{{ request()->routeIs('penulis.articles.*') && !request()->has('s') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
+                <a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
                     <div class="w-12 h-12 shrink-0 flex items-center justify-center">
                         <svg class="w-5 h-5 transition-transform duration-300 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2 2h-7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h10M7 11h10M7 15h10" />
                         </svg>
                     </div>
-                    <span :class="sidebarOpen ? 'opacity-100 max-w-xs' : 'lg:opacity-0 lg:max-w-0'" class="whitespace-nowrap font-bold transition-all duration-500 overflow-hidden">Semua Artikel</span>
+                    <span :class="sidebarOpen ? 'opacity-100 max-w-xs' : 'lg:opacity-0 lg:max-w-0'" class="whitespace-nowrap font-bold transition-all duration-500 overflow-hidden">Kategori</span>
                 </a>
-                
-                <a href="{{ route('penulis.articles.index', ['s' => 'published']) }}" class="{{ request()->query('s') === 'published' ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
-                    <div class="w-12 h-12 shrink-0 flex items-center justify-center">
-                       <svg class="w-5 h-5 transition-transform duration-300 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <span :class="sidebarOpen ? 'opacity-100 max-w-xs' : 'lg:opacity-0 lg:max-w-0'" class="whitespace-nowrap font-bold transition-all duration-500 overflow-hidden">Published</span>
-                </a>
-                
-                <a href="{{ route('penulis.articles.index', ['s' => 'draft']) }}" class="{{ request()->query('s') === 'draft' ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
+                <a href="{{ route('admin.rutinan.index') }}" class="{{ request()->routeIs('admin.rutinan.*') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
                     <div class="w-12 h-12 shrink-0 flex items-center justify-center">
                         <svg class="w-5 h-5 transition-transform duration-300 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                         </svg>
                     </div>
-                    <span :class="sidebarOpen ? 'opacity-100 max-w-xs' : 'lg:opacity-0 lg:max-w-0'" class="whitespace-nowrap font-bold transition-all duration-500 overflow-hidden">Draft</span>
+                    <span :class="sidebarOpen ? 'opacity-100 max-w-xs' : 'lg:opacity-0 lg:max-w-0'" class="whitespace-nowrap font-bold transition-all duration-500 overflow-hidden">Jadwal Rutinan</span>
                 </a>
-                
-                <a href="{{ route('penulis.articles.index', ['s' => 'archived']) }}" class="{{ request()->query('s') === 'archived' ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
-                    <div class="w-12 h-12 shrink-0 flex items-center justify-center">
-                        <svg class="w-5 h-5 transition-transform duration-300 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
-                        </svg>
-                    </div>
-                    <span :class="sidebarOpen ? 'opacity-100 max-w-xs' : 'lg:opacity-0 lg:max-w-0'" class="whitespace-nowrap font-bold transition-all duration-500 overflow-hidden">Archived</span>
-                </a>
+
+                @if ($isSuperAdmin)
+                    <a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.*') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
+                        <div class="w-12 h-12 shrink-0 flex items-center justify-center">
+                            <svg class="w-5 h-5 transition-transform duration-300 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                        </div>
+                        <span :class="sidebarOpen ? 'opacity-100 max-w-xs' : 'lg:opacity-0 lg:max-w-0'" class="whitespace-nowrap font-bold transition-all duration-500 overflow-hidden">Manajemen User</span>
+                    </a>
+                    <a href="{{ route('admin.logs.index') }}" class="{{ request()->routeIs('admin.logs.*') ? $linkBase . ' ' . $linkActive : $linkBase . ' ' . $linkInactive }}">
+                        <div class="w-12 h-12 shrink-0 flex items-center justify-center">
+                            <svg class="w-5 h-5 transition-transform duration-300 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                            </svg>
+                        </div>
+                        <span :class="sidebarOpen ? 'opacity-100 max-w-xs' : 'lg:opacity-0 lg:max-w-0'" class="whitespace-nowrap font-bold transition-all duration-500 overflow-hidden">Log Aktivitas</span>
+                    </a>
+                @endif
             </nav>
         </div>
     @endif

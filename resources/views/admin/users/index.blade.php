@@ -59,14 +59,12 @@
                                             @foreach ($user->roles ?? [] as $role)
                                                 @php
                                                     $roleLabels = [
-                                                        'admin' => 'Administrator',
-                                                        'penulis' => 'Penulis Konten',
-                                                        'selasanan_manager' => 'Manajer Selasanan',
+                                                        'superadmin' => 'Super Admin',
+                                                        'admin' => 'Admin',
                                                     ];
                                                     $roleColors = [
-                                                        'admin' => 'bg-red-50 text-red-700 border-red-100 group-hover:bg-red-100',
-                                                        'penulis' => 'bg-blue-50 text-blue-700 border-blue-100 group-hover:bg-blue-100',
-                                                        'selasanan_manager' => 'bg-emerald-50 text-emerald-700 border-emerald-100 group-hover:bg-emerald-100',
+                                                        'superadmin' => 'bg-purple-50 text-purple-700 border-purple-100 group-hover:bg-purple-100',
+                                                        'admin' => 'bg-emerald-50 text-emerald-700 border-emerald-100 group-hover:bg-emerald-100',
                                                     ];
                                                 @endphp
                                                 <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-wider border shadow-sm transition-all {{ $roleColors[$role] ?? 'bg-gray-50 text-gray-700 border-gray-100' }}">
@@ -78,7 +76,7 @@
                                     <td class="px-6 py-5 whitespace-nowrap">
                                         <div class="flex flex-col">
                                             <span class="text-xs font-bold text-gray-700 leading-none mb-1">{{ $user->created_at->format('d M Y') }}</span>
-                                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">📅 Terdaftar</span>
+                                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">Terdaftar</span>
                                         </div>
                                     </td>
                                     <td class="px-6 py-5 whitespace-nowrap text-right">

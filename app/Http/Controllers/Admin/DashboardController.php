@@ -16,14 +16,6 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        if (auth()->user()->isPenulis()) {
-            return redirect()->route('penulis.articles.index');
-        }
-
-        if (auth()->user()->isSelasananManager()) {
-            return redirect()->route('manage.selasanan.index');
-        }
-
         // Track visitor
         $ip = request()->ip();
         $alreadyVisited = Visitor::where('ip_address', $ip)
@@ -134,9 +126,8 @@ class DashboardController extends Controller
         // === USER PER ROLE ===
         $allUsers = User::all();
         $roleCounts = [
+            'superadmin' => 0,
             'admin' => 0,
-            'penulis' => 0,
-            'selasanan_manager' => 0,
         ];
 
         foreach ($allUsers as $user) {

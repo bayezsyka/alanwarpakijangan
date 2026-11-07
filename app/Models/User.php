@@ -50,19 +50,14 @@ class User extends Authenticatable
         return count(array_intersect($this->roles ?? [], $roles)) > 0;
     }
 
+    public function isSuperAdmin(): bool
+    {
+        return $this->hasRole('superadmin');
+    }
+
     public function isAdmin(): bool
     {
-        return $this->hasRole('admin');
-    }
-
-    public function isPenulis(): bool
-    {
-        return $this->hasRole('penulis');
-    }
-
-    public function isSelasananManager(): bool
-    {
-        return $this->hasRole('selasanan_manager');
+        return $this->hasRole('admin') || $this->hasRole('superadmin');
     }
 
     public function articles()

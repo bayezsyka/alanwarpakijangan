@@ -13,11 +13,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // 3. Buat satu user default secara langsung di sini
-        User::factory()->create([
-            'name' => 'Direktorat Pengembangan', 
-            'email' => 'admin@alanwar.id', 
-            'password' => Hash::make('Pakijangan@67'), 
-        ]);
+        // 3. Buat user default superadmin secara langsung di sini
+        User::firstOrCreate(
+            ['email' => 'admin@alanwar.id'],
+            [
+                'name' => 'Direktorat Pengembangan', 
+                'password' => Hash::make('Pakijangan@67'), 
+                'roles' => ['superadmin'],
+            ]
+        );
     }
 }

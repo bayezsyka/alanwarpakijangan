@@ -58,39 +58,28 @@
 
                         <div class="bg-gray-50/50 p-6 rounded-3xl border border-gray-100 shadow-inner">
                             <label class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-4 text-center">Hak Akses & Peran Sistem <span class="text-red-500">*</span></label>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 @php $userRoles = $user->roles ?? []; @endphp
-                                <label class="relative flex flex-col items-center p-5 rounded-3xl border border-gray-200 bg-white hover:border-emerald-300 hover:shadow-xl hover:shadow-emerald-500/5 transition-all cursor-pointer group shadow-sm text-center">
-                                    <input type="checkbox" name="roles[]" value="admin"
-                                           class="w-5 h-5 text-emerald-600 border-gray-200 rounded-lg focus:ring-emerald-500 transition-all absolute top-4 right-4"
-                                           {{ in_array('admin', old('roles', $userRoles)) ? 'checked' : '' }}>
-                                    <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mb-3 group-hover:bg-emerald-600 group-hover:text-white transition-all shadow-inner">
+                                <label class="relative flex flex-col items-center p-5 rounded-3xl border border-gray-200 bg-white hover:border-purple-300 hover:shadow-xl hover:shadow-purple-500/5 transition-all cursor-pointer group shadow-sm text-center">
+                                    <input type="radio" name="roles[]" value="superadmin"
+                                           class="w-5 h-5 text-purple-600 border-gray-200 focus:ring-purple-500 transition-all absolute top-4 right-4"
+                                           {{ in_array('superadmin', old('roles', $userRoles)) ? 'checked' : '' }}>
+                                    <div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center mb-3 group-hover:bg-purple-600 group-hover:text-white transition-all shadow-inner">
                                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                                     </div>
-                                    <p class="text-xs font-black text-gray-800 tracking-widest uppercase">Administrator</p>
-                                    <p class="text-[9px] font-bold text-gray-400 mt-1 uppercase tracking-tighter">Akses Penuh</p>
+                                    <p class="text-xs font-black text-gray-800 tracking-widest uppercase">Super Admin</p>
+                                    <p class="text-[9px] font-bold text-gray-400 mt-1 uppercase tracking-tighter">Akses Penuh, Akun Admin & Log</p>
                                 </label>
                                 
-                                <label class="relative flex flex-col items-center p-5 rounded-3xl border border-gray-200 bg-white hover:border-blue-300 hover:shadow-xl hover:shadow-blue-500/5 transition-all cursor-pointer group shadow-sm text-center">
-                                    <input type="checkbox" name="roles[]" value="penulis"
-                                           class="w-5 h-5 text-blue-600 border-gray-200 rounded-lg focus:ring-blue-500 transition-all absolute top-4 right-4"
-                                           {{ in_array('penulis', old('roles', $userRoles)) ? 'checked' : '' }}>
-                                    <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition-all shadow-inner">
-                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                                <label class="relative flex flex-col items-center p-5 rounded-3xl border border-gray-200 bg-white hover:border-emerald-300 hover:shadow-xl hover:shadow-emerald-500/5 transition-all cursor-pointer group shadow-sm text-center">
+                                    <input type="radio" name="roles[]" value="admin"
+                                           class="w-5 h-5 text-emerald-600 border-gray-200 focus:ring-emerald-500 transition-all absolute top-4 right-4"
+                                           {{ in_array('admin', old('roles', $userRoles)) ? 'checked' : '' }}>
+                                    <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mb-3 group-hover:bg-emerald-600 group-hover:text-white transition-all shadow-inner">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
                                     </div>
-                                    <p class="text-xs font-black text-gray-800 tracking-widest uppercase">Penulis</p>
-                                    <p class="text-[9px] font-bold text-gray-400 mt-1 uppercase tracking-tighter">Kelola Artikel</p>
-                                </label>
-                                
-                                <label class="relative flex flex-col items-center p-5 rounded-3xl border border-gray-200 bg-white hover:border-purple-300 hover:shadow-xl hover:shadow-purple-500/5 transition-all cursor-pointer group shadow-sm text-center">
-                                    <input type="checkbox" name="roles[]" value="selasanan_manager"
-                                           class="w-5 h-5 text-purple-600 border-gray-200 rounded-lg focus:ring-purple-500 transition-all absolute top-4 right-4"
-                                           {{ in_array('selasanan_manager', old('roles', $userRoles)) ? 'checked' : '' }}>
-                                    <div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center mb-3 group-hover:bg-purple-600 group-hover:text-white transition-all shadow-inner">
-                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
-                                    </div>
-                                    <p class="text-xs font-black text-gray-800 tracking-widest uppercase">Selasanan</p>
-                                    <p class="text-[9px] font-bold text-gray-400 mt-1 uppercase tracking-tighter">Jurnal Audio</p>
+                                    <p class="text-xs font-black text-gray-800 tracking-widest uppercase">Admin</p>
+                                    <p class="text-[9px] font-bold text-gray-400 mt-1 uppercase tracking-tighter">Kelola Konten & Operasional</p>
                                 </label>
                             </div>
                         </div>

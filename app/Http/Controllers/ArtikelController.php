@@ -106,7 +106,7 @@ class ArtikelController extends Controller
         if ($article->status !== 'published') {
             $canPreview = false;
             if (auth()->check()) {
-                if (auth()->user()->isAdmin() || (auth()->user()->isPenulis() && $article->user_id === auth()->id())) {
+                if (auth()->user()->isAdmin()) {
                     $canPreview = true;
                 }
             }

@@ -142,12 +142,10 @@
                             @php
                                 $uRoles = Auth::user()->roles ?? [];
                                 $uRoleLabel = 'User Guest';
-                                if (in_array('admin', $uRoles)) {
-                                    $uRoleLabel = 'Administrator';
-                                } elseif (in_array('selasanan_manager', $uRoles)) {
-                                    $uRoleLabel = 'Manajer Selasanan';
-                                } elseif (in_array('penulis', $uRoles)) {
-                                    $uRoleLabel = 'Penulis Konten';
+                                if (in_array('superadmin', $uRoles)) {
+                                    $uRoleLabel = 'Super Admin';
+                                } elseif (in_array('admin', $uRoles)) {
+                                    $uRoleLabel = 'Admin';
                                 }
                             @endphp
                             <div class="relative" x-data="{ userMenuOpen: false }">

@@ -31,7 +31,7 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'roles' => ['required', 'array', 'min:1'],
-            'roles.*' => [Rule::in(['admin', 'penulis', 'selasanan_manager'])],
+            'roles.*' => [Rule::in(['superadmin', 'admin'])],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -59,7 +59,7 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'roles' => ['required', 'array', 'min:1'],
-            'roles.*' => [Rule::in(['admin', 'penulis', 'selasanan_manager'])],
+            'roles.*' => [Rule::in(['superadmin', 'admin'])],
             'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
         ]);
 

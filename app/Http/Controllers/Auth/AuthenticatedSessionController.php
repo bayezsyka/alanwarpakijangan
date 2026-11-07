@@ -21,16 +21,6 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
         $request->session()->regenerate();
 
-        $user = $request->user();
-
-        if ($user->isPenulis()) {
-            return redirect()->route('penulis.articles.index');
-        }
-
-        if ($user->isSelasananManager()) {
-            return redirect()->route('manage.selasanan.index');
-        }
-
         return redirect()->intended(route('dashboard', absolute: false));
     }
 
