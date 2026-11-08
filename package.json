@@ -9,6 +9,7 @@
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.2",
         "@tailwindcss/vite": "^4.0.0",
+        "@vitejs/plugin-react": "^4.7.0",
         "autoprefixer": "^10.4.2",
         "axios": "^1.8.2",
         "concurrently": "^9.0.1",
@@ -19,7 +20,12 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^7.0.0",
+        "@inertiajs/react": "^3.11.0",
         "aos": "^2.3.4",
-        "chartjs-chart-matrix": "^3.0.0"
+        "chartjs-chart-matrix": "^3.0.0",
+        "lucide-react": "^1.70.0",
+        "react": "^19.3.1",
+        "react-dom": "^19.3.1",
+        "scheduler": "^0.28.0"
     }
 }

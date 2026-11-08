@@ -21,6 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // Middleware visitor log untuk web
         $middleware->appendToGroup('web', \App\Http\Middleware\LogVisitorMiddleware::class);
+        $middleware->appendToGroup('web', \App\Http\Middleware\HandleInertiaRequests::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

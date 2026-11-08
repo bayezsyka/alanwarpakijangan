@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\Event;
 use App\Models\Rutinan;
-use App\Models\Announcement; // <-- TAMBAHAN
+use App\Models\Announcement;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Models\Category;
+use App\Support\SeoUrl;
+use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class ArtikelController extends Controller
 {
@@ -16,84 +20,140 @@ class ArtikelController extends Controller
      */
     public function welcome()
     {
-        // Ambil 2 artikel terbaru yang berstatus published
-        $latestArticles = Article::published()->latest()->take(2)->get();
+        $artikelTerbaru = Article::published()->latest()->take(2)->get();
 
-        // Ambil 1 jurnal Selasanan terbaru yang sudah dipublish
-        $latestSelasanan = \App\Models\SelasananEntry::where('is_published', true)
+        $selasananTerbaru = \App\Models\SelasananEntry::where('is_published', true)
             ->orderByDesc('monday_date')
             ->first();
 
-        // Ambil beberapa entry Selasanan dengan foto untuk galeri
-        $selasananGallery = \App\Models\SelasananEntry::where('is_published', true)
+        $galeriSelasanan = \App\Models\SelasananEntry::where('is_published', true)
             ->whereNotNull('cover_image_path')
             ->orderByDesc('monday_date')
             ->take(6)
             ->get();
 
-        $latestEvents = Event::with('photos')->latest()->take(3)->get();
+        $acaraTerbaru = Event::with('photos')->latest()->take(3)->get();
 
-        // --- LOGIKA BARU YANG MEMAKSA TANGGAL BARU ---
-        $dayNames = [0 => 'Ahad', 1 => 'Senin', 2 => 'Selasa', 3 => 'Rabu', 4 => 'Kamis', 5 => 'Jumat', 6 => 'Sabtu'];
-        $rollingDays = [];
+        $namaHari = [0 => 'Ahad', 1 => 'Senin', 2 => 'Selasa', 3 => 'Rabu', 4 => 'Kamis', 5 => 'Jumat', 6 => 'Sabtu'];
+        $rentangHari = [];
 
         for ($i = -2; $i <= 4; $i++) {
-            // Kita buat objek tanggal baru secara manual, tidak mengandalkan Carbon::now()
-            $dateObject = new \DateTime();
-            $dateObject->modify("$i days");
+            $objekTanggal = new \DateTime();
+            $objekTanggal->modify("$i days");
 
-            $day = Carbon::instance($dateObject); // Ubah kembali ke objek Carbon untuk kemudahan format
+            $hari = Carbon::instance($objekTanggal);
 
-            $rollingDays[] = [
-                'full_date'   => $day->format('Y-m-d'),
-                'day_of_week' => $day->dayOfWeek,
-                'day_name'    => $dayNames[$day->dayOfWeek],
-                'date'        => $day->format('d'),
-                'month'       => strtoupper($day->translatedFormat('M')),
-                'is_today'    => $day->isToday(),
+            $rentangHari[] = [
+                'full_date' => $hari->format('Y-m-d'),
+                'day_of_week' => $hari->dayOfWeek,
+                'day_name' => $namaHari[$hari->dayOfWeek],
+                'date' => $hari->format('d'),
+                'month' => strtoupper($hari->translatedFormat('M')),
+                'is_today' => $hari->isToday(),
             ];
         }
 
-        $groupedRutinans = Rutinan::with('exceptions')->get()->sortBy('waktu')->groupBy('day_of_week');
+        $rutinanPerHari = Rutinan::with('exceptions')->get()->sortBy('waktu')->groupBy('day_of_week');
 
-        // >>> PENGUMUMAN POPUP: ambil pengumuman aktif (dalam rentang tanggal & is_active = true)
-        $announcements = Announcement::active()
+        $pengumuman = Announcement::active()
             ->orderBy('start_date', 'desc')
             ->get();
 
-        // Transform announcements for JavaScript
-        $announcementsData = $announcements->map(function ($a) {
+        $dataPengumuman = $pengumuman->map(function ($item) {
             return [
-                'id'        => $a->id,
-                'title'     => $a->title,
-                'image_url' => $a->image_url,
-                'link'      => $a->link,
+                'id' => $item->id,
+                'judul' => $item->title,
+                'gambar' => $item->image_url,
+                'tautan' => $item->link,
             ];
         })->toArray();
 
-        // Kirim semua data ke view
-        return view('welcome', compact(
-            'latestArticles',
-            'latestSelasanan',
-            'selasananGallery',
-            'latestEvents',
-            'groupedRutinans',
-            'rollingDays',
-            'announcements',
-            'announcementsData'
-        ));
+        $jadwal = collect($rentangHari)->map(function (array $hari) use ($rutinanPerHari) {
+            $rutinanHari = $rutinanPerHari->get($hari['day_of_week'], collect());
+
+            return [
+                'tanggal_penuh' => $hari['full_date'],
+                'nama_hari' => $hari['day_name'],
+                'tanggal' => $hari['date'],
+                'bulan' => $hari['month'],
+                'hari_ini' => $hari['is_today'],
+                'kegiatan' => $rutinanHari->map(function (Rutinan $rutinan) use ($hari) {
+                    return [
+                        'id' => $rutinan->id,
+                        'nama' => $rutinan->nama_acara,
+                        'waktu' => Carbon::parse($rutinan->waktu)->format('H:i') . ' WIB',
+                        'tempat' => $rutinan->tempat,
+                        'pengisi' => $rutinan->pengisi,
+                        'kitab' => $rutinan->kitab,
+                        'keterangan' => $rutinan->isi,
+                        'libur' => $rutinan->exceptions->contains('libur_date', $hari['full_date']),
+                    ];
+                })->values(),
+            ];
+        });
+
+        return Inertia::render('Beranda', [
+            'artikelTerbaru' => $artikelTerbaru->load(['user', 'category'])->map(fn (Article $article) => $this->presentasikanArtikel($article)),
+            'selasananTerbaru' => $selasananTerbaru ? $this->presentasikanSelasanan($selasananTerbaru) : null,
+            'jadwal' => $jadwal,
+            'galeri' => $galeriSelasanan->map(fn ($entry) => [
+                'id' => 'selasanan-' . $entry->id,
+                'judul' => $entry->title,
+                'gambar' => asset('storage/' . $entry->cover_image_path),
+                'tautan' => route('selasanan.show', $entry->slug),
+            ])->concat($acaraTerbaru->flatMap(fn (Event $event) => $event->photos->take(2)->map(fn ($photo) => [
+                'id' => 'acara-' . $photo->id,
+                'judul' => $event->nama_acara,
+                'gambar' => asset('storage/' . $photo->file_path),
+                'tautan' => route('galeri.index'),
+            ])))->take(8)->values(),
+            'pengumuman' => $dataPengumuman,
+            'seo' => [
+                'judul' => 'Pondok Pesantren Al-Anwar Pakijangan | Brebes',
+                'deskripsi' => 'Pondok Pesantren Al-Anwar Pakijangan di Bulakamba, Brebes mengembangkan pendidikan salaf modern, Madrasah Diniyah, SMP, dan pembinaan karakter santri.',
+                'canonical' => SeoUrl::baseUrl() . '/',
+                'gambar' => SeoUrl::assetUrl('images/landingpage/bgppdb.png'),
+                'schema' => [SeoUrl::organizationSchema(), SeoUrl::websiteSchema()],
+            ],
+        ]);
     }
 
     /**
      * Menampilkan halaman daftar semua artikel.
      */
-    public function index()
+    public function index(Request $request)
     {
         if (Article::published()->doesntExist()) {
             return redirect()->route('welcome');
         }
 
-        return view('artikel');
+        $pencarian = trim((string) $request->query('q', ''));
+        $kategori = trim((string) $request->query('kategori', ''));
+
+        $artikel = Article::published()
+            ->with(['user', 'category'])
+            ->when($kategori, fn ($query) => $query->whereHas('category', fn ($q) => $q->where('slug', $kategori)))
+            ->when($pencarian, fn ($query) => $query->where('judul', 'like', '%' . $pencarian . '%'))
+            ->latest()
+            ->paginate(9)
+            ->withQueryString()
+            ->through(fn (Article $article) => $this->presentasikanArtikel($article));
+
+        return Inertia::render('Artikel/Indeks', [
+            'artikel' => $artikel,
+            'kategori' => Category::query()->orderBy('name')->get(['name', 'slug']),
+            'filter' => ['q' => $pencarian, 'kategori' => $kategori],
+            'seo' => [
+                'judul' => 'Artikel | Pondok Pesantren Al-Anwar Pakijangan',
+                'deskripsi' => 'Artikel Pondok Pesantren Al-Anwar Pakijangan tentang pendidikan pesantren, santri, keislaman, karakter, ilmu pengetahuan, dan kegiatan Al-Anwar.',
+                'canonical' => SeoUrl::url('artikel'),
+                'gambar' => SeoUrl::assetUrl('images/landingpage/bgppdb.png'),
+                'schema' => [SeoUrl::breadcrumbSchema([
+                    ['name' => 'Beranda', 'url' => SeoUrl::baseUrl() . '/'],
+                    ['name' => 'Artikel', 'url' => SeoUrl::url('artikel')],
+                ])],
+            ],
+        ]);
     }
 
     /**
@@ -132,6 +192,102 @@ class ArtikelController extends Controller
             session()->put($viewedKey, true);
         }
 
-        return view('artikel_detail', compact('article', 'isPreview'));
+        $article->load(['user', 'category']);
+        $artikel = $this->presentasikanArtikel($article, true);
+        $deskripsi = SeoUrl::cleanDescription($article->isi, 155);
+
+        $artikelTerkait = Article::published()
+            ->where('id', '!=', $article->id)
+            ->where('category_id', $article->category_id)
+            ->latest()
+            ->take(3)
+            ->get();
+
+        if ($artikelTerkait->count() < 3) {
+            $kurang = 3 - $artikelTerkait->count();
+            $tambahan = Article::published()
+                ->where('id', '!=', $article->id)
+                ->whereNotIn('id', $artikelTerkait->pluck('id'))
+                ->latest()
+                ->take($kurang)
+                ->get();
+            $artikelTerkait = $artikelTerkait->concat($tambahan);
+        }
+
+        $tanggalTerbit = $article->tanggal ? Carbon::parse($article->tanggal) : $article->created_at;
+
+        return Inertia::render('Artikel/Detail', [
+            'artikel' => $artikel,
+            'artikelTerkait' => $artikelTerkait->map(fn (Article $item) => $this->presentasikanArtikel($item))->values(),
+            'pratinjau' => $isPreview,
+            'seo' => [
+                'judul' => $article->judul . ' | Al-Anwar Pakijangan',
+                'deskripsi' => $deskripsi,
+                'canonical' => SeoUrl::articleUrl($article),
+                'gambar' => SeoUrl::articleImageUrl($article->gambar),
+                'jenis' => 'article',
+                'schema' => [[
+                    '@context' => 'https://schema.org',
+                    '@type' => 'Article',
+                    'headline' => $article->judul,
+                    'description' => $deskripsi,
+                    'image' => [SeoUrl::articleImageUrl($article->gambar)],
+                    'url' => SeoUrl::articleUrl($article),
+                    'datePublished' => $tanggalTerbit?->toAtomString(),
+                    'dateModified' => $article->updated_at?->toAtomString(),
+                    'articleSection' => $article->category->name ?? 'Artikel',
+                    'inLanguage' => 'id-ID',
+                    'author' => ['@type' => 'Person', 'name' => $artikel['penulis']],
+                    'publisher' => ['@type' => 'Organization', 'name' => 'Pondok Pesantren Al-Anwar Pakijangan'],
+                ], SeoUrl::breadcrumbSchema([
+                    ['name' => 'Beranda', 'url' => SeoUrl::baseUrl() . '/'],
+                    ['name' => 'Artikel', 'url' => SeoUrl::url('artikel')],
+                    ['name' => $article->judul, 'url' => SeoUrl::articleUrl($article)],
+                ])],
+            ],
+        ]);
+    }
+
+    private function presentasikanArtikel(Article $article, bool $sertakanIsi = false): array
+    {
+        $jumlahKata = str_word_count(strip_tags($article->isi));
+        $waktuBaca = max(1, (int) ceil($jumlahKata / 200)) . ' menit baca';
+
+        $data = [
+            'id' => $article->id,
+            'judul' => $article->judul,
+            'slug' => $article->slug,
+            'tautan' => route('artikel.detail', $article->slug),
+            'penulis' => $article->penulis ?? $article->user?->name ?? 'Admin',
+            'kategori' => $article->category ? ['nama' => $article->category->name, 'slug' => $article->category->slug] : null,
+            'ringkasan' => Str::limit(trim(preg_replace('/\s+/', ' ', strip_tags($article->isi))), 170),
+            'gambar' => $article->gambar
+                ? (Str::startsWith($article->gambar, ['http://', 'https://']) ? $article->gambar : asset('storage/' . ltrim($article->gambar, '/')))
+                : asset('images/landingpage/bgppdb.png'),
+            'tanggal' => $article->created_at?->locale('id')->translatedFormat('d F Y'),
+            'tanggal_singkat' => $article->created_at?->locale('id')->translatedFormat('d M Y'),
+            'dilihat' => $article->views,
+            'waktu_baca' => $waktuBaca,
+            'status' => $article->status,
+        ];
+
+        if ($sertakanIsi) {
+            $data['isi'] = $article->isi;
+        }
+
+        return $data;
+    }
+
+    private function presentasikanSelasanan($entry): array
+    {
+        return [
+            'id' => $entry->id,
+            'judul' => $entry->title,
+            'tautan' => route('selasanan.show', $entry->slug),
+            'pembicara' => $entry->speaker,
+            'tanggal' => $entry->monday_date?->locale('id')->translatedFormat('d F Y'),
+            'gambar' => $entry->cover_image_path ? asset('storage/' . $entry->cover_image_path) : asset('images/landingpage/bgppdb.png'),
+            'ada_audio' => filled($entry->audio_path),
+        ];
     }
 }

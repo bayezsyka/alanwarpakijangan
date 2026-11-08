@@ -1,0 +1,264 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-08T10:00:40+07:00",
+  "title": "Design System: Pondok Pesantren Al-Anwar Pakijangan",
+  "extensions": {
+    "colorMeta": {
+      "hijau-hutan": {
+        "role": "primary",
+        "displayName": "Hijau Hutan",
+        "canonical": "#0b3028",
+        "tonalRamp": ["#071b16", "#0b3028", "#104438", "#1c6a55", "#3b806d", "#6a9f90", "#a9c6bd", "#e9f1ee"]
+      },
+      "hijau-institusi": {
+        "role": "primary",
+        "displayName": "Hijau Institusi",
+        "canonical": "#104438",
+        "tonalRamp": ["#071b16", "#0b3028", "#104438", "#1c6a55", "#3b806d", "#6a9f90", "#a9c6bd", "#e9f1ee"]
+      },
+      "hijau-terbitan": {
+        "role": "primary",
+        "displayName": "Hijau Terbitan",
+        "canonical": "#1c6a55",
+        "tonalRamp": ["#071b16", "#0b3028", "#104438", "#1c6a55", "#3b806d", "#6a9f90", "#a9c6bd", "#e9f1ee"]
+      },
+      "gading-hangat": {
+        "role": "secondary",
+        "displayName": "Gading Hangat",
+        "canonical": "#f6f0e3",
+        "tonalRamp": ["#30281c", "#514530", "#756345", "#9b8460", "#bca582", "#d7c6a5", "#f6f0e3", "#fffaf0"]
+      },
+      "kertas": {
+        "role": "neutral",
+        "displayName": "Kertas Hangat",
+        "canonical": "#fffdf8",
+        "tonalRamp": ["#292720", "#4a473c", "#6e695b", "#948d7d", "#bbb3a3", "#ddd7ca", "#f3efe7", "#fffdf8"]
+      },
+      "tinta": {
+        "role": "neutral",
+        "displayName": "Tinta Gelap",
+        "canonical": "#18231f",
+        "tonalRamp": ["#0d1412", "#18231f", "#2b3a35", "#485850", "#6f7d77", "#9ea9a4", "#d2d8d5", "#f1f4f2"]
+      },
+      "kuningan": {
+        "role": "tertiary",
+        "displayName": "Kuningan",
+        "canonical": "#b9924b",
+        "tonalRamp": ["#241b0b", "#493718", "#715526", "#997335", "#b9924b", "#d0b477", "#e4d3ad", "#f8f0dc"]
+      },
+      "kuningan-fokus": {
+        "role": "tertiary",
+        "displayName": "Kuningan Fokus",
+        "canonical": "#d5af64",
+        "tonalRamp": ["#281e0c", "#503d1a", "#795d28", "#a17e39", "#c69f4e", "#d5af64", "#ead3a1", "#faf1dc"]
+      },
+      "permukaan-sage": {
+        "role": "neutral",
+        "displayName": "Permukaan Sage",
+        "canonical": "#e9eee9",
+        "tonalRamp": ["#1b2620", "#34433b", "#526158", "#738177", "#97a39a", "#bcc6be", "#e9eee9", "#f7faf7"]
+      },
+      "garis-arsip": {
+        "role": "neutral",
+        "displayName": "Garis Arsip",
+        "canonical": "#d8d2c6",
+        "tonalRamp": ["#27231d", "#49433a", "#6c655a", "#91897d", "#b4ada1", "#d8d2c6", "#ece8df", "#faf8f3"]
+      },
+      "teks-sekunder": {
+        "role": "neutral",
+        "displayName": "Teks Sekunder",
+        "canonical": "#52665e",
+        "tonalRamp": ["#16201c", "#2a3933", "#405249", "#52665e", "#71847b", "#99a79f", "#c8d0cb", "#eef1ef"]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display Editorial",
+        "purpose": "Judul hero dan momen identitas utama, satu fokus dominan per layar."
+      },
+      "headline": {
+        "displayName": "Headline Editorial",
+        "purpose": "Judul halaman dan section utama."
+      },
+      "title": {
+        "displayName": "Judul Terbitan",
+        "purpose": "Judul terbitan, dialog, dan blok informasi utama."
+      },
+      "body": {
+        "displayName": "Teks Informasi",
+        "purpose": "Isi umum, jadwal, informasi pendaftaran, dan prosa baca."
+      },
+      "label": {
+        "displayName": "Label Operasional",
+        "purpose": "Navigasi, tombol, kategori, metadata, dan kontrol."
+      }
+    },
+    "shadows": [
+      {
+        "name": "navigasi-melekat",
+        "value": "0 10px 30px rgba(11,48,40,0.08)",
+        "purpose": "Memisahkan header berlatarkan kertas dari isi setelah halaman bergulir."
+      },
+      {
+        "name": "label-melayang",
+        "value": "0 10px 30px rgba(11,48,40,0.16)",
+        "purpose": "Menjaga label jumlah foto terbaca di atas montase gambar."
+      },
+      {
+        "name": "dialog",
+        "value": "0 24px 80px rgba(0,0,0,0.35)",
+        "purpose": "Menegaskan permukaan dialog di atas overlay hijau gelap."
+      }
+    ],
+    "motion": [
+      {
+        "name": "state-fast",
+        "value": "200ms ease",
+        "purpose": "Perubahan warna header, tombol, tautan, dan kontrol."
+      },
+      {
+        "name": "image-gentle",
+        "value": "500ms ease",
+        "purpose": "Pembesaran gambar sangat halus pada terbitan dan galeri saat hover."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "0.01ms",
+        "purpose": "Mematikan animasi dan transisi ketika pengguna memilih pengurangan gerak."
+      }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Tombol Utama",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Tindakan utama seperti mencari, membuka galeri, pendaftaran, atau petunjuk arah.",
+      "html": "<button class=\"ds-button-primary\" type=\"button\">Informasi Pendaftaran</button>",
+      "css": ".ds-button-primary { min-height: 48px; display: inline-flex; align-items: center; justify-content: center; padding: 12px 24px; border: 0; border-radius: 6px; background: var(--hijau-900, #104438); color: var(--kertas, #fffdf8); font-family: \"Instrument Sans\", sans-serif; font-size: 16px; font-weight: 600; transition: background-color 200ms ease; cursor: pointer; } .ds-button-primary:hover { background: var(--hijau-950, #0b3028); } .ds-button-primary:focus-visible { outline: 3px solid #d5af64; outline-offset: 3px; } .ds-button-primary:active { background: #071b16; }"
+    },
+    {
+      "name": "Tombol Sekunder",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Tindakan pendamping pada permukaan terang atau kontrol berbagi di halaman baca.",
+      "html": "<button class=\"ds-button-secondary\" type=\"button\">Bagikan</button>",
+      "css": ".ds-button-secondary { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; padding: 10px 16px; border: 1px solid #bdb5a7; border-radius: 6px; background: var(--kertas, #fffdf8); color: var(--hijau-900, #104438); font-family: \"Instrument Sans\", sans-serif; font-size: 14px; font-weight: 600; transition: border-color 200ms ease, background-color 200ms ease; cursor: pointer; } .ds-button-secondary:hover { border-color: var(--hijau-900, #104438); background: var(--gading, #f6f0e3); } .ds-button-secondary:focus-visible { outline: 3px solid #d5af64; outline-offset: 3px; } .ds-button-secondary:active { background: #eee7d9; }"
+    },
+    {
+      "name": "Pencarian Artikel",
+      "kind": "input",
+      "refersTo": "input-search",
+      "description": "Field pencarian editorial dengan ikon yang tetap tenang dan fokus hijau institusi.",
+      "html": "<label class=\"ds-search\"><span class=\"ds-search-label\">Cari artikel</span><svg class=\"ds-search-icon\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"8\"></circle><path d=\"m21 21-4.3-4.3\"></path></svg><input type=\"search\" placeholder=\"Cari judul artikel\"></label>",
+      "css": ".ds-search { position: relative; display: block; width: min(100%, 520px); font-family: \"Instrument Sans\", sans-serif; } .ds-search-label { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; } .ds-search-icon { position: absolute; left: 16px; top: 50%; width: 19px; height: 19px; transform: translateY(-50%); fill: none; stroke: #718078; stroke-width: 2; stroke-linecap: round; } .ds-search input { width: 100%; min-height: 48px; padding: 12px 16px 12px 48px; border: 1px solid #c9c0b0; border-radius: 6px; background: var(--kertas, #fffdf8); color: var(--tinta, #18231f); font: inherit; } .ds-search input::placeholder { color: #7f8984; } .ds-search input:hover { border-color: #9f978a; } .ds-search input:focus-visible { border-color: var(--hijau-900, #104438); outline: 3px solid #d5af64; outline-offset: 2px; }"
+    },
+    {
+      "name": "Navigasi Publik",
+      "kind": "nav",
+      "description": "Header institusi dengan nama pesantren, tautan inti, dan tindakan pendaftaran yang paling jelas.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Navigasi utama\"><a class=\"ds-nav-brand\" href=\"#\"><span><strong>Al-Anwar Pakijangan</strong><small>Pondok Pesantren</small></span></a><div class=\"ds-nav-links\"><a href=\"#\">Rutinan</a><a href=\"#\">Selasanan</a><a href=\"#\">Artikel</a><a class=\"ds-nav-action\" href=\"#\">Pendaftaran</a></div></nav>",
+      "css": ".ds-nav { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 0 24px; border-bottom: 1px solid #d9d3c6; background: rgba(255,253,248,0.95); color: var(--hijau-950, #0b3028); font-family: \"Instrument Sans\", sans-serif; box-shadow: 0 10px 30px rgba(11,48,40,0.08); } .ds-nav a { color: inherit; text-decoration: none; } .ds-nav-brand { min-height: 44px; display: inline-flex; align-items: center; } .ds-nav-brand strong, .ds-nav-brand small { display: block; } .ds-nav-brand strong { font-size: 16px; } .ds-nav-brand small { margin-top: 2px; color: #48645b; font-size: 11px; } .ds-nav-links { display: flex; align-items: center; gap: 4px; } .ds-nav-links > a { min-height: 44px; display: inline-flex; align-items: center; padding: 0 12px; font-size: 14px; font-weight: 500; } .ds-nav-links > a:hover { color: var(--hijau-700, #1c6a55); } .ds-nav-links > a:focus-visible { outline: 3px solid #d5af64; outline-offset: 2px; } .ds-nav-links .ds-nav-action { margin-left: 12px; padding: 0 20px; border-radius: 6px; background: var(--hijau-900, #104438); color: #fff; font-weight: 600; } .ds-nav-links .ds-nav-action:hover { background: var(--hijau-950, #0b3028); color: #fff; } @media (max-width: 720px) { .ds-nav { min-height: 64px; padding: 0 16px; } .ds-nav-links > a:not(.ds-nav-action) { display: none; } .ds-nav-links .ds-nav-action { margin-left: 0; } .ds-nav-brand small { display: none; } }"
+    },
+    {
+      "name": "Tab Hari Aktif",
+      "kind": "chip",
+      "refersTo": "schedule-tab-active",
+      "description": "Pemilih hari berbentuk petak arsip dengan tiga tingkat informasi, bukan chip kapsul.",
+      "html": "<button class=\"ds-day-tab\" type=\"button\" aria-selected=\"true\"><span>Senin</span><strong>09</strong><small>Nov</small></button>",
+      "css": ".ds-day-tab { min-width: 70px; min-height: 76px; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px; border: 1px solid var(--hijau-900, #104438); border-radius: 0; background: var(--hijau-900, #104438); color: #fff; font-family: \"Instrument Sans\", sans-serif; cursor: pointer; transition: background-color 200ms ease; } .ds-day-tab span { font-size: 12px; font-weight: 500; } .ds-day-tab strong { margin-top: 4px; font-size: 18px; line-height: 1; } .ds-day-tab small { margin-top: 4px; font-size: 10px; } .ds-day-tab:hover { background: var(--hijau-950, #0b3028); } .ds-day-tab:focus-visible { outline: 3px solid #d5af64; outline-offset: 3px; }"
+    },
+    {
+      "name": "Terbitan Unggulan",
+      "kind": "card",
+      "refersTo": "card-featured",
+      "description": "Komposisi editorial dua bidang untuk artikel atau kajian yang menjadi prioritas indeks.",
+      "html": "<article class=\"ds-featured\"><div class=\"ds-featured-media\" aria-hidden=\"true\"></div><div class=\"ds-featured-body\"><p>Terbitan terbaru · November 2026</p><h3>Catatan kajian dari Al-Anwar Pakijangan</h3><div class=\"ds-featured-meta\"><span>KH. Muhammad Miftah</span><span>8 November 2026</span></div></div></article>",
+      "css": ".ds-featured { display: grid; grid-template-columns: 1.15fr .85fr; overflow: hidden; background: var(--permukaan-sage, #e9eee9); color: var(--tinta, #18231f); font-family: \"Instrument Sans\", sans-serif; } .ds-featured-media { min-height: 320px; background: #cbdad4; } .ds-featured-body { min-width: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 40px; } .ds-featured-body > p { margin: 0; color: var(--hijau-700, #1c6a55); font-size: 14px; font-weight: 600; } .ds-featured h3 { margin: 20px 0 40px; color: var(--hijau-950, #0b3028); font-family: Newsreader, Georgia, serif; font-size: clamp(32px, 5vw, 48px); font-weight: 600; line-height: 1.1; letter-spacing: -.025em; } .ds-featured-meta { display: flex; justify-content: space-between; gap: 16px; padding-top: 16px; border-top: 1px solid #cdd5d1; color: #6f7f79; font-size: 12px; } .ds-featured:hover h3 { color: var(--hijau-700, #1c6a55); } .ds-featured:focus-within { outline: 3px solid #d5af64; outline-offset: 3px; } @media (max-width: 640px) { .ds-featured { grid-template-columns: 1fr; } .ds-featured-media { min-height: 240px; } .ds-featured-body { padding: 24px; } .ds-featured-meta { flex-direction: column; } }"
+    },
+    {
+      "name": "Dialog Pengumuman",
+      "kind": "custom",
+      "description": "Lapisan pengumuman dengan permukaan kertas, judul editorial, dan kontrol tutup 44px.",
+      "html": "<div class=\"ds-dialog-stage\"><section class=\"ds-dialog\" role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"ds-dialog-title\"><header><div><p>Pengumuman 1 dari 2</p><h2 id=\"ds-dialog-title\">Informasi Pesantren</h2></div><button type=\"button\" aria-label=\"Tutup pengumuman\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M18 6 6 18M6 6l12 12\"></path></svg></button></header><div class=\"ds-dialog-content\">Materi pengumuman yang diterbitkan pengurus.</div></section></div>",
+      "css": ".ds-dialog-stage { display: grid; place-items: center; min-height: 420px; padding: 24px; background: rgba(7,27,22,.8); font-family: \"Instrument Sans\", sans-serif; } .ds-dialog { width: min(100%, 640px); overflow: hidden; border-radius: 12px; background: var(--kertas, #fffdf8); box-shadow: 0 24px 80px rgba(0,0,0,.35); } .ds-dialog header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 16px 28px; border-bottom: 1px solid #ded8cc; } .ds-dialog header p { margin: 0; color: #6f7f79; font-size: 12px; font-weight: 600; } .ds-dialog h2 { margin: 4px 0 0; color: var(--hijau-950, #0b3028); font-family: Newsreader, Georgia, serif; font-size: 24px; font-weight: 600; line-height: 1.2; } .ds-dialog button { width: 44px; height: 44px; flex: 0 0 auto; display: inline-grid; place-items: center; border: 1px solid #d9d3c6; border-radius: 9999px; background: transparent; color: var(--hijau-950, #0b3028); cursor: pointer; } .ds-dialog button:hover { background: #eee7d9; } .ds-dialog button:focus-visible { outline: 3px solid #d5af64; outline-offset: 3px; } .ds-dialog svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; } .ds-dialog-content { min-height: 190px; padding: 28px; color: var(--teks-sekunder, #52665e); line-height: 1.75; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Arsip Hidup Pesantren",
+    "overview": "Arsip Hidup Pesantren menempatkan situs sebagai catatan institusi yang terus bergerak melalui jadwal, terbitan, kajian, foto, dan informasi pendaftaran. Bidang warna yang mantap, tipografi editorial, garis tipis, serta foto pesantren dan kegiatan nyata memberi bobot kelembagaan tanpa menjadikannya landing page promosi generik.\n\nSistem ini terasa hangat, tertib, dan berwibawa. Komposisi bergerak antara bidang penuh, daftar berlapis garis, grid foto, dan kolom baca yang tenang. Hijau hutan membangun identitas, gading dan kertas menjaga kehangatan, sedangkan kuningan dipakai jarang sebagai penanda perhatian. Dials sistem: ENERGY 2 / RHYTHM 3 / MOTION 1.",
+    "keyCharacteristics": [
+      "Arsip editorial yang mengutamakan bukti kegiatan dan terbitan nyata.",
+      "Hierarki kuat melalui bidang hijau, skala judul besar, dan komposisi asimetris.",
+      "Garis arsip tipis sebagai struktur, bukan tumpukan card berbayang.",
+      "Gerak terbatas pada perubahan keadaan, umpan balik, dan pembesaran gambar yang halus.",
+      "Tata letak seluler dengan target sentuh sekurang-kurangnya 44 piksel."
+    ],
+    "rules": [
+      {
+        "name": "The Institutional Green Rule",
+        "body": "Hijau menjadi identitas dan hierarki, bukan warna dekoratif yang disebar ke setiap elemen.",
+        "section": "colors"
+      },
+      {
+        "name": "The Brass Accent Rule",
+        "body": "Kuningan hanya menandai momen penting seperti fokus, progres, ikon pengantar, atau garis kutipan.",
+        "section": "colors"
+      },
+      {
+        "name": "The Warm Paper Rule",
+        "body": "Latar terang tetap hangat; putih dingin tidak menjadi kanvas utama.",
+        "section": "colors"
+      },
+      {
+        "name": "The Editorial Voice Rule",
+        "body": "Newsreader menyuarakan identitas dan isi terbitan; Instrument Sans menangani operasi dan metadata.",
+        "section": "typography"
+      },
+      {
+        "name": "The One Display Rule",
+        "body": "Setiap viewport memiliki satu fokus tipografis utama; judul lain turun satu atau lebih tingkat.",
+        "section": "typography"
+      },
+      {
+        "name": "The Content-Led Grid Rule",
+        "body": "Rasio kolom berubah mengikuti bobot konten, bukan diseragamkan antarseksi.",
+        "section": "layout"
+      },
+      {
+        "name": "The Mobile Composition Rule",
+        "body": "Tata letak seluler disusun ulang menjadi alur tunggal yang jelas, bukan sekadar versi desktop yang dikecilkan.",
+        "section": "layout"
+      },
+      {
+        "name": "The Flat Archive Rule",
+        "body": "Surface tetap datar pada keadaan normal; shadow hanya menandai lapisan yang benar-benar mengambang.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Rectangular Archive Rule",
+        "body": "Struktur editorial memakai sudut tegas; radius tidak boleh mengubah seluruh antarmuka menjadi kumpulan kapsul.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "Do gunakan foto pesantren, kegiatan, sampul, dan terbitan nyata sebagai bukti visual utama.",
+      "Do gunakan garis arsip, pembagian bidang, dan perubahan skala untuk membentuk hierarki sebelum menambahkan shadow.",
+      "Do pertahankan satu fokus dominan pada setiap layar dan beri ruang pada judul editorial.",
+      "Do variasikan komposisi section sesuai jadwal, bacaan, galeri, atau informasi operasional yang dibawanya.",
+      "Do pertahankan target sentuh minimum 44px, fokus yang terlihat, dan dukungan pengurangan gerak."
+    ],
+    "donts": [
+      "Don't ubah situs menjadi landing promosi dengan heading, subtitle, dan grid card seragam pada setiap section.",
+      "Don't gunakan badge eyebrow kapsul, label uppercase dengan tracking lebar, atau microcopy yang hanya mengulang judul.",
+      "Don't gunakan gradien neon ungu, glow generik, atau shadow pada setiap container.",
+      "Don't gunakan radius besar pada card, input, tombol, dan label secara bersamaan.",
+      "Don't menambahkan statistik, testimoni, klaim, foto, atau program yang tidak memiliki sumber nyata."
+    ]
+  }
+}

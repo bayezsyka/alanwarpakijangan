@@ -15,6 +15,8 @@ use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\AnnouncementController as AdminAnnouncementController;
 use App\Http\Controllers\SelasananController;
 use App\Http\Controllers\Selasanan\SelasananManageController;
+use App\Support\SeoUrl;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,9 +32,23 @@ Route::get('/s/{code}', [ShortLinkController::class, 'redirect'])
 Route::get('/artikel', [ArtikelController::class, 'index'])->name('artikel');
 Route::get('/artikel/{article:slug}', [ArtikelController::class, 'show'])->name('artikel.detail');
 Route::get('/galeri-acara', [GalleryController::class, 'index'])->name('galeri.index');
-Route::get('/pendaftaran', function () {
-    return view('pendaftaran');
-})->name('pendaftaran');
+Route::get('/profil', function () {
+    return Inertia::render('Profil', [
+        'seo' => [
+            'judul' => 'Profil Pondok Pesantren Al-Anwar Pakijangan | Brebes',
+            'deskripsi' => 'Mengenal Pondok Pesantren Al-Anwar Pakijangan di Bulakamba, Brebes: sejarah, kurikulum salaf modern, SMP, Madrasah Diniyah, pendiri, pengasuh, dan pembinaan karakter santri.',
+            'canonical' => SeoUrl::url('profil'),
+            'gambar' => SeoUrl::assetUrl('images/landingpage/bgppdb.png'),
+            'schema' => [
+                SeoUrl::organizationSchema(),
+                SeoUrl::breadcrumbSchema([
+                    ['name' => 'Beranda', 'url' => SeoUrl::baseUrl() . '/'],
+                    ['name' => 'Profil Pesantren', 'url' => SeoUrl::url('profil')],
+                ]),
+            ],
+        ],
+    ]);
+})->name('profil');
 
 // == SELASANAN (PUBLIK) ==
 Route::get('/selasanan', [SelasananController::class, 'index'])->name('selasanan.index');
