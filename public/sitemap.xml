@@ -6,8 +6,59 @@
   <priority>1.0</priority>
  </url>
  <url>
-  <loc>https://alanwarpakijangan.com/pendaftaran</loc>
+  <loc>https://alanwarpakijangan.com/profil</loc>
   <changefreq>monthly</changefreq>
   <priority>0.8</priority>
+ </url>
+ <url>
+  <loc>https://alanwarpakijangan.com/artikel</loc>
+  <changefreq>daily</changefreq>
+  <priority>0.9</priority>
+ </url>
+ <url>
+  <loc>https://alanwarpakijangan.com/selasanan</loc>
+  <changefreq>weekly</changefreq>
+  <priority>0.8</priority>
+ </url>
+ <url>
+  <loc>https://alanwarpakijangan.com/galeri-acara</loc>
+  <changefreq>weekly</changefreq>
+  <priority>0.7</priority>
+ </url>
+ <url>
+  <loc>https://alanwarpakijangan.com/artikel/harmonisasi-kurikulum-salaf-dan-pendidikan-formal-smp-al-anwar</loc>
+  <lastmod>2026-11-08T03:39:37+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.8</priority>
+ </url>
+ <url>
+  <loc>https://alanwarpakijangan.com/artikel/membentuk-kemandirian-santri-melalui-kedisiplinan-keseharian-di-pondok</loc>
+  <lastmod>2026-11-08T03:39:37+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.8</priority>
+ </url>
+ <url>
+  <loc>https://alanwarpakijangan.com/artikel/menjaga-ketersambungan-sanad-keilmuan-kitab-kuning-di-era-modern</loc>
+  <lastmod>2026-11-08T03:39:37+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.8</priority>
+ </url>
+ <url>
+  <loc>https://alanwarpakijangan.com/artikel/pentingnya-menata-niat-dan-menghormati-guru-sebelum-memulai-menuntut-ilmu</loc>
+  <lastmod>2026-11-08T03:39:37+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.8</priority>
+ </url>
+ <url>
+  <loc>https://alanwarpakijangan.com/selasanan/menata-niat-dalam-berkhidmah-dan-menuntut-ilmu-2026-10-26</loc>
+  <lastmod>2026-11-08T03:39:37+00:00</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.7</priority>
+ </url>
+ <url>
+  <loc>https://alanwarpakijangan.com/selasanan/tafaqquh-fiddin-dan-keutamaan-menjaga-kesucian-batin-2026-11-02</loc>
+  <lastmod>2026-11-08T03:39:37+00:00</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.7</priority>
  </url>
 </urlset>

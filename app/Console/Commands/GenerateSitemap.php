@@ -31,7 +31,7 @@ class GenerateSitemap extends Command
 
         // Halaman Utama & Sekunder
         $this->writeUrl($xml, SeoUrl::baseUrl() . '/', null, 'daily', '1.0');
-        $this->writeUrl($xml, SeoUrl::url('pendaftaran'), null, 'monthly', '0.8');
+        $this->writeUrl($xml, SeoUrl::url('profil'), null, 'monthly', '0.8');
 
         if (Article::published()->exists()) {
             $this->writeUrl($xml, SeoUrl::url('artikel'), null, 'daily', '0.9');
